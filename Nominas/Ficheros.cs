@@ -80,7 +80,7 @@ namespace Nominas
         }
         #endregion FIN XML - Francisco Romero
 
-        #region FICHEROS TXT
+        #region FICHEROS TXT - Francisco Romero
         // CREAR TXT
         public static void CrearTxtNomina()
         {
