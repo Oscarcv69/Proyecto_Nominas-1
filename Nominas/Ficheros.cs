@@ -9,7 +9,7 @@ namespace Nominas
         #region FICHEROS XML
         public static void crearTrabajadores(string _DNI, string _nombre, string _apellidos)
         {
-            string ruta = "C:\\Users\\Fran-portatil\\Desktop\\CURSO 2º\\Proyecto Nominas\\ProyectoNomina\\Nominas\\Nominas\\trabajador.xml";
+            string ruta = "..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
             XmlDocument doc = new XmlDocument();
             bool salir = false;
 
@@ -57,7 +57,7 @@ namespace Nominas
         public static void CrearTxtNomina()
         {
             bool salir = false;
-            string fic = @"..\\..\\..\\Nominas\\nomina_empleado.txt";
+            string fic = @"..\\..\\..\\Nominas\\Nominas_empleados\\nomina_empleado.txt";
             string formato = "Prueba escribir";
             try {
                 do
