@@ -1,12 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml;
 
 namespace Nominas
 {
     class Ficheros
     {
-        // FICHERO XML
-        #region FICHEROS XML
+
+        #region FICHEROS XML - Francisco Romero
+        // CREAR TRABAJADORES
         public static void crearTrabajadores(string _DNI, string _nombre, string _apellidos)
         {
             string ruta = "..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
@@ -49,17 +51,44 @@ namespace Nominas
                 }
             } while (!salir);
         }
-        // FIN XML
-        #endregion FIN XML
+        // FIN CREAR TRABAJADORES
+
+        // LEER TRABAJADORES
+        public static void getTrabajadores()
+        {
+            string dni, nombre, apellidos;
+            XmlDocument doc = new XmlDocument();
+            doc.Load("..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml");
+
+            //Obtenemos una colección con todos los empleados.
+            XmlNodeList listaEmpleados = doc.SelectNodes("Plantilla/Trabajador");
+
+            //Creamos un único empleado.
+            XmlNode unEmpleado;
+            Interfaz.Header();
+            Interfaz.HeaderVerTrabajadores();
+
+            //Recorremos toda la lista de empleados.
+            for (int i = 0; i < listaEmpleados.Count; i++)
+            {
+                unEmpleado = listaEmpleados.Item(i);
+                dni = Encriptacion.DesEncriptar(unEmpleado.Attributes.GetNamedItem("DNI").InnerText);
+                nombre = Encriptacion.DesEncriptar(unEmpleado.SelectSingleNode("Nombre").InnerText);
+                apellidos = Encriptacion.DesEncriptar(unEmpleado.SelectSingleNode("Apellidos").InnerText);
+                Interfaz.FormatoLeerXML(dni, nombre, apellidos);
+            }
+        }
+        #endregion FIN XML - Francisco Romero
 
         #region FICHEROS TXT
-
+        // CREAR TXT
         public static void CrearTxtNomina()
         {
             bool salir = false;
             string fic = @"..\\..\\..\\Nominas\\Nominas_empleados\\nomina_empleado.txt";
             string formato = "Prueba escribir";
-            try {
+            try
+            {
                 do
                 {
                     if (!File.Exists(fic)) // ARCHIVO EXISTE -> COMPROBADO
@@ -76,21 +105,17 @@ namespace Nominas
                         salir = true;
                     }
                 } while (!salir);
-            } catch (FileNotFoundException e)
+            }
+            catch (FileNotFoundException e)
             {
                 e.ToString();
-            } catch (FileLoadException ex)
+            }
+            catch (FileLoadException ex)
             {
                 ex.ToString();
             }
         }
-
-
-
-
-
-
-
+        // FIN CREAR TXT
         #endregion FIN TXT
     }
 }

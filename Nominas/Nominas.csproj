@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Encriptacion.cs" />
     <Compile Include="Ficheros.cs" />
+    <Compile Include="Interfaz.cs" />
     <Compile Include="Nomina.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
