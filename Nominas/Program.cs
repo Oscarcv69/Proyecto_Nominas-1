@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nominas
 {
@@ -24,11 +20,12 @@ namespace Nominas
                     case 1:
                         Ficheros.getTrabajadores();
                         Console.ReadLine();
-                        salir = false;
                         break;
                     // Operar trabajadores
                     case 2:
-                        Console.WriteLine("En construccion..");
+                        Interfaz.Operaciones();
+                        break;
+                    case 3:
                         salir = true;
                         break;
                 }
