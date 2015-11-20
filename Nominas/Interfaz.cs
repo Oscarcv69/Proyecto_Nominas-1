@@ -103,6 +103,38 @@ namespace Nominas
             Console.ResetColor();
         }
         #endregion Mostrar Error
+        #region Pedir Contraseña - Francisco Romero
+        public static string PedirContraseña()
+        {
+            bool salir = false;
+            string password = null;
+            do
+            {
+                Header();
+                Console.Write("\t\tIntroduzca la contraseña: ");
+                password = Console.ReadLine();
+                if (GestionNegocio.ValidarContraseña(password))
+                {
+                    salir = true;
+                }
+                else
+                {
+                    Error("La contraseña introducida es incorrecta, introduzca una contraseña de 3 - 6 carácteres.");
+                    Continuar();
+                    salir = false;
+                }
+            } while (!salir);
+            return password;
+        }
+        #endregion
+        #region Continuar
+        public static void Continuar()
+        {
+            Console.WriteLine("");
+            Console.Write("\t\t\tPulsa una tecla para continuar...");
+            Console.ReadLine();
+        }
+        #endregion
         #region Header Tabla Trabajadores - Francisco Romero
         public static void HeaderVerTrabajadores()
         {
