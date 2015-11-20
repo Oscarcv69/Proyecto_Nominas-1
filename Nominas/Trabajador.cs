@@ -30,7 +30,7 @@ namespace Nominas
                 }
                 else if (!Int32.TryParse(value.Substring(0, 8), out numero) || (Int32.TryParse(value[8].ToString(), out numero)))
                 {
-                    throw new Exception("DNI Incorrecto: Formato erróneo (22334455A)");
+                    throw new Exception("DNI Incorrecto: Formato erróneo (12345678A)");
                 }
                 else
                 {
