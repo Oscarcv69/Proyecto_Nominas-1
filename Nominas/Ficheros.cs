@@ -6,12 +6,12 @@ namespace Nominas
 {
     class Ficheros
     {
-
+        private static string ruta = "..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
         #region FICHEROS XML - Francisco Romero
         // CREAR TRABAJADORES
-        public static void crearTrabajadores(string _DNI, string _nombre, string _apellidos)
+        public static void crearTrabajadores(Trabajador trb)
         {
-            string ruta = "..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
+
             XmlDocument doc = new XmlDocument();
             bool salir = false;
 
@@ -25,15 +25,15 @@ namespace Nominas
                     root.AppendChild(nodo);
 
                     XmlAttribute dni = doc.CreateAttribute("DNI");
-                    dni.Value = Encriptacion.Encriptar(_DNI);
+                    dni.Value = Encriptacion.Encriptar(trb.dni_pre);
                     nodo.Attributes.Append(dni);
 
                     XmlElement nombre = doc.CreateElement("Nombre");
-                    nombre.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(_nombre)));
+                    nombre.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(trb.nombre_pre)));
                     nodo.AppendChild(nombre);
 
                     XmlElement apellidos = doc.CreateElement("Apellidos");
-                    apellidos.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(_apellidos)));
+                    apellidos.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(trb.apellidos_pre)));
                     nodo.AppendChild(apellidos);
                     doc.Save(ruta);
                     salir = true;
@@ -54,30 +54,67 @@ namespace Nominas
         // FIN CREAR TRABAJADORES
 
         // LEER TRABAJADORES
-        public static void getTrabajadores()
+        public static Trabajador[] getTrabajadores()
         {
+            Trabajador trb = null;
+            Trabajador[] trbArray = null;
             string dni, nombre, apellidos;
             XmlDocument doc = new XmlDocument();
-            doc.Load("..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml");
-
-            //Obtenemos una colección con todos los empleados.
-            XmlNodeList listaEmpleados = doc.SelectNodes("Plantilla/Trabajador");
-
-            //Creamos un único empleado.
-            XmlNode unEmpleado;
-            Interfaz.Header();
-            Interfaz.HeaderVerTrabajadores();
-
-            //Recorremos toda la lista de empleados.
-            for (int i = 0; i < listaEmpleados.Count; i++)
+            try
             {
-                unEmpleado = listaEmpleados.Item(i);
-                dni = Encriptacion.DesEncriptar(unEmpleado.Attributes.GetNamedItem("DNI").InnerText);
-                nombre = Encriptacion.DesEncriptar(unEmpleado.SelectSingleNode("Nombre").InnerText);
-                apellidos = Encriptacion.DesEncriptar(unEmpleado.SelectSingleNode("Apellidos").InnerText);
-                Interfaz.FormatoLeerXML(dni, nombre, apellidos);
+                doc.Load(ruta);
+
+                XmlNodeList listaEmpleados = doc.SelectNodes("Plantilla/Trabajador");
+                XmlNode unEmpleado;
+
+                trbArray = new Trabajador[listaEmpleados.Count];
+                for (int i = 0; i < listaEmpleados.Count; i++)
+                {
+                    trb = new Trabajador();
+                    unEmpleado = listaEmpleados.Item(i);
+                    dni = Encriptacion.DesEncriptar(unEmpleado.Attributes.GetNamedItem("DNI").InnerText);
+                    trb.dni_pre = dni.ToString();
+                    nombre = Encriptacion.DesEncriptar(unEmpleado.SelectSingleNode("Nombre").InnerText);
+                    trb.nombre_pre = nombre;
+                    apellidos = Encriptacion.DesEncriptar(unEmpleado.SelectSingleNode("Apellidos").InnerText);
+                    trb.apellidos_pre = apellidos;
+                    trbArray[i] = trb;
+                }
             }
+            catch (FileNotFoundException)
+            {
+                throw new Exception("Archivo no encontrado");
+            }
+            catch (ArgumentException)
+            {
+                throw new Exception("El archivo al que trata de acceder esta vacio. Por favor inserte minimo un trabajador.");
+            }
+            catch (XmlException)
+            {
+                throw new Exception("No se ha podido abrir el archivo, revise el contenido.");
+            }
+            return trbArray;
         }
+
+        public static void Borrar(string dni)
+        {
+            XmlDocument documento = new XmlDocument();
+            documento.Load(ruta);
+            dni = Encriptacion.Encriptar(dni);
+            XmlElement plantilla = documento.DocumentElement;
+            XmlNodeList listaEmpleados = documento.SelectNodes("Plantilla/Trabajador");
+
+            foreach (XmlNode item in listaEmpleados)
+            {
+                //Determinamos el nodo a modificar por medio del id de empleado.
+                if (item.Attributes.GetNamedItem("DNI").InnerText.Equals(dni))
+                {
+                    plantilla.RemoveChild(item);
+                }
+            }
+            documento.Save(ruta);
+        }
+
         #endregion FIN XML - Francisco Romero
 
         #region FICHEROS TXT - Francisco Romero
@@ -106,13 +143,13 @@ namespace Nominas
                     }
                 } while (!salir);
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
-                e.ToString();
+                throw new Exception("Archivo no encontrado");
             }
-            catch (FileLoadException ex)
+            catch (FileLoadException)
             {
-                ex.ToString();
+                throw new Exception("Archivo no encontrado");
             }
         }
         // FIN CREAR TXT
