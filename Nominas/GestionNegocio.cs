@@ -4,11 +4,65 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Nominas
 {
     class GestionNegocio
     {
+        private int extra = 0;
+        private int jornada = 40;
+        private int horas = 0;
+        private float precio = 0.0F;
+        private float retenciones = 0.16F;
+        private float bruto = 0.0F;
+        private float neto = 0.0F;
+        private float salarioExtra = 0.0F;
+
+        #region GESTION NOMINAS - ANTONIO
+        public int CalculoExtra(int horas)
+        {
+            extra = horas - jornada;
+
+            return extra;
+
+        }
+        //Cálculo del salario bruto
+        public float CalculoSalarioBruto(int horas, int jornada, float precio)
+        {
+            if (horas > jornada)
+            {
+                extra = CalculoExtra(horas);
+                salarioExtra = CalculoSalarioExtra(extra, precio);
+                bruto = jornada + salarioExtra * precio;
+            }
+            else
+            {
+                bruto = horas * precio;
+            }
+            return bruto;
+        }
+        //Calculo del salario Extra
+        public float CalculoSalarioExtra(int extra, float precio)
+        {
+            return (extra * precio * 1.5F);
+        }
+        //Cálculo del salario Neto
+        public float CalculoSalarioNeto(float bruto, float retenciones)
+        {
+            retenciones = CalculoRetenciones(bruto, retenciones);
+            neto = bruto - retenciones;
+            return neto;
+        }
+        //Cálculo de las retenciones
+        public float CalculoRetenciones(float bruto, float retenciones)
+        {
+            retenciones = bruto * retenciones;
+            return retenciones;
+        }
+        #endregion
+
+        #region GESTION TRABAJADOR - OSCAR
         public static bool ExisteTrabajador(Trabajador[] listaTrabajadores, string dni)
         {
             bool existe = false;
@@ -155,7 +209,30 @@ namespace Nominas
             Interfaz.Continuar(mensaje);
 
         }
-        
+        #endregion
+
+        #region Gestion Operaciones - LLAMADA INTERFAZ
+        public static void GestionOperaciones(int numb, ref bool flag)
+        {
+            switch (numb)
+            {
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    flag = true;
+                    break;
+            }
+        }
+        #endregion
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
         {
@@ -184,6 +261,21 @@ namespace Nominas
             }
             return false;
         }
+        public static void ModificarContraseña()
+        {
+            string nuevapass = Interfaz.PedirContraseñaModificar();
+            if (ConfigurationManager.AppSettings["Password"] == null)
+            {
+                throw new ArgumentNullException("La contraseña ", "<" + "Password" + "> does not exist in the configuration. Update failed.");
+            }
+            else
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.Settings["Password"].Value = nuevapass;
+                config.Save(ConfigurationSaveMode.Modified);
+            }
+        }
         #endregion
+
     }
 }

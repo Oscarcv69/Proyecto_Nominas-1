@@ -84,7 +84,7 @@ namespace Nominas
 
                 if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 1) && (seleccion <= 5))
                 {
-                    flag = true;
+                    GestionNegocio.GestionOperaciones(Int32.Parse(eleccion), ref flag);
                 }
                 else
                 {
@@ -127,6 +127,29 @@ namespace Nominas
             return password;
         }
         #endregion
+        #region Pedir <Modificar Contraseña> - Francisco Romero
+        public static string PedirContraseñaModificar()
+        {
+            string passactual = null, passnueva = null;
+            bool salir = false;
+            do
+            {
+                Header();
+                Console.WriteLine("Introduce la contraseña actual");
+                passactual = Console.ReadLine();
+                if (GestionNegocio.ValidarContraseña(passactual))
+                {
+                    Console.WriteLine("Introduce la contraseña nueva");
+                    passnueva = Console.ReadLine();
+                }
+                else
+                {
+                    Error("La contraseña actual no es correcta, por favor, intentelo de nuevo.");
+                }
+            } while (!salir);
+            return passnueva;
+        }
+        #endregion
         #region Continuar
         public static void Continuar()
         {
@@ -155,5 +178,6 @@ namespace Nominas
             Console.WriteLine("");
         }
         #endregion Formato de Salida VER TRABAJADORES
+
     }
 }
