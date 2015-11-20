@@ -20,6 +20,10 @@ namespace Nominas
         private float salarioExtra = 0.0F;
 
         #region GESTION NOMINAS - ANTONIO
+
+        //Métodos para el cálculo de la nómina
+
+        //Cálculo de las horas extra
         public int CalculoExtra(int horas)
         {
             extra = horas - jornada;
@@ -60,6 +64,8 @@ namespace Nominas
             retenciones = bruto * retenciones;
             return retenciones;
         }
+
+        //Métodos para la gestión de las nóminas
         #endregion
 
         #region GESTION TRABAJADOR - OSCAR
