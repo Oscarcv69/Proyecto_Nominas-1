@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,8 +24,6 @@ namespace Nominas
 
             return existe;
         }
-
-
         private static bool ExisteTrabajador(Trabajador[] listaTrabajadores, string dni, ref int posicion)
         {
             bool existe = false;    // Control de existencia
@@ -92,8 +91,6 @@ namespace Nominas
             } while (!salida);
 
         }
-
-
         // Método público: Operar con cuenta cliente
         public static void OperarTrabajadores(ref Trabajador[] trabjador)
         {
@@ -158,6 +155,35 @@ namespace Nominas
             Interfaz.Continuar(mensaje);
 
         }
-
+        
+        #region Gestion Contraseña - Francisco Romero
+        public static bool GestionContraseña()
+        {
+            bool correcto = false;
+            string password = null;
+            password = Interfaz.PedirContraseña();
+            if (ValidarContraseña(password))
+            {
+                correcto = true;
+            }
+            else
+            {
+                correcto = false;
+            }
+            return correcto;
+        }
+        public static bool ValidarContraseña(string password)
+        {
+            string pass = ConfigurationManager.AppSettings["Password"];
+            if (password.Length > 3 && password.Length <= 6)
+            {
+                if (password.Equals(pass))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        #endregion
     }
 }
