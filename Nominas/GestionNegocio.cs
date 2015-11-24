@@ -146,8 +146,8 @@ namespace Nominas
                 mensaje = mensaje + "\n\n\t Desea registrar otro Trabajador (s/n): ";
 
 
-                //salida = Interfaz.Continuar(mensaje) ? false : true;
-                salida = true;
+                salida = Interfaz.Continuar(mensaje) ? false : true;
+               
             } while (!salida);
 
         }
@@ -157,12 +157,12 @@ namespace Nominas
 
             if (listaTrabajadores != null)
             {
-                //  Interfaz.MostrarLista(listaTrabajadores);
-                // Interfaz.Continuar("\n\tPulse ENTER para continuar");
+                Interfaz.MostrarLista(listaTrabajadores);
+                Interfaz.Continuar("\n\tPulse ENTER para continuar");
             }
             else
             {
-                // Interfaz.Continuar("\n\tNo hay trabajadores a mostrar. \n\tPulse ENTER para continuar");
+                Interfaz.Continuar("\n\tNo hay trabajadores a mostrar. \n\tPulse ENTER para continuar");
             }
         }
         //Método para borrar un trabajador
@@ -173,6 +173,7 @@ namespace Nominas
             string dni = null;
             bool existe = false;
             bool correcto = false;
+            string mensaje;
             int j = 0;
 
             //En primer lugar pedimos la contraseña para realizar cambios
@@ -207,20 +208,18 @@ namespace Nominas
                 copia.CopyTo(listaTrabajadores, 0);
                 //Ponemos el array de copia en Null para ahorrar memoria
                 copia = null;
-                //mensaje = "\n\t Cliente borrado con éxito, Pulse ENTER para continuar\n";
+                mensaje = "\n\t Cliente borrado con éxito, Pulse ENTER para continuar\n";
             }
             else
             {
 
-               // mensaje = "\n\t ERROR: Asegurese que el DNI existe o que no tienes fondos en su cuenta\n";
+                mensaje = "\n\t ERROR: Asegurese que el DNI existe o que no tienes fondos en su cuenta\n";
             }
 
-          //  Interfaz.Continuar(mensaje);
+                Interfaz.Continuar(mensaje);
 
         }
-
-
-
+        #endregion
 
         #region Gestion Operaciones - LLAMADA INTERFAZ
         public static void GestionOperaciones(int numb, ref bool flag)
@@ -247,6 +246,9 @@ namespace Nominas
                     ModificarContraseña();
                     break;
                 case 5:
+                   ListarTrabajadores(listaTrabajador);
+                    break;
+                case 6:    
                     flag = true;
                     break;
             }
@@ -294,7 +296,6 @@ namespace Nominas
                 config.Save(ConfigurationSaveMode.Modified);
             }
         }
-        #endregion
     }
     #endregion
 }

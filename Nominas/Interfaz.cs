@@ -77,7 +77,8 @@ namespace Nominas
                 Console.WriteLine("\t\t\t2 -> Modificar Trabajadores ");
                 Console.WriteLine("\t\t\t3 -> Eliminar Trabajadores ");
                 Console.WriteLine("\t\t\t4 -> Modificar Contraseña ");
-                Console.WriteLine("\t\t\t5 -> Salir\n");
+                Console.WriteLine("\t\t\t5 -> Mostrar Trabajadores");
+                Console.WriteLine("\t\t\t6 -> Salir\n");
                 Console.Write("\t\t\tEleccion: ");
                 eleccion = Console.ReadLine();
                 eleccion = eleccion.Trim();
@@ -156,6 +157,25 @@ namespace Nominas
             Console.WriteLine("");
             Console.Write("\t\t\tPulsa una tecla para continuar...");
             Console.ReadLine();
+        }
+        //Método sobrescrito de continuar, solo para probar
+        public static bool Continuar(string message)
+        {
+            bool seguir = false;    // Control de la confirmación
+            string aux = null;
+
+            // ENTRADA
+            Console.Write(message);
+            aux = Console.ReadLine();
+            aux = aux.Trim().ToLower(); // Métodos en cadena: 1º limpia ; 2º minúsculas
+
+            // VALIDACION --> PENDIENTE
+
+            // PROCESAMIENTO
+            if ((aux != "") && (aux[0] == 's')) seguir = true;   // Sólo true si 's', false en resto de casos
+
+            // SALIDA
+            return seguir;
         }
         #endregion
         #region Header Tabla Trabajadores - Francisco Romero
@@ -260,6 +280,22 @@ namespace Nominas
             return eleccion;
         }
         #endregion
-        
+
+        #region Metodo ListarTrabajadores(Todavia no implementado) - Óscar
+        public static void MostrarLista(Trabajador[] listaTrabajadores)
+        {
+            int indice = 0;
+
+            Header();
+            Console.WriteLine("\t LISTADO DE TRABAJADORES");
+            HeaderVerTrabajadores();
+
+            for (indice = 0; indice < listaTrabajadores.Length; indice++)
+            {
+                Console.WriteLine(listaTrabajadores[indice]);
+            }
+        }
+        #endregion
+
     }
 }
