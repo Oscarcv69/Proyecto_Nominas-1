@@ -235,7 +235,7 @@ namespace Nominas
             {
                 Console.Clear();
                 Interfaz.Header();
-                if (Gestion.GestionContraseña())
+                if (GestionNegocio.GestionContraseña())
                 {
                     Console.WriteLine("\tA continuacion, introduce el DNI del empleado a modificar.");
                     Console.Write("\n\t\t\tIntroduce el DNI: ");
@@ -260,6 +260,6 @@ namespace Nominas
             return eleccion;
         }
         #endregion
-
+        
     }
 }

@@ -103,7 +103,7 @@ namespace Nominas
 
             return existe;
         }
-        public static void NuevoTrabajador(ref Trabajador[] trabajador)
+        public static void NuevoTrabajador(ref Trabajador[] listaTrabajadores)
         {
             Trabajador trabtemp;
             Trabajador[] copia = null;
@@ -115,25 +115,25 @@ namespace Nominas
             {
                 // ENTRADA
 
-                trabtemp = Interfaz.DatosTrabajador();
+                trabtemp = Interfaz.PlantillaCrearTrabajador();
 
-                if (!ExisteTrabajador(trabajador, trabtemp.dni_pre))
+                if (!ExisteTrabajador(listaTrabajadores, trabtemp.dni_pre))
                 {
 
-                    if (trabajador == null)
+                    if (listaTrabajadores == null)
                     {
-                        trabajador = new Trabajador[1];
+                        listaTrabajadores = new Trabajador[1];
                     }
                     else
                     {
-                        copia = new Trabajador[trabajador.Length];
-                        trabajador.CopyTo(copia, 0);
-                        trabajador = new Trabajador[trabajador.Length + 1];
-                        copia.CopyTo(trabajador, 0);
+                        copia = new Trabajador[listaTrabajadores.Length];
+                        listaTrabajadores.CopyTo(copia, 0);
+                        listaTrabajadores = new Trabajador[listaTrabajadores.Length + 1];
+                        copia.CopyTo(listaTrabajadores, 0);
                         copia = null;
                     }
 
-                    trabajador[trabajador.Length - 1] = trabtemp;
+                    listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp;
 
                     mensaje = "\n\t Trabajador registrado correctamente";
                 }
@@ -146,92 +146,105 @@ namespace Nominas
                 mensaje = mensaje + "\n\n\t Desea registrar otro Trabajador (s/n): ";
 
 
-                salida = Interfaz.Continuar(mensaje) ? false : true;
-
+                //salida = Interfaz.Continuar(mensaje) ? false : true;
+                salida = true;
             } while (!salida);
 
         }
-        // Método público: Operar con cuenta cliente
-        public static void OperarTrabajadores(ref Trabajador[] trabjador)
+        // Método para mostrar a todos los trabajadores que hay en la nómina
+        public static void ListarTrabajadores(Trabajador[] listaTrabajadores)
         {
-            string dni = null;      // Empleado para la búsqueda del cliente
-            float cantidad = 0.0F;  // Cantidad a ingresar o reintegrar
-            byte opcion;            // Opción del menú
-            int indice = 0;         // Posición del cliente en la lista de clientes
-            string mensaje = null;
 
-            // ENTRADA: Solicitud del DNI del cliente para operar
-            dni = Interfaz.SolicitarDni();
-
-            // PROCESO
-            // Comprobación de la existencia del Cliente
-            if (ExisteTrabajador(trabjador, dni, ref indice))
+            if (listaTrabajadores != null)
             {
-                opcion = Interfaz.MenuOperar(trabjador[indice]);
-
-                switch (opcion)
-                {
-                    // Salida del Menú de Operación
-                    case 0:
-                        mensaje = "\n\tOperación Cancelada\n";
-                        break;
-                    // Ingreso en Cuenta del Cliente
-                    case 1:
-                        if (cantidad > 0)
-                        {
-                            Interfaz.SolicitarCantidad(trabjador[indice], ref cantidad, 1);
-
-                            trabjador[indice].RecargarSaldo(cantidad);
-
-                            mensaje = "\n\tIngreso realizado con éxito\n";
-                        }
-
-                        break;
-                    // Reintegro en Cuenta del Cliente
-                    case 2:
-                        Interfaz.SolicitarCantidad(trabjador[indice], ref cantidad, 2);
-                        if (trabjador[indice].pSaldo >= cantidad)
-                        {
-                            trabjador[indice].ExtraerSaldo(cantidad);
-                            mensaje = "\n\tReintegro realizado con éxito\n";
-                        }
-                        else
-                        {
-                            mensaje = "\n\tNo tiene suficiente saldo en la cuenta\n";
-                        }
-
-
-
-                        break;
-                }
+                //  Interfaz.MostrarLista(listaTrabajadores);
+                // Interfaz.Continuar("\n\tPulse ENTER para continuar");
             }
             else
             {
-                mensaje = "\n\tERROR: No se encuentra el Cliente\n";
+                // Interfaz.Continuar("\n\tNo hay trabajadores a mostrar. \n\tPulse ENTER para continuar");
+            }
+        }
+        //Método para borrar un trabajador
+        public static void BorrarTrabajador(ref Trabajador[] listaTrabajadores)
+        {
+            Trabajador[] copia;
+            int posicion = 0;
+            string dni = null;
+            bool existe = false;
+            bool correcto = false;
+            int j = 0;
+
+            //En primer lugar pedimos la contraseña para realizar cambios
+            correcto = GestionContraseña();
+
+            //Vamos a pedir el DNI para buscar a la persona que vamos a borrar
+            dni = Interfaz.PlantillaBorrarUsuario();
+
+            //En segundo lugar buscamos si existe dicho DNI introducido.
+            existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
+
+            // Condición para conocer si la cuenta se encuentra sin saldo y además si existe.
+            if (correcto == true && existe == true)
+            {
+
+                // Creamos un array de Copia para volcar los datos, con longitud de los clientes -1
+                copia = new Trabajador[listaTrabajadores.Length - 1];
+
+                /* For para recorrer el array, si encotnramos dicho DNI, borramos dicha posición y datos.*/
+
+
+                for (int i = 0; i < listaTrabajadores.Length; i++, j++)
+                {
+                    if (i != posicion)
+                    {
+                        copia[j] = listaTrabajadores[i];
+                    }
+                    else j -= 1;
+                }
+                //Array dinámico
+                listaTrabajadores = new Trabajador[copia.Length];
+                copia.CopyTo(listaTrabajadores, 0);
+                //Ponemos el array de copia en Null para ahorrar memoria
+                copia = null;
+                //mensaje = "\n\t Cliente borrado con éxito, Pulse ENTER para continuar\n";
+            }
+            else
+            {
+
+               // mensaje = "\n\t ERROR: Asegurese que el DNI existe o que no tienes fondos en su cuenta\n";
             }
 
-            // SALIDA
-            mensaje = mensaje + "\n\tPulse ENTER para continuar";
-            Interfaz.Continuar(mensaje);
+          //  Interfaz.Continuar(mensaje);
 
         }
-        #endregion
+
+
+
 
         #region Gestion Operaciones - LLAMADA INTERFAZ
         public static void GestionOperaciones(int numb, ref bool flag)
         {
+            Trabajador[] listaTrabajador = null;
             switch (numb)
             {
+                //Agregar trabajadores
                 case 1:
-
+                    NuevoTrabajador(ref listaTrabajador);
                     break;
+                //Modificar trabajadores
                 case 2:
 
                     break;
-                case 3:
 
+                //Eliminar trabajadores 
+                case 3:
+                    BorrarTrabajador(ref listaTrabajador);
                     break;
+
+                //Modificar Contraseña
                 case 4:
+                    ModificarContraseña();
                     break;
                 case 5:
                     flag = true;
@@ -282,6 +295,6 @@ namespace Nominas
             }
         }
         #endregion
-
     }
+    #endregion
 }
