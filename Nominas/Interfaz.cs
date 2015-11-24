@@ -178,6 +178,88 @@ namespace Nominas
             Console.WriteLine("");
         }
         #endregion Formato de Salida VER TRABAJADORES
+        #region Operaciones Usuario
+        public static Trabajador PlantillaCrearTrabajador()
+        {
+            Trabajador trb = null;
+            bool salir = false;
+            do
+            {
+                trb = new Trabajador();
+                Console.Write("\n\t\t\tIntroduce el DNI: ");
+                trb.dni_pre = Console.ReadLine();
+                Console.Write("\t\t\tIntroduce el Nombre: ");
+                trb.nombre_pre = Console.ReadLine();
+                Console.Write("\t\t\tIntroduce los apellidos: ");
+                trb.apellidos_pre = Console.ReadLine();
+                return trb;
+
+            } while (!salir);
+        }
+        public static string PlantillaBorrarUsuario()
+        {
+            string dni = null;
+            string eleccion = null;
+            bool salir = false;
+            do
+            {
+                Console.Clear();
+                Interfaz.Header();
+                Console.WriteLine("\tA continuacion, introduce el DNI del empleado a eliminar.");
+                Console.Write("\n\t\t\tIntroduce el DNI: ");
+                dni = Console.ReadLine();
+                Console.Write("\n\t\t¿Desea borrar otro empleado? s/n =>> ");
+                eleccion = Console.ReadLine();
+                if (eleccion.Equals("s"))
+                {
+                    salir = false;
+                }
+                else if (eleccion.Equals("n"))
+                {
+                    salir = true;
+                }
+                else
+                {
+                    Error("Introduce una S para borrar otro empleado o una N para salir.");
+                    Continuar();
+                }
+            } while (!salir);
+            return dni;
+        }
+        public static string PlantillaModificarUsuario()
+        {
+            string dni = null;
+            string eleccion = null;
+            bool salir = false;
+            do
+            {
+                Console.Clear();
+                Interfaz.Header();
+                if (Gestion.GestionContraseña())
+                {
+                    Console.WriteLine("\tA continuacion, introduce el DNI del empleado a modificar.");
+                    Console.Write("\n\t\t\tIntroduce el DNI: ");
+                    dni = Console.ReadLine();
+                    Console.Write("\n\t\t¿Desea modificar otro empleado? s/n =>> ");
+                    eleccion = Console.ReadLine();
+                    if (eleccion.Equals("s"))
+                    {
+                        salir = false;
+                    }
+                    else if (eleccion.Equals("n"))
+                    {
+                        salir = true;
+                    }
+                    else
+                    {
+                        Error("Introduce una 's' para modificar otro empleado o una 'n' para salir.");
+                        Continuar();
+                    }
+                }
+            } while (!salir);
+            return eleccion;
+        }
+        #endregion
 
     }
 }
