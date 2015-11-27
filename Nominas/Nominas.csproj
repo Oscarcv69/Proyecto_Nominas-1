@@ -75,6 +75,8 @@
     <Compile Include="Encriptacion.cs" />
     <Compile Include="Ficheros.cs" />
     <Compile Include="GestionNegocio.cs" />
+    <Compile Include="Gestion_Nomina.cs" />
+    <Compile Include="Gestion_Empleado.cs" />
     <Compile Include="Interfaz.cs" />
     <Compile Include="Nomina.cs" />
     <Compile Include="Program.cs" />
