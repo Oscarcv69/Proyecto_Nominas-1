@@ -6,7 +6,24 @@ using System.Threading.Tasks;
 
 namespace Nominas
 {
-    class Nomina
-    {
+    class Nomina{
+		private int horas;
+
+		public Nomina(){
+			
+			this.horas = null;
+		}
+	
+		//Fragmento estándar
+		public int Horas{
+			
+			set{
+				this.horas = value;
+			}
+
+			get{
+				return horas;
+			}
+		}
     }
 }
