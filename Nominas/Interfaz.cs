@@ -77,7 +77,8 @@ namespace Nominas
                 Console.WriteLine("\t\t\t2 -> Modificar Trabajadores ");
                 Console.WriteLine("\t\t\t3 -> Eliminar Trabajadores ");
                 Console.WriteLine("\t\t\t4 -> Modificar Contraseña ");
-                Console.WriteLine("\t\t\t5 -> Salir\n");
+                Console.WriteLine("\t\t\t5 -> Mostrar Trabajadores");
+                Console.WriteLine("\t\t\t6 -> Salir\n");
                 Console.Write("\t\t\tEleccion: ");
                 eleccion = Console.ReadLine();
                 eleccion = eleccion.Trim();
@@ -157,6 +158,25 @@ namespace Nominas
             Console.Write("\t\t\tPulsa una tecla para continuar...");
             Console.ReadLine();
         }
+        //Método sobrescrito de continuar, solo para probar
+        public static bool Continuar(string message)
+        {
+            bool seguir = false;    // Control de la confirmación
+            string aux = null;
+
+            // ENTRADA
+            Console.Write(message);
+            aux = Console.ReadLine();
+            aux = aux.Trim().ToLower(); // Métodos en cadena: 1º limpia ; 2º minúsculas
+
+            // VALIDACION --> PENDIENTE
+
+            // PROCESAMIENTO
+            if ((aux != "") && (aux[0] == 's')) seguir = true;   // Sólo true si 's', false en resto de casos
+
+            // SALIDA
+            return seguir;
+        }
         #endregion
         #region Header Tabla Trabajadores - Francisco Romero
         public static void HeaderVerTrabajadores()
@@ -178,6 +198,104 @@ namespace Nominas
             Console.WriteLine("");
         }
         #endregion Formato de Salida VER TRABAJADORES
+        #region Operaciones Usuario
+        public static Trabajador PlantillaCrearTrabajador()
+        {
+            Trabajador trb = null;
+            bool salir = false;
+            do
+            {
+                trb = new Trabajador();
+                Console.Write("\n\t\t\tIntroduce el DNI: ");
+                trb.dni_pre = Console.ReadLine();
+                Console.Write("\t\t\tIntroduce el Nombre: ");
+                trb.nombre_pre = Console.ReadLine();
+                Console.Write("\t\t\tIntroduce los apellidos: ");
+                trb.apellidos_pre = Console.ReadLine();
+                return trb;
+
+            } while (!salir);
+        }
+        public static string PlantillaBorrarUsuario()
+        {
+            string dni = null;
+            string eleccion = null;
+            bool salir = false;
+            do
+            {
+                Console.Clear();
+                Interfaz.Header();
+                Console.WriteLine("\tA continuacion, introduce el DNI del empleado a eliminar.");
+                Console.Write("\n\t\t\tIntroduce el DNI: ");
+                dni = Console.ReadLine();
+                Console.Write("\n\t\t¿Desea borrar otro empleado? s/n =>> ");
+                eleccion = Console.ReadLine();
+                if (eleccion.Equals("s"))
+                {
+                    salir = false;
+                }
+                else if (eleccion.Equals("n"))
+                {
+                    salir = true;
+                }
+                else
+                {
+                    Error("Introduce una S para borrar otro empleado o una N para salir.");
+                    Continuar();
+                }
+            } while (!salir);
+            return dni;
+        }
+        public static string PlantillaModificarUsuario()
+        {
+            string dni = null;
+            string eleccion = null;
+            bool salir = false;
+            do
+            {
+                Console.Clear();
+                Interfaz.Header();
+                if (GestionNegocio.GestionContraseña())
+                {
+                    Console.WriteLine("\tA continuacion, introduce el DNI del empleado a modificar.");
+                    Console.Write("\n\t\t\tIntroduce el DNI: ");
+                    dni = Console.ReadLine();
+                    Console.Write("\n\t\t¿Desea modificar otro empleado? s/n =>> ");
+                    eleccion = Console.ReadLine();
+                    if (eleccion.Equals("s"))
+                    {
+                        salir = false;
+                    }
+                    else if (eleccion.Equals("n"))
+                    {
+                        salir = true;
+                    }
+                    else
+                    {
+                        Error("Introduce una 's' para modificar otro empleado o una 'n' para salir.");
+                        Continuar();
+                    }
+                }
+            } while (!salir);
+            return eleccion;
+        }
+        #endregion
+
+        #region Metodo ListarTrabajadores(Todavia no implementado) - Óscar
+        public static void MostrarLista(Trabajador[] listaTrabajadores)
+        {
+            int indice = 0;
+
+            Header();
+            Console.WriteLine("\t LISTADO DE TRABAJADORES");
+            HeaderVerTrabajadores();
+
+            for (indice = 0; indice < listaTrabajadores.Length; indice++)
+            {
+                Console.WriteLine(listaTrabajadores[indice]);
+            }
+        }
+        #endregion
 
     }
 }
