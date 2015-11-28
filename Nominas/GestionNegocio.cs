@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+
 
 namespace Nominas
 {
     class GestionNegocio
     {
 
-        #region Gestion Operaciones - LLAMADA INTERFAZ
+        #region GestionNegocio - LLAMADA INTERFAZ
         public static void GestionOperaciones(int numb, ref bool flag)
         {
             Trabajador[] listaTrabajador = null;
+            Ficheros.ExistOrEmpty(ref listaTrabajador);
+
             switch (numb)
             {
                 //Agregar trabajadores
                 case 1:
-                    NuevoTrabajador(ref listaTrabajador);
+                    Gestion_Empleado.NuevoTrabajador(ref listaTrabajador);
+                    Ficheros.crearTrabajadores(listaTrabajador);
                     break;
                 //Modificar trabajadores
                 case 2:
@@ -28,7 +27,7 @@ namespace Nominas
 
                 //Eliminar trabajadores 
                 case 3:
-                    BorrarTrabajador(ref listaTrabajador);
+                    Gestion_Empleado.BorrarTrabajador(ref listaTrabajador);
                     break;
 
                 //Modificar Contraseña
@@ -36,15 +35,15 @@ namespace Nominas
                     ModificarContraseña();
                     break;
                 case 5:
-                   ListarTrabajadores(listaTrabajador);
+                    Gestion_Empleado.ListarTrabajadores(listaTrabajador);
                     break;
-                case 6:    
+                case 6:
                     flag = true;
                     break;
             }
         }
         #endregion
-        
+
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
         {
@@ -61,6 +60,7 @@ namespace Nominas
             }
             return correcto;
         }
+
         public static bool ValidarContraseña(string password)
         {
             string pass = ConfigurationManager.AppSettings["Password"];
@@ -73,12 +73,13 @@ namespace Nominas
             }
             return false;
         }
+
         public static void ModificarContraseña()
         {
             string nuevapass = Interfaz.PedirContraseñaModificar();
             if (ConfigurationManager.AppSettings["Password"] == null)
             {
-                throw new ArgumentNullException("La contraseña ", "<" + "Password" + "> does not exist in the configuration. Update failed.");
+                throw new ArgumentNullException("La contraseña ", "<" + "Password" + "> No existe en la configuración.");
             }
             else
             {
@@ -87,6 +88,13 @@ namespace Nominas
                 config.Save(ConfigurationSaveMode.Modified);
             }
         }
-    }
-    #endregion
-}
+        #endregion
+
+        #region GET VALORES POR DEFECTO APP.CONF
+        public void getHextras() // obtiene el valor por defecto de las horas extraordinarias
+        {
+
+        }
+        #endregion
+    } // FIN CLASE
+} // FIN ESP. NOMBRES

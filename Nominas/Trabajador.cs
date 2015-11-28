@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Nominas
 {
-    class Trabajador
+    public class Trabajador
     {
         private string dni, nombre, apellidos;
         public Trabajador() {

@@ -19,7 +19,7 @@ namespace Nominas
             Console.WriteLine("\t\t|>-----------------------------------------<|");
         }
         #endregion Header
-        #region Menu Principal - Francisco Romero
+        #region Menus PRINCIPALES - Francisco Romero
         public static byte MenuPrincipal()
         {
             byte seleccion = 0;
@@ -35,8 +35,7 @@ namespace Nominas
                 {
                     Error(msg);
                 }
-                Console.WriteLine("\n\t\t\t1 -> Ver trabajadores");
-                Console.WriteLine("\t\t\t2 -> Operaciones trabajadores");
+                Console.WriteLine("\t\t\t1 -> Operaciones trabajadores");
                 Console.WriteLine("\t\t\t3 -> Salir\n");
                 Console.Write("\t\t\tEleccion: ");
                 aux = Console.ReadLine();
@@ -56,8 +55,7 @@ namespace Nominas
 
             return seleccion;
         }
-        #endregion Menu Principal
-        #region SubMenu Operaciones
+        
         public static void Operaciones()
         {
             byte seleccion = 0;
@@ -95,7 +93,8 @@ namespace Nominas
 
             } while (!flag);
         }
-        #endregion SubMenu Operaciones
+        #endregion
+
         #region Mostrar Error - Francisco Romero
         public static void Error(string err)
         {

@@ -57,9 +57,6 @@ namespace Nominas
 
                 trabtemp = Interfaz.PlantillaCrearTrabajador();
 
-                if (!ExisteTrabajador(listaTrabajadores, trabtemp.dni_pre))
-                {
-
                     if (listaTrabajadores == null)
                     {
                         listaTrabajadores = new Trabajador[1];
@@ -76,11 +73,7 @@ namespace Nominas
                     listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp;
 
                     mensaje = "\n\t Trabajador registrado correctamente";
-                }
-                else
-                {
-                    mensaje = "\n\t El Trabajador se encuentra registrado";
-                }
+              
 
                 // SALIDA
                 mensaje = mensaje + "\n\n\t Desea registrar otro Trabajador (s/n): ";
@@ -92,17 +85,12 @@ namespace Nominas
 
         }
         // Método para mostrar a todos los trabajadores que hay en la nómina
-        public static void ListarTrabajadores(Trabajador[] listaTrabajadores)
+        public static void ListarTrabajadores(Trabajador[] arr)
         {
-
-            if (listaTrabajadores != null)
+            arr = Ficheros.getTrabajadores();
+            for (int i = 0; i < arr.Length; i++)
             {
-                Interfaz.MostrarLista(listaTrabajadores);
-                Interfaz.Continuar("\n\tPulse ENTER para continuar");
-            }
-            else
-            {
-                Interfaz.Continuar("\n\tNo hay trabajadores a mostrar. \n\tPulse ENTER para continuar");
+                Interfaz.FormatoLeerXML(arr[i].dni_pre, arr[i].nombre_pre, arr[i].apellidos_pre);
             }
         }
         //Método para borrar un trabajador
@@ -117,7 +105,7 @@ namespace Nominas
             int j = 0;
 
             //En primer lugar pedimos la contraseña para realizar cambios
-            correcto = GestionContraseña();
+            /*correcto = GestionContraseña();*/
 
             //Vamos a pedir el DNI para buscar a la persona que vamos a borrar
             dni = Interfaz.PlantillaBorrarUsuario();

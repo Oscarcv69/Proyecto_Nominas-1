@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Nominas
 {
@@ -9,45 +11,33 @@ namespace Nominas
         private static string ruta = "..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
         #region FICHEROS XML - Francisco Romero
         // CREAR TRABAJADORES
-        public static void crearTrabajadores(Trabajador trb)
+        public static void crearTrabajadores(Trabajador[] trb)
         {
-
             XmlDocument doc = new XmlDocument();
             bool salir = false;
 
             do
             {
-                if (File.Exists(ruta)) // COMPROBAR SI EXISTE -> COMPLETADO
+                for (int i = 1; i < trb.Length; i++)
                 {
-                    doc.Load(ruta);
-                    XmlNode root = doc.DocumentElement;
-                    XmlElement nodo = doc.CreateElement("Trabajador");
-                    root.AppendChild(nodo);
+                        doc.Load(ruta);
+                        XmlNode root = doc.DocumentElement;
+                        XmlElement nodo = doc.CreateElement("Trabajador");
+                        root.AppendChild(nodo);
 
-                    XmlAttribute dni = doc.CreateAttribute("DNI");
-                    dni.Value = Encriptacion.Encriptar(trb.dni_pre);
-                    nodo.Attributes.Append(dni);
+                        XmlAttribute dni = doc.CreateAttribute("DNI");
+                        dni.Value = Encriptacion.Encriptar(trb[i].dni_pre);
+                        nodo.Attributes.Append(dni);
 
-                    XmlElement nombre = doc.CreateElement("Nombre");
-                    nombre.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(trb.nombre_pre)));
-                    nodo.AppendChild(nombre);
+                        XmlElement nombre = doc.CreateElement("Nombre");
+                        nombre.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(trb[i].nombre_pre)));
+                        nodo.AppendChild(nombre);
 
-                    XmlElement apellidos = doc.CreateElement("Apellidos");
-                    apellidos.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(trb.apellidos_pre)));
-                    nodo.AppendChild(apellidos);
-                    doc.Save(ruta);
-                    salir = true;
-                }
-                else
-                {
-                    XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
-                    XmlElement root = doc.DocumentElement;
-                    doc.InsertBefore(xmlDeclaration, root);
-
-                    XmlElement element1 = doc.CreateElement(string.Empty, "Plantilla", string.Empty);
-                    doc.AppendChild(element1);
-                    doc.Save(ruta);
-                    salir = false;
+                        XmlElement apellidos = doc.CreateElement("Apellidos");
+                        apellidos.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(trb[i].apellidos_pre)));
+                        nodo.AppendChild(apellidos);
+                        doc.Save(ruta);
+                        salir = true;
                 }
             } while (!salir);
         }
@@ -113,6 +103,34 @@ namespace Nominas
                 }
             }
             documento.Save(ruta);
+        }
+
+        public static void ExistOrEmpty(ref Trabajador[] arr)
+        {
+            bool salir = false;
+            do
+            {
+                XmlDocument doc = new XmlDocument();
+                if (!File.Exists(ruta))
+                {
+                    XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+                    XmlElement root = doc.DocumentElement;
+                    doc.InsertBefore(xmlDeclaration, root);
+
+                    XmlElement element1 = doc.CreateElement(string.Empty, "Plantilla", string.Empty);
+                    doc.AppendChild(element1);
+                    doc.Save(ruta);
+                    salir = false;
+                }
+                else if (doc.ChildNodes.Count == 0)
+                {
+                    arr = new Trabajador[1];
+                    salir = true;
+                } else
+                {
+                    salir = true;
+                }
+            } while (!salir);
         }
 
         #endregion FIN XML - Francisco Romero
