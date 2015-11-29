@@ -25,7 +25,7 @@ namespace Nominas
             {
                 char[] comprobacion = { 't', 'r', 'w', 'a', 'g', 'm', 'y', 'f', 'p', 'd', 'x', 'b', 'n', 'j', 'z', 's', 'q', 'v', 'h', 'l', 'c', 'k', 'e' };
                 int resto = 0;
-                char letra = ' ';
+                char letra = (char)0;
                 int numero = 0;
                 if (value.Length < 9)
                 {
