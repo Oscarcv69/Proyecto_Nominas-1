@@ -149,6 +149,11 @@ namespace Nominas
             Interfaz.Continuar(mensaje);
 
         }
+        public static void ComprobarListaTrabajadores()
+        {
+
+        }
+
         #endregion
     }
 }

@@ -11,12 +11,12 @@ namespace Nominas
         public static void GestionOperaciones(int numb, ref bool flag)
         {
             Trabajador[] listaTrabajador = null;
-            Ficheros.ExistOrEmpty(ref listaTrabajador);
+            listaTrabajador = Ficheros.getTrabajadores();
 
             switch (numb)
             {
                 //Agregar trabajadores
-                case 1:
+                case 1: // *AGREGAR TRABAJADORES FUNCIONA CORRECTAMENTE*
                     Gestion_Empleado.NuevoTrabajador(ref listaTrabajador);
                     Ficheros.GuardarTrabajadores(listaTrabajador);
                     break;
@@ -27,7 +27,7 @@ namespace Nominas
                     break;
 
                 //Eliminar trabajadores 
-                case 3:
+                case 3: // *BORRADO FUNCIONA CORRECTAMENTE*
                     Gestion_Empleado.BorrarTrabajador(ref listaTrabajador);
                     Ficheros.GuardarTrabajadores(listaTrabajador);
                     break;
@@ -36,10 +36,10 @@ namespace Nominas
                 case 4:
                     ModificarContraseña();
                     break;
-                case 5:
+                case 5: // * MOSTRAR TRABAJADORES FUNCIONA CORRECTAMENTE
                     Gestion_Empleado.ListarTrabajadores(listaTrabajador);
                     break;
-                case 6:
+                case 6: // SALIR
                     flag = true;
                     break;
             }

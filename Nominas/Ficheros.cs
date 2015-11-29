@@ -15,11 +15,10 @@ namespace Nominas
         {
             XmlDocument doc = new XmlDocument();
             bool salir = false;
-
+            Format(); // FORMATEA EL ARCHIVO
             do
             {
-                // HAY QUE BORRAR PRIMERO EL ARCHIVO PARA PODER ESCRIBIR EL ARRAY SIN SOBREESCRIBIR.
-                    for (int i = 1; i < trb.Length; i++)
+                    for (int i = 0; i < trb.Length; i++)
                     {
                         doc.Load(ruta);
                         XmlNode root = doc.DocumentElement;
@@ -87,18 +86,19 @@ namespace Nominas
             return trbArray;
         }
 
-        public static void Borrar(Trabajador[] arr)
+        public static void Format() // FORMATEA EL ARCHIVO XML ANTES DE INGRESAR LOS DATOS DE LOS TRABAJADORES
         {
-
+            XmlDocument doc = new XmlDocument();
+            doc.Load(ruta);
+            XmlNode root = doc.DocumentElement;
+            root.RemoveAll();
+            doc.Save(ruta);
         }
 
-        public static void ExistOrEmpty(ref Trabajador[] arr)
+        public static void ExistOrEmpty()
         {
-            bool salir = false;
-            do
-            {
                 XmlDocument doc = new XmlDocument();
-                if (!File.Exists(ruta))
+                if (!File.Exists(ruta) || new FileInfo(ruta).Length == 0)
                 {
                     XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
                     XmlElement root = doc.DocumentElement;
@@ -107,16 +107,8 @@ namespace Nominas
                     XmlElement element1 = doc.CreateElement(string.Empty, "Plantilla", string.Empty);
                     doc.AppendChild(element1);
                     doc.Save(ruta);
-                    salir = false;
                 }
-                else
-                {
-                    arr = getTrabajadores();
-                    salir = true;
-                }
-            } while (!salir);
         }
-
 
 
         #endregion FIN XML - Francisco Romero

@@ -18,6 +18,7 @@ namespace Nominas
                 {
                     // Ver trabajadores
                     case 1:
+                        Ficheros.ExistOrEmpty();
                         Interfaz.Operaciones();
                         break;
                     case 2:
