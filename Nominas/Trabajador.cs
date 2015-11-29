@@ -43,7 +43,7 @@ namespace Nominas
                     {
                         throw new Exception("DNI Incorrecto: Letra del DNI es incorrecta");
                     }
-                    else if (letra == comprobacion[resto])
+                    else
                     {
                         dni = value.ToUpper();
                     }
