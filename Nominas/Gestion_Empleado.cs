@@ -31,7 +31,7 @@ namespace Nominas
 
             if (listaTrabajadores != null)
             {
-                for (indice = 0; (indice < listaTrabajadores.Length) && !existe; indice++)
+                for (indice = 0; (indice <= listaTrabajadores.Length) && !existe; indice++)
                 {
                     if (listaTrabajadores[indice].dni_pre.Equals(dni))
                     {
@@ -57,9 +57,6 @@ namespace Nominas
 
                 trabtemp = Interfaz.PlantillaCrearTrabajador();
 
-                if (!ExisteTrabajador(listaTrabajadores, trabtemp.dni_pre))
-                {
-
                     if (listaTrabajadores == null)
                     {
                         listaTrabajadores = new Trabajador[1];
@@ -76,11 +73,7 @@ namespace Nominas
                     listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp;
 
                     mensaje = "\n\t Trabajador registrado correctamente";
-                }
-                else
-                {
-                    mensaje = "\n\t El Trabajador se encuentra registrado";
-                }
+              
 
                 // SALIDA
                 mensaje = mensaje + "\n\n\t Desea registrar otro Trabajador (s/n): ";
@@ -92,18 +85,15 @@ namespace Nominas
 
         }
         // Método para mostrar a todos los trabajadores que hay en la nómina
-        public static void ListarTrabajadores(Trabajador[] listaTrabajadores)
+        public static void ListarTrabajadores(Trabajador[] arr)
         {
-
-            if (listaTrabajadores != null)
+            arr = Ficheros.getTrabajadores();
+            Interfaz.Header();
+            for (int i = 0; i < arr.Length; i++)
             {
-                Interfaz.MostrarLista(listaTrabajadores);
-                Interfaz.Continuar("\n\tPulse ENTER para continuar");
+                Interfaz.FormatoLeerXML(arr[i].dni_pre, arr[i].nombre_pre, arr[i].apellidos_pre);
             }
-            else
-            {
-                Interfaz.Continuar("\n\tNo hay trabajadores a mostrar. \n\tPulse ENTER para continuar");
-            }
+            Interfaz.Continuar("\t\tPulsa una tecla para continuar");
         }
         //Método para borrar un trabajador
         public static void BorrarTrabajador(ref Trabajador[] listaTrabajadores)
@@ -117,7 +107,7 @@ namespace Nominas
             int j = 0;
 
             //En primer lugar pedimos la contraseña para realizar cambios
-            correcto = GestionContraseña();
+            /*correcto = GestionContraseña();*/
 
             //Vamos a pedir el DNI para buscar a la persona que vamos a borrar
             dni = Interfaz.PlantillaBorrarUsuario();
@@ -126,7 +116,7 @@ namespace Nominas
             existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
 
             // Condición para conocer si la cuenta se encuentra sin saldo y además si existe.
-            if (correcto == true && existe == true)
+            if (existe == true)
             {
 
                 // Creamos un array de Copia para volcar los datos, con longitud de los clientes -1
@@ -159,6 +149,11 @@ namespace Nominas
             Interfaz.Continuar(mensaje);
 
         }
+        public static void ComprobarListaTrabajadores()
+        {
+
+        }
+
         #endregion
     }
 }

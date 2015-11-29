@@ -8,6 +8,7 @@ namespace Nominas
 {
     class Gestion_Nomina
     {
+/*
         #region GESTION NOMINAS - ANTONIO
 
         //Métodos para el cálculo de la nómina
@@ -203,5 +204,6 @@ namespace Nominas
         //Serializar nómina
         //Convertir nómina a texto.
         #endregion
+        */
     }
 }

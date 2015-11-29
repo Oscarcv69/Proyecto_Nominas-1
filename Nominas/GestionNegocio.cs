@@ -1,50 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+
 
 namespace Nominas
 {
     class GestionNegocio
     {
 
-        #region Gestion Operaciones - LLAMADA INTERFAZ
+        #region GestionNegocio - LLAMADA INTERFAZ
         public static void GestionOperaciones(int numb, ref bool flag)
         {
             Trabajador[] listaTrabajador = null;
+            listaTrabajador = Ficheros.getTrabajadores();
+
             switch (numb)
             {
                 //Agregar trabajadores
-                case 1:
-                    NuevoTrabajador(ref listaTrabajador);
+                case 1: // *AGREGAR TRABAJADORES FUNCIONA CORRECTAMENTE*
+                    Gestion_Empleado.NuevoTrabajador(ref listaTrabajador);
+                    Ficheros.GuardarTrabajadores(listaTrabajador);
                     break;
                 //Modificar trabajadores
                 case 2:
-
+                    // LLAMAR A MÉTODO MODIFICAR USUARIO (REF ARRAY)----
+                    // LLAMAR A MÉTODO FICHERO MODIFICAR
                     break;
 
                 //Eliminar trabajadores 
-                case 3:
-                    BorrarTrabajador(ref listaTrabajador);
+                case 3: // *BORRADO FUNCIONA CORRECTAMENTE*
+                    Gestion_Empleado.BorrarTrabajador(ref listaTrabajador);
+                    Ficheros.GuardarTrabajadores(listaTrabajador);
                     break;
 
                 //Modificar Contraseña
                 case 4:
                     ModificarContraseña();
                     break;
-                case 5:
-                   ListarTrabajadores(listaTrabajador);
+                case 5: // * MOSTRAR TRABAJADORES FUNCIONA CORRECTAMENTE
+                    Gestion_Empleado.ListarTrabajadores(listaTrabajador);
                     break;
-                case 6:    
+                case 6: // SALIR
                     flag = true;
                     break;
             }
         }
         #endregion
-        
+
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
         {
@@ -61,6 +62,7 @@ namespace Nominas
             }
             return correcto;
         }
+
         public static bool ValidarContraseña(string password)
         {
             string pass = ConfigurationManager.AppSettings["Password"];
@@ -73,12 +75,13 @@ namespace Nominas
             }
             return false;
         }
+
         public static void ModificarContraseña()
         {
             string nuevapass = Interfaz.PedirContraseñaModificar();
             if (ConfigurationManager.AppSettings["Password"] == null)
             {
-                throw new ArgumentNullException("La contraseña ", "<" + "Password" + "> does not exist in the configuration. Update failed.");
+                throw new ArgumentNullException("La contraseña ", "<" + "Password" + "> No existe en la configuración.");
             }
             else
             {
@@ -87,6 +90,13 @@ namespace Nominas
                 config.Save(ConfigurationSaveMode.Modified);
             }
         }
-    }
-    #endregion
-}
+        #endregion
+
+        #region GET VALORES POR DEFECTO APP.CONF
+        public void getHextras() // obtiene el valor por defecto de las horas extraordinarias
+        {
+
+        }
+        #endregion
+    } // FIN CLASE
+} // FIN ESP. NOMBRES
