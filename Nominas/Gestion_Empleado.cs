@@ -31,7 +31,7 @@ namespace Nominas
 
             if (listaTrabajadores != null)
             {
-                for (indice = 0; (indice <= listaTrabajadores.Length) && !existe; indice++)
+                for (indice = 0; (indice < listaTrabajadores.Length) && !existe; indice++)
                 {
                     if (listaTrabajadores[indice].dni_pre.Equals(dni))
                     {
@@ -84,17 +84,55 @@ namespace Nominas
             } while (!salida);
 
         }
-        // Método para mostrar a todos los trabajadores que hay en la nómina
-        public static void ListarTrabajadores(Trabajador[] arr)
+
+        public static void ModificarTrabajador(ref Trabajador[] listaTrabajadores)
         {
-            arr = Ficheros.getTrabajadores();
-            Interfaz.Header();
-            for (int i = 0; i < arr.Length; i++)
-            {
-                Interfaz.FormatoLeerXML(arr[i].dni_pre, arr[i].nombre_pre, arr[i].apellidos_pre);
-            }
-            Interfaz.Continuar("\t\tPulsa una tecla para continuar");
+            int posicion = 0;
+            string eleccion = null;
+            string dni = null;
+            bool existe = false;
+            bool salir = false;           
+            string mensaje;
+
+          
+                dni = Interfaz.PlantillaModificarUsuario();
+
+                do
+                {
+
+                existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
+
+                if (existe)
+                {
+                    eleccion = Interfaz.PlantillaEleccionModificar();
+                    switch (eleccion)
+                    {
+                        case "1":
+                            listaTrabajadores[posicion].dni_pre = Interfaz.ElementoModificar(eleccion);
+                            break;
+                        case "2":
+                            listaTrabajadores[posicion].nombre_pre = Interfaz.ElementoModificar(eleccion);
+                            break;
+                        case "3":
+                            listaTrabajadores[posicion].apellidos_pre = Interfaz.ElementoModificar(eleccion);
+                            break;
+                    }
+                    mensaje = "/t/tOperación realizada con éxito";
+                    mensaje = "/t/tPulse intro para continuar";
+                    salir = true;
+                }
+
+                else
+                {
+                    mensaje = "/t/tEl Trabajador no existe";
+                    salir = false; 
+                }
+
+            } while (!salir);
+
+            Interfaz.Continuar(mensaje);
         }
+       
         //Método para borrar un trabajador
         public static void BorrarTrabajador(ref Trabajador[] listaTrabajadores)
         {
@@ -102,7 +140,7 @@ namespace Nominas
             int posicion = 0;
             string dni = null;
             bool existe = false;
-            bool correcto = false;
+            //bool correcto = false;
             string mensaje;
             int j = 0;
 
@@ -119,7 +157,7 @@ namespace Nominas
             if (existe == true)
             {
 
-                // Creamos un array de Copia para volcar los datos, con longitud de los clientes -1
+                // Creamos un array de Copia para volcar los datos, con longitud de los trabajadores -1
                 copia = new Trabajador[listaTrabajadores.Length - 1];
 
                 /* For para recorrer el array, si encotnramos dicho DNI, borramos dicha posición y datos.*/
@@ -138,17 +176,28 @@ namespace Nominas
                 copia.CopyTo(listaTrabajadores, 0);
                 //Ponemos el array de copia en Null para ahorrar memoria
                 copia = null;
-                mensaje = "\n\t Cliente borrado con éxito, Pulse ENTER para continuar\n";
+                mensaje = "\n\t Trabajador borrado con éxito, Pulse ENTER para continuar\n";
             }
             else
             {
 
-                mensaje = "\n\t ERROR: Asegurese que el DNI existe o que no tienes fondos en su cuenta\n";
+                mensaje = "\n\t ERROR: Asegurese que el DNI existe\n";
             }
 
             Interfaz.Continuar(mensaje);
 
         }
+        public static void ListarTrabajadores(Trabajador[] arr)
+        {
+            arr = Ficheros.getTrabajadores();
+            Interfaz.Header();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Interfaz.FormatoLeerXML(arr[i].dni_pre, arr[i].nombre_pre, arr[i].apellidos_pre);
+            }
+            Interfaz.Continuar("\t\tPulsa una tecla para continuar");
+        }
+        // Método para mostrar a todos los trabajadores que hay en la nómina
         public static void ComprobarListaTrabajadores()
         {
 
