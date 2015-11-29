@@ -24,6 +24,8 @@ namespace Nominas
                 case 2:
                     // LLAMAR A MÉTODO MODIFICAR USUARIO (REF ARRAY)----
                     // LLAMAR A MÉTODO FICHERO MODIFICAR
+                    Gestion_Empleado.ModificarTrabajador(ref listaTrabajador);
+                    Ficheros.GuardarTrabajadores(listaTrabajador);
                     break;
 
                 //Eliminar trabajadores 

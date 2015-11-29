@@ -39,7 +39,7 @@ namespace Nominas
                 Console.WriteLine("\t\t\t3 -> Salir\n");
                 Console.Write("\t\t\tEleccion: ");
                 aux = Console.ReadLine();
-                aux = aux.Trim(); 
+                aux = aux.Trim();
 
                 if (Byte.TryParse(aux, out seleccion) && (seleccion >= 1) && (seleccion <= 3))
                 {
@@ -55,7 +55,7 @@ namespace Nominas
 
             return seleccion;
         }
-        
+
         public static void Operaciones()
         {
             byte seleccion = 0;
@@ -260,6 +260,7 @@ namespace Nominas
                     Console.WriteLine("\tA continuacion, introduce el DNI del empleado a modificar.");
                     Console.Write("\n\t\t\tIntroduce el DNI: ");
                     dni = Console.ReadLine();
+                    dni.ToUpper();
                     Console.Write("\n\t\t¿Desea modificar otro empleado? s/n =>> ");
                     eleccion = Console.ReadLine();
                     if (eleccion.Equals("s"))
@@ -277,10 +278,100 @@ namespace Nominas
                     }
                 }
             } while (!salir);
+            return dni;
+        }
+
+        #endregion
+        #region
+        public static String PlantillaEleccionModificar()
+        {
+            string eleccion = null;
+            string salida = null;
+            byte seleccion = 0;
+            bool salir = false;
+            do
+            {
+                Console.Clear();
+                Interfaz.Header();
+                Console.WriteLine("\n\t\t¿Que desea modificar?.");
+                Console.WriteLine("\n\t\t1.Modificar DNI.");
+                Console.WriteLine("\n\t\t2.Modificar Nombre.");
+                Console.WriteLine("\n\t\t3.Modificar Apellidos.");
+                Console.Write("\n\t\t\tIntroduce tu elección: ");
+                eleccion = Console.ReadLine();
+
+                if (Byte.TryParse(eleccion, out seleccion) && (seleccion > 0) && (seleccion <= 3))
+                {
+                    Console.Write("\n\t\t¿Desea realizar otra operacion? s/n =>> ");
+                    salida = Console.ReadLine();
+                    if (salida.Equals("s"))
+                    {
+                        salir = false;
+                    }
+                    else if (salida.Equals("n")) {
+                        salir = true;
+                    }
+
+                }
+                else
+                {
+                    Error("Introduce una elección del 1 al 3");
+                    Continuar();
+                }
+            } while (!salir);
             return eleccion;
         }
-        #endregion
 
+        public static String ElementoModificar(string eleccion)
+        {
+            string salida = null;
+            bool salir = false;
+            byte seleccion = 0;
+            string cambio = null;
+            do
+            {
+                
+            switch (eleccion)
+            {
+
+                case "1":
+                    Console.Write("\n\t\t\tIntroduce el DNI nuevo: ");
+                    cambio = Console.ReadLine();
+                    break;
+                case "2":
+                    Console.Write("\n\t\t\tIntroduce el Nombre nuevo: ");
+                    cambio = Console.ReadLine();
+                        break;
+                case "3":
+                    Console.Write("\n\t\t\tIntroduce el Apellido nuevo: ");
+                    cambio = Console.ReadLine();
+                    break;
+            }
+
+                if (Byte.TryParse(eleccion, out seleccion) && (seleccion > 0) && (seleccion <= 3))
+                {
+                    Console.Write("\n\t\t¿Desea realizar otra operacion? s/n =>> ");
+                    salida = Console.ReadLine();
+                    if (salida.Equals("s"))
+                    {
+                        salir = false;
+                    }
+                    else if (salida.Equals("n"))
+                    {
+                        salir = true;
+                    }
+
+                }
+                else
+                {
+                    Error("Introduce una elección del 1 al 3");
+                    Continuar();
+                }
+            } while (!salir);
+            return cambio;
+        }
+
+        #endregion
         #region Metodo ListarTrabajadores(Todavia no implementado) - Óscar
         public static void MostrarLista(Trabajador[] listaTrabajadores)
         {

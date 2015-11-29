@@ -23,6 +23,9 @@ namespace Nominas
             }
             set
             {
+                char[] comprobacion = { 't', 'r', 'w', 'a', 'g', 'm', 'y', 'f', 'p', 'd', 'x', 'b', 'n', 'j', 'z', 's', 'q', 'v', 'h', 'l', 'c', 'k', 'e' };
+                int resto = 0;
+                char letra = (char)0;
                 int numero = 0;
                 if (value.Length < 9)
                 {
@@ -32,9 +35,18 @@ namespace Nominas
                 {
                     throw new Exception("DNI Incorrecto: Formato erróneo (12345678A)");
                 }
-                else
+                else if (Int32.TryParse(value.Substring(0, 8), out numero) || (Int32.TryParse(value[8].ToString(), out numero)))
                 {
-                    dni = value.ToUpper();
+                    letra = value[8];
+                    resto = numero % 23;
+                    if (letra != comprobacion[resto])
+                    {
+                        throw new Exception("DNI Incorrecto: Letra del DNI es incorrecta");
+                    }
+                    else
+                    {
+                        dni = value.ToUpper();
+                    }
                 }
             }
         }
