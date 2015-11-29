@@ -23,7 +23,7 @@ namespace Nominas
             }
             set
             {
-                int  numero = 0;
+                int numero = 0;
                 if (value.Length < 9)
                 {
                     throw new Exception("La longitud debe ser 9");
