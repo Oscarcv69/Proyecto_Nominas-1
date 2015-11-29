@@ -41,7 +41,7 @@ namespace Nominas
                     resto = numero % 23;
                     if (letra != comprobacion[resto])
                     {
-                        Console.WriteLine("DNI Incorrecto: Formato erróneo (12345678A)");
+                        throw new Exception("DNI Incorrecto: Formato erróneo (12345678A)");
                     }
                 }
                 else
