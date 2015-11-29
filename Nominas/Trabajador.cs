@@ -35,18 +35,18 @@ namespace Nominas
                 {
                     throw new Exception("DNI Incorrecto: Formato erróneo (12345678A)");
                 }
-                else if (Int32.TryParse(dni_pre.Substring(0, 8), out numero) && (Int32.TryParse(dni_pre[8].ToString(), out numero)))
+                else if (Int32.TryParse(value.Substring(0, 8), out numero) || (Int32.TryParse(value[8].ToString(), out numero)))
                 {
-                    letra = dni_pre[8];
+                    letra = value[8];
                     resto = numero % 23;
                     if (letra != comprobacion[resto])
                     {
                         throw new Exception("DNI Incorrecto: Formato erróneo (12345678A)");
                     }
-                }
-                else
-                {
-                    dni = value.ToUpper();
+                    else
+                    {
+                        dni = value.ToUpper();
+                    }
                 }
             }
         }
