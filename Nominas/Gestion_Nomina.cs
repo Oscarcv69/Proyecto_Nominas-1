@@ -8,21 +8,30 @@ namespace Nominas
 {
     class Gestion_Nomina
     {
-/*
+        private static byte horas = 0;
+        private static byte extra = 0;
+        private static byte jornada = 0;
+        private static float salarioExtra = 0.0F;
+        private static float bruto = 0.0F;
+        private static float neto = 0.0F;
+        private static byte retenciones = 0;
+
         #region GESTION NOMINAS - ANTONIO
 
         //Métodos para el cálculo de la nómina
 
         //Cálculo de las horas extra
-        private static int CalculoExtra(int horas)
+        private static byte CalculoExtra(byte hora)
         {
-            extra = horas - jornada;
+            horas = hora;
+            extra = (byte)(horas - jornada);
 
             return extra;
 
         }
+
         //Cálculo del salario bruto
-        private static float CalculoSalarioBruto(int horas, int jornada, float precio)
+        private static float CalculoSalarioBruto(byte horas, byte jornada, float precio)
         {
             if (horas > jornada)
             {
@@ -36,11 +45,13 @@ namespace Nominas
             }
             return bruto;
         }
+
         //Calculo del salario Extra
-        private static float CalculoSalarioExtra(int extra, float precio)
+        private static float CalculoSalarioExtra(byte extra, float precio)
         {
             return (extra * precio * 1.5F);
         }
+
         //Cálculo del salario Neto
         private static float CalculoSalarioNeto(float bruto, float retenciones)
         {
@@ -48,6 +59,7 @@ namespace Nominas
             neto = bruto - retenciones;
             return neto;
         }
+
         //Cálculo de las retenciones
         private static float CalculoRetenciones(float bruto, float retenciones)
         {
@@ -57,7 +69,7 @@ namespace Nominas
 
         //Métodos para la gestión de las nóminas
         //Cálculo de las semanas del mes
-        private static short CalculoSemanas(short anho, short mes)
+        private static short CalculoSemanas(short anho, byte mes)
         {
             //Control de errores
             if (mes < 1 && mes > 12)
@@ -98,7 +110,7 @@ namespace Nominas
         }
 
         //Método de creación de semanas
-        public static void NuevaSemana(ref Nomina[] Nomina, short semana)
+        public static void NuevaSemana(ref Nomina[] Nomina, byte semana)
         {
             Nomina nominastemp;
             Nomina[] nomcop = null;
@@ -110,7 +122,7 @@ namespace Nominas
             {
                 //ENTRADA
                 nominastemp = Interfaz.DatosNomina();
-                if (!ExisteNomina(semana))
+                if (!ExisteNomina(Nomina, semana))
                 {
                     if (Nomina == null)
                     {
@@ -144,7 +156,7 @@ namespace Nominas
         }
 
         //Comprobación existe la semana
-        private static bool ExisteNomina(Nomina[] Nomina, short semana)
+        private static bool ExisteNomina(Nomina[] Nomina, byte semana)
         {
             bool existe = false;
             if (Nomina[semana] != null)
@@ -157,12 +169,10 @@ namespace Nominas
         //Método de modificacion de nómina semanal
         private static void CambiaSemana(Nomina[] Nomina)
         {
-            short semana = 0;
-            short opcion = 0;
+            byte semana = 0;
+            byte opcion = 0;
             String cadena = null;
-            short horas = 0;
-            float precio = 0.0F;
-            float porcentaje = 0.0F;
+
 
             //Entrada de Datos
             semana = Interfaz.PedirSemana();
@@ -175,6 +185,10 @@ namespace Nominas
             else
             {
                 opcion = Interfaz.NominaModificar(Nomina[semana]);
+                cadena = GestionNegocio.OperacionesNomina(opcion);
+                Interfaz.Continuar(cadena);
+
+                /* PASAR ESTO A EL METODO GESTIONNEGOCIO.OPERACIONESNOMINA(byte opcion)
                 switch (opcion)
                 {
                     case 0:
@@ -194,16 +208,93 @@ namespace Nominas
                         cadena = "Porcentaje de retención por impuestos modificado con éxito";
                         break;
                 }
+                cadena += "Pulse ENTER para continuar";*/
+
             }
-            cadena += "Pulse ENTER para continuar";
-            Interfaz.Continuar(cadena);
+
         }
         //Método de eliminación de nómina
+        private void eliminarNomina(Nomina[] Nomina, byte semana)
+        {
+            int opcion = 0;
+            int i = 0;
+            int j = 0;
+            Nomina[] copiaNomina;
+            bool existesemana;
+            String cadena = "";
+            //Existe la semana?
+            existesemana = ExisteNomina(Nomina, semana);
+            if (!existesemana)
+            {
+                cadena = "La semana no existe";
+            }
+            else
+            {
+                copiaNomina = new Nomina[Nomina.Length - 1];
+
+                switch (opcion)
+                {
+                    case 0:
+                        cadena = "Operación abortada";
+                        break;
+                    case 1:
+                        if (semana > Nomina.Length)
+                        {
+                            cadena = "Esta semana no se ha cargado en el archivo.";
+                        }
+                        else
+                        {
+                            for (i = 0; i < Nomina.Length; i++, j++)
+                            {
+                                if (i != semana)
+                                {
+                                    copiaNomina[j] = Nomina[i];
+                                }
+                                else j -= 1;
+                            }
+                            //Array dinámico
+                            Nomina = new Nomina[copiaNomina.Length];
+                            copiaNomina.CopyTo(Nomina, 0);
+                            //Ponemos el array de copia en Null para ahorrar memoria
+                            copiaNomina = null;
+                            cadena = "\n\t Semana eliminada con éxito\n";
+                        }
+                       
+                        break;
+                    case 2:
+                        //Borrar toda la nómina
+                        for (i = 0; i < Nomina.Length; i++)
+                        {
+                            Nomina[i] = null;
+                        }
+                        break;
+                }
+                cadena = "Pulse ENTER para continuar";
+                Interfaz.Continuar(cadena);
+            }
+        }
 
         //Cerrar nómina
-        //Serializar nómina
-        //Convertir nómina a texto.
-        #endregion
-        */
+        private void CierraNomina(Nomina[] Nomina, Trabajador trabajador)
+        {
+            //Calcula nomina total
+            for (int i = 0; i < Nomina.Length; i++)
+            {
+                Nomina[i].setHoras(horas);
+                Nomina[i].setExtra(CalculoExtra);
+                Nomina[i].setBruto(CalculoSalarioBruto);
+                Nomina[i].setExtra(CalculoSalarioExtra);
+                Nomina[i].setRetenciones(CalculoRetenciones);
+                Nomina[i].setNeto(CalculoSalarioNeto);
+
+            }
+            //Calcula nomina mensual
+            //Muestra datos pantalla
+            //Confirmacion
+            //Almacena en el fichero
+            //Eliminar fichero
+        }
+            #endregion
+        
     }
 }
