@@ -18,16 +18,18 @@ namespace Nominas
                 //Agregar trabajadores
                 case 1:
                     Gestion_Empleado.NuevoTrabajador(ref listaTrabajador);
-                    Ficheros.crearTrabajadores(listaTrabajador);
+                    Ficheros.GuardarTrabajadores(listaTrabajador);
                     break;
                 //Modificar trabajadores
                 case 2:
-
+                    // LLAMAR A MÉTODO MODIFICAR USUARIO (REF ARRAY)----
+                    // LLAMAR A MÉTODO FICHERO MODIFICAR
                     break;
 
                 //Eliminar trabajadores 
                 case 3:
                     Gestion_Empleado.BorrarTrabajador(ref listaTrabajador);
+                    Ficheros.GuardarTrabajadores(listaTrabajador);
                     break;
 
                 //Modificar Contraseña

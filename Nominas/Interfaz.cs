@@ -204,6 +204,7 @@ namespace Nominas
             bool salir = false;
             do
             {
+                Header();
                 trb = new Trabajador();
                 Console.Write("\n\t\t\tIntroduce el DNI: ");
                 trb.dni_pre = Console.ReadLine();

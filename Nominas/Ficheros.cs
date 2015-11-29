@@ -8,18 +8,19 @@ namespace Nominas
 {
     class Ficheros
     {
-        private static string ruta = "..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
+        private static string ruta = @"..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
         #region FICHEROS XML - Francisco Romero
         // CREAR TRABAJADORES
-        public static void crearTrabajadores(Trabajador[] trb)
+        public static void GuardarTrabajadores(Trabajador[] trb)
         {
             XmlDocument doc = new XmlDocument();
             bool salir = false;
 
             do
             {
-                for (int i = 1; i < trb.Length; i++)
-                {
+                // HAY QUE BORRAR PRIMERO EL ARCHIVO PARA PODER ESCRIBIR EL ARRAY SIN SOBREESCRIBIR.
+                    for (int i = 1; i < trb.Length; i++)
+                    {
                         doc.Load(ruta);
                         XmlNode root = doc.DocumentElement;
                         XmlElement nodo = doc.CreateElement("Trabajador");
@@ -38,7 +39,7 @@ namespace Nominas
                         nodo.AppendChild(apellidos);
                         doc.Save(ruta);
                         salir = true;
-                }
+                    }
             } while (!salir);
         }
         // FIN CREAR TRABAJADORES
@@ -86,23 +87,9 @@ namespace Nominas
             return trbArray;
         }
 
-        public static void Borrar(string dni)
+        public static void Borrar(Trabajador[] arr)
         {
-            XmlDocument documento = new XmlDocument();
-            documento.Load(ruta);
-            dni = Encriptacion.Encriptar(dni);
-            XmlElement plantilla = documento.DocumentElement;
-            XmlNodeList listaEmpleados = documento.SelectNodes("Plantilla/Trabajador");
 
-            foreach (XmlNode item in listaEmpleados)
-            {
-                //Determinamos el nodo a modificar por medio del id de empleado.
-                if (item.Attributes.GetNamedItem("DNI").InnerText.Equals(dni))
-                {
-                    plantilla.RemoveChild(item);
-                }
-            }
-            documento.Save(ruta);
         }
 
         public static void ExistOrEmpty(ref Trabajador[] arr)
@@ -122,16 +109,15 @@ namespace Nominas
                     doc.Save(ruta);
                     salir = false;
                 }
-                else if (doc.ChildNodes.Count == 0)
+                else
                 {
-                    arr = new Trabajador[1];
-                    salir = true;
-                } else
-                {
+                    arr = getTrabajadores();
                     salir = true;
                 }
             } while (!salir);
         }
+
+
 
         #endregion FIN XML - Francisco Romero
 

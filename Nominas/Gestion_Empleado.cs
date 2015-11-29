@@ -31,7 +31,7 @@ namespace Nominas
 
             if (listaTrabajadores != null)
             {
-                for (indice = 0; (indice < listaTrabajadores.Length) && !existe; indice++)
+                for (indice = 0; (indice <= listaTrabajadores.Length) && !existe; indice++)
                 {
                     if (listaTrabajadores[indice].dni_pre.Equals(dni))
                     {
@@ -88,10 +88,12 @@ namespace Nominas
         public static void ListarTrabajadores(Trabajador[] arr)
         {
             arr = Ficheros.getTrabajadores();
+            Interfaz.Header();
             for (int i = 0; i < arr.Length; i++)
             {
                 Interfaz.FormatoLeerXML(arr[i].dni_pre, arr[i].nombre_pre, arr[i].apellidos_pre);
             }
+            Interfaz.Continuar("\t\tPulsa una tecla para continuar");
         }
         //Método para borrar un trabajador
         public static void BorrarTrabajador(ref Trabajador[] listaTrabajadores)
@@ -114,7 +116,7 @@ namespace Nominas
             existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
 
             // Condición para conocer si la cuenta se encuentra sin saldo y además si existe.
-            if (correcto == true && existe == true)
+            if (existe == true)
             {
 
                 // Creamos un array de Copia para volcar los datos, con longitud de los clientes -1
