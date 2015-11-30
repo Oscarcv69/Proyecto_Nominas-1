@@ -204,118 +204,6 @@ namespace Nominas
         #region Operaciones Usuario
         public static Trabajador PlantillaCrearTrabajador()
         {
-            bool correcto = false;
-            bool error = false;    // Control error inicializado
-            string mensaje = null;
-            bool existe = false;
-
-            Trabajador trabajador = new Trabajador();  // Cliente Temporal
-            string aux = null;
-
-            do
-            {
-                do { 
-
-                Header();
-                if (error)
-                {
-                    Continuar(mensaje);  // Presentación de Errores
-                    error = false;          // Reinicio del Control de Errores
-                }
-                Console.WriteLine("\t APERTURA CUENTA: DATOS DEL NUEVO TRABAJADOR\n");
-
-                // ENTRADA: DNI del Cliente
-              
-                    if (trabajador.dni_pre == null)
-                    {
-                        try
-                        {
-                            Console.Write("\t\t Introduzca DNI (12345678A): ");
-                            // El DNI es válido
-                            aux = Console.ReadLine();
-                            aux = aux.Trim().ToUpper();
-                            existe = Gestion_Empleado.ComprobarDni(aux);
-                            if (existe)
-                            {
-
-                                Continuar("YA SE ENCUENTRA REGISTRADO");
-                                correcto = false;
-                            }
-                            else
-                            {
-                                trabajador.dni_pre = aux;
-                                correcto = true;
-                            }
-                        }
-                    catch (Exception e)
-                    {
-                        error = true;
-                        mensaje = e.Message;
-                    }
-                }
-                } while (!correcto);
-                // ENTRADA: Nombre y Apellidos
-                if (!error)
-                {
-                    Console.Write("\t\t Introduzca Nombre: ");
-                    if (trabajador.nombre_pre == null) // Dato introducido?
-                    {
-                        try
-                        {
-                            // Limpieza de entrada (espacios en blanco)
-                            // Validación Nombre --> NO TESTADO (PENDIENTE)
-                            aux = Console.ReadLine();
-                            aux = aux.Trim();
-                            trabajador.nombre_pre = aux;
-                        }
-                        catch (Exception e)
-                        {
-                            error = true;
-                            mensaje = e.Message;
-                        }
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("{0}", trabajador.nombre_pre);   // Apellidos válidos
-                    }
-                }
-
-                Console.Write("\t\t Introduzca Apellidos: ");
-                if (!error)
-                {
-                    if (trabajador.apellidos_pre == null) // Dato introducido?
-                    {
-                        try
-                        {
-                            aux = Console.ReadLine();
-                            aux = aux.Trim();   // Limpieza de entrada (espacios en blanco)
-                                                // Validación Apellidos --> NO TESTADO (PENDIENTE)
-                            trabajador.apellidos_pre = aux;
-                            correcto = true;
-                        }
-
-                        catch (Exception e)
-                        {
-                            error = true;
-                            mensaje = e.Message;
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("{0}", trabajador.apellidos_pre);    // Apellidos válidos
-                  
-                }
-
-            } while (!correcto);
-
-            return trabajador;     // Datos del Cliente
-        }
-
-
-       /* public static Trabajador PlantillaCrearTrabajador()
-        {
             Trabajador trb = null;
             bool salir = false;
             do
@@ -331,7 +219,7 @@ namespace Nominas
                 return trb;
 
             } while (!salir);
-        }*/
+        }
         public static string PlantillaPedirDni()
         {
             string dni = null;
@@ -458,7 +346,7 @@ namespace Nominas
 
         #region Menús Nómina - Antonio Baena
         //Menú general de opciones de nómina
-   /*     public static void OperacionesNomina()
+        public static void OperacionesNomina()
         {
             byte seleccion = 0;
             bool fail = false;
@@ -642,7 +530,7 @@ namespace Nominas
         internal static void SolicitarRetencion(ref Nomina nomina)//TODO:DESARROLLAR
         {
             throw new NotImplementedException();
-        }*/
+        }
             #endregion
 
         }
