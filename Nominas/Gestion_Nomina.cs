@@ -10,31 +10,39 @@ namespace Nominas
     {
         //TODO: Cargar ajustes por dfecto
 
-        private static byte horas = Nomina.Horas_pre;
-        private static byte extra = Nomina.extra_pre;
-        private static byte jornada = Nomina.jornada_pre;
-        private static byte precio = Nomina.precio_pre;
+        Nomina Nominas = new Nomina();
+
+        int jornada;
+        float horasExtra;
+        float retencion;
+
+        //Al llamar a get config se pasa por referencia esas tres variables, asi lee el fichero y se pasa los valores 
+
+        private static short horas= Nominas.Horas_pre;
+        private static short extra = Nominas.extra_pre;
+        private static short jornada = Nominas.jornada_pre;
+        private static short precio = Nominas.precio_pre;
         private static float salarioExtra = 0.0F;
         private static float bruto = 0.0F;
         private static float neto = 0.0F;
-        private static byte retenciones = GestionNegocio.getRetencion();
+        private static short retenciones = GestionNegocio.getRetencion();
 
         #region GESTION NOMINAS - ANTONIO
 
         //Métodos para el cálculo de la nómina
 
         //Cálculo de las horas extra
-        private static byte CalculoExtra(byte hora)
+        private static short CalculoExtra(short hora)
         {
             horas = hora;
-            extra = (byte)(horas - jornada);
+            extra = (short)(horas - jornada);
 
             return extra;
 
         }
 
         //Cálculo del salario bruto
-        private static float CalculoSalarioBruto(byte horas, byte jornada, float precio)
+        private static float CalculoSalarioBruto(short horas, short jornada, float precio)
         {
             if (horas > jornada)
             {
@@ -50,7 +58,7 @@ namespace Nominas
         }
 
         //Calculo del salario Extra
-        private static float CalculoSalarioExtra(byte extra, float precio)
+        private static float CalculoSalarioExtra(short extra, float precio)
         {
             return (extra * precio * 1.5F);
         }
@@ -72,7 +80,7 @@ namespace Nominas
 
         //Métodos para la gestión de las nóminas
         //Cálculo de las semanas del mes
-        public static short CalculoSemanas(short anho, byte mes)
+        public static short CalculoSemanas(short anho, short mes)
         {
             //Control de errores
             if (mes < 1 && mes > 12)
@@ -117,11 +125,11 @@ namespace Nominas
             for (int i = 0; i < Nomina.Length; i++)
             {
                 Nomina[i].Horas_pre = horas;
-                Nomina[i].HExtra_pre = CalculoExtra;
-                Nomina[i].SalBruto_pre = CalculoSalarioBruto;
-                Nomina[i].SalExtra_pre = CalculoSalarioExtra;
-                Nomina[i].SalRetencion_pre = CalculoRetenciones;
-                Nomina[i].SalNeto_pre = CalculoSalarioNeto;
+                Nomina[i].HExtra_pre = CalculoExtra(horas);
+                Nomina[i].SalBruto_pre = CalculoSalarioBruto(horas, jornada, precio);
+                Nomina[i].SalExtra_pre = CalculoSalarioExtra(Nomina[i].Horas_pre, precio);
+                Nomina[i].SalRetencion_pre = CalculoRetenciones();
+                Nomina[i].SalNeto_pre = CalculoSalarioNeto();
             }
 
         }
