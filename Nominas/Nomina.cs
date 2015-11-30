@@ -9,13 +9,13 @@ namespace Nominas
 	//Comentario
     class Nomina
     {
-        private int horas;
-        private int hextras;
-        private int precio;
-        private int salarioExtra;
-        private int salarioBruto;
-        private int salarioNeto;
-        private int retencion;
+        private short horas;
+        private short hextras;
+        private short precio;
+        private float salarioExtra;
+        private float salarioBruto;
+        private float salarioNeto;
+        private short retencion;
         
         public Nomina()
         {
@@ -29,7 +29,7 @@ namespace Nominas
         }
 
 
-        public int Horas_pre
+        public short Horas_pre
         {
             get { return horas; }
             set {
@@ -43,7 +43,7 @@ namespace Nominas
             }
         }
 
-        public int HExtra_pre
+        public short HExtra_pre
         {
             get { return hextras; }
             set
@@ -59,7 +59,7 @@ namespace Nominas
             }
         }
 
-        public int Precio_pre
+        public short Precio_pre
         {
             get { return precio; }
             set
@@ -75,7 +75,7 @@ namespace Nominas
             }
         }
 
-        public int SalExtra_pre
+        public float SalExtra_pre
         {
             get { return salarioExtra; }
             set
@@ -91,7 +91,7 @@ namespace Nominas
             }
         }
 
-        public int SalBruto_pre
+        public float SalBruto_pre
         {
             get { return salarioBruto; }
             set
@@ -107,7 +107,7 @@ namespace Nominas
             }
         }
 
-        public int SalRetencion_pre
+        public float SalRetencion_pre
         {
             get { return retencion; }
             set
@@ -123,7 +123,7 @@ namespace Nominas
             }
         }
 
-        public int SalNeto_pre
+        public float SalNeto_pre
         {
             get { return salarioNeto; }
             set

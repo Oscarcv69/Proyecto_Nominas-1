@@ -9,17 +9,17 @@ namespace Nominas
     class Gestion_Nomina
     {
         //TODO: Cargar ajustes por dfecto
+        private static short horas = 0; //Total de horas trabajadas en la semana (se almacena en el temporal)
+        private static short extra = 0; //Horas extra trabajadas en la semana (se almacena en el temporal)
+        private static short precio = 0; //Precio de la hora trabajada (se almacena en el temporal)
+        private static int jornada = 0; //Horas a partir de las cuales se consideran extras (se almacena en el temporal)
+        private static float horasExtra = 0.0F;//Multplicador de precio para horas extra (se almacena en el temporal)
 
-        /*
-        private static float horasExtra =0.0F;
-        private static short horas = 0; 
-        private static short extra = 0; 
-        private static short precio = 0; 
-        private static float salarioExtra = 0.0F;
-        private static float bruto = 0.0F;
-        private static float neto = 0.0F;
-        private static float retenciones = 0.0F;
-        private static int jornada = 0;
+        private static float salarioExtra = 0.0F; //Calculo de las hora extra (se calculan por método)
+        private static float bruto = 0.0F; //Calculo del salario bruto total (se calculan por método)
+        private static float neto = 0.0F; //Calculo del salario neto total (Bruto-renteciones) (se calculan por método)
+        private static float retenciones = 0.0F; //Calculo de retenciones salariales (se calculan por método)
+
 
         #region GESTION NOMINAS - ANTONIO
 
@@ -40,10 +40,9 @@ namespace Nominas
         //Fichero temporal lleva las horas por semana
 
         //Cálculo de las horas extra
-        private static short CalculoExtra(short hora)
+        private static short CalculoExtra(short hora, int jornada)
         {
-            horas = hora;
-            extra = (short)(horas - jornada);
+            extra = (short)(hora - jornada);
 
             return extra;
 
@@ -54,7 +53,7 @@ namespace Nominas
         {
             if (horas > jornada)
             {
-                extra = CalculoExtra(horas);
+                extra = CalculoExtra(horas, jornada);
                 salarioExtra = CalculoSalarioExtra(extra, precio);
                 bruto = jornada + salarioExtra * precio;
             }
@@ -133,11 +132,11 @@ namespace Nominas
             for (int i = 0; i < Nomina.Length; i++)
             {
                 Nomina[i].Horas_pre = horas;
-                Nomina[i].HExtra_pre = CalculoExtra(horas);
+                Nomina[i].HExtra_pre = CalculoExtra(horas, jornada);
                 Nomina[i].SalBruto_pre = CalculoSalarioBruto(horas, jornada, precio);
                 Nomina[i].SalExtra_pre = CalculoSalarioExtra(Nomina[i].Horas_pre, precio);
-                Nomina[i].SalRetencion_pre = CalculoRetenciones();
-                Nomina[i].SalNeto_pre = CalculoSalarioNeto();
+                Nomina[i].SalRetencion_pre = CalculoRetenciones(bruto, retenciones);
+                Nomina[i].SalNeto_pre = CalculoSalarioNeto(bruto, retenciones);
             }
 
         }
@@ -185,12 +184,6 @@ namespace Nominas
                     break;
             }
             return cadena;
-        }
-
-
-        internal static void ListarNominaHist()//TODO: PorDesarrollar
-        {
-            throw new NotImplementedException();
         }
 
         //Método de creación de semanas
@@ -350,6 +343,6 @@ namespace Nominas
 
         
         #endregion
-        */
+
     }
 }
