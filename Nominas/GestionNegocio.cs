@@ -49,7 +49,7 @@ namespace Nominas
         #endregion
 
         #region GestionNomina - LLAMADA INTERFAZ (Antonio Baena)
-
+        /*
         public static void GestionNominas(int numb, ref bool flag)
         {
             Nomina[] Nomina = null;
@@ -59,7 +59,6 @@ namespace Nominas
 
             switch (numb)
             {
-
                 //Necesitamos pedir antes el DNI del trabajador para operar con sus nóminas
                 case 0: // SALIR
                     flag = true;
@@ -79,7 +78,8 @@ namespace Nominas
                     Gestion_Nomina.eliminarNomina(ref Nomina, semana);
                     break;
                     //Lanza Submenú Mostrar Nómina
-                case 4: Interfaz.SubmenuMostrarNomina();
+                case 4:
+                    Interfaz.SubmenuMostrarNomina();
                     break;
                 //Cerrar Nómina del Mes
                 case 5:
@@ -98,7 +98,7 @@ namespace Nominas
             }
             Ficheros.GuardarNominas(Nomina);
         }
-
+        */
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)
         {
             String cadena = null;
@@ -124,7 +124,7 @@ namespace Nominas
             return cadena;
         }
         #endregion
-
+        */
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
         {
@@ -177,15 +177,15 @@ namespace Nominas
 
         }
 
-        
-        /*  ANTONIO - Métodos para recuperar los datos de app.conf
-public void getJornada()//Obtiene el valor por defecto de la jornada
+        public static string getJornada()//Obtiene el valor por defecto de la jornada
 {
-
+            string jor = ConfigurationManager.AppSettings["Jornada"];
+            return jor;
 }
-public void getRetencion()//Obtiene el valor por defecto del porcentaje de retención
+        public string getRetencion()//Obtiene el valor por defecto del porcentaje de retención
 {
-
+            string ret = ConfigurationManager.AppSettings["Retenciones"];
+            return ret;
 }
 public void getPrecio()//Obtiene el valor por defecto del precio por hora
 {
@@ -194,3 +194,4 @@ public void getPrecio()//Obtiene el valor por defecto del precio por hora
         #endregion
     } // FIN CLASE
 } // FIN ESP. NOMBRES
+        #endregion

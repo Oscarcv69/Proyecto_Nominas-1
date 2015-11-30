@@ -204,6 +204,118 @@ namespace Nominas
         #region Operaciones Usuario
         public static Trabajador PlantillaCrearTrabajador()
         {
+            bool correcto = false;
+            bool error = false;    // Control error inicializado
+            string mensaje = null;
+            bool existe = false;
+
+            Trabajador trabajador = new Trabajador();  // Cliente Temporal
+            string aux = null;
+
+            do
+            {
+                do { 
+
+                Header();
+                if (error)
+                {
+                    Continuar(mensaje);  // Presentación de Errores
+                    error = false;          // Reinicio del Control de Errores
+                }
+                Console.WriteLine("\t APERTURA CUENTA: DATOS DEL NUEVO TRABAJADOR\n");
+
+                // ENTRADA: DNI del Cliente
+              
+                    if (trabajador.dni_pre == null)
+                    {
+                        try
+                        {
+                            Console.Write("\t\t Introduzca DNI (12345678A): ");
+                            // El DNI es válido
+                            aux = Console.ReadLine();
+                            aux = aux.Trim().ToUpper();
+                            existe = Gestion_Empleado.ComprobarDni(aux);
+                            if (existe)
+                            {
+
+                                Continuar("YA SE ENCUENTRA REGISTRADO");
+                                correcto = false;
+                            }
+                            else
+                            {
+                                trabajador.dni_pre = aux;
+                                correcto = true;
+                            }
+                        }
+                    catch (Exception e)
+                    {
+                        error = true;
+                        mensaje = e.Message;
+                    }
+                }
+                } while (!correcto);
+                // ENTRADA: Nombre y Apellidos
+                if (!error)
+                {
+                    Console.Write("\t\t Introduzca Nombre: ");
+                    if (trabajador.nombre_pre == null) // Dato introducido?
+                    {
+                        try
+                        {
+                            // Limpieza de entrada (espacios en blanco)
+                            // Validación Nombre --> NO TESTADO (PENDIENTE)
+                            aux = Console.ReadLine();
+                            aux = aux.Trim();
+                            trabajador.nombre_pre = aux;
+                        }
+                        catch (Exception e)
+                        {
+                            error = true;
+                            mensaje = e.Message;
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0}", trabajador.nombre_pre);   // Apellidos válidos
+                    }
+                }
+
+                Console.Write("\t\t Introduzca Apellidos: ");
+                if (!error)
+                {
+                    if (trabajador.apellidos_pre == null) // Dato introducido?
+                    {
+                        try
+                        {
+                            aux = Console.ReadLine();
+                            aux = aux.Trim();   // Limpieza de entrada (espacios en blanco)
+                                                // Validación Apellidos --> NO TESTADO (PENDIENTE)
+                            trabajador.apellidos_pre = aux;
+                            correcto = true;
+                        }
+
+                        catch (Exception e)
+                        {
+                            error = true;
+                            mensaje = e.Message;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("{0}", trabajador.apellidos_pre);    // Apellidos válidos
+                  
+                }
+
+            } while (!correcto);
+
+            return trabajador;     // Datos del Cliente
+        }
+
+
+       /* public static Trabajador PlantillaCrearTrabajador()
+        {
             Trabajador trb = null;
             bool salir = false;
             do
@@ -219,7 +331,7 @@ namespace Nominas
                 return trb;
 
             } while (!salir);
-        }
+        }*/
         public static string PlantillaPedirDni()
         {
             string dni = null;
@@ -346,45 +458,53 @@ namespace Nominas
 
         #region Menús Nómina - Antonio Baena
         //Menú general de opciones de nómina
-        public static void OperacionesNomina()
+   /*     public static void OperacionesNomina()
         {
             byte seleccion = 0;
             bool fail = false;
             bool flag = false;  // Control de datos correctos
             string eleccion = null;
             string msg = null;
+            string dni = null;
 
-            do
+            dni = Interfaz.PlantillaPedirDni();
+            if (Gestion_Empleado.ComprobarDni(dni)) {
+                do
+                {
+                    Header();
+                    if (fail)
+                    {
+                        Error(msg);
+                    }
+                    Console.WriteLine("\n\t\t\t1 -> Introducir nueva nómina");
+                    Console.WriteLine("\t\t\t2 -> Modificar nómina ");
+                    Console.WriteLine("\t\t\t3 -> Eliminar nómina ");
+                    Console.WriteLine("\t\t\t4 -> Mostrar nómina");
+                    Console.WriteLine("\t\t\t5 -> Cerrar nómina");
+                    Console.WriteLine("\t\t\t0 -> Salir\n");
+                    Console.Write("\t\t\tEleccion: ");
+                    eleccion = Console.ReadLine();
+                    eleccion = eleccion.Trim();
+
+                    if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 5))
+                    {
+
+                    }
+                    else
+                    {
+                        fail = true;
+                        msg = "Opción Incorrecta (seleccione una opción del menú: 0 - 5)";
+                    }
+
+                } while (!flag);
+            } else
             {
-                Header();
-                if (fail)
-                {
-                    Error(msg);
-                }
-                Console.WriteLine("\n\t\t\t1 -> Introducir nueva nómina");
-                Console.WriteLine("\t\t\t2 -> Modificar nómina ");
-                Console.WriteLine("\t\t\t3 -> Eliminar nómina ");
-                Console.WriteLine("\t\t\t4 -> Mostrar nómina");
-                Console.WriteLine("\t\t\t5 -> Cerrar nómina");
-                Console.WriteLine("\t\t\t0 -> Salir\n");
-                Console.Write("\t\t\tEleccion: ");
-                eleccion = Console.ReadLine();
-                eleccion = eleccion.Trim();
+                Console.WriteLine("El trabajador no se encuentra registrado");
 
-                if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 5))
-                {
-                    GestionNegocio.GestionNominas(Int32.Parse(eleccion), ref flag);
-                }
-                else
-                {
-                    fail = true;
-                    msg = "Opción Incorrecta (seleccione una opción del menú: 0 - 5)";
-                }
-
-            } while (!flag);
+            }
         }
         
-        //Submenú para elegir que tipo de nómina mostrar.
+        /*Submenú para elegir que tipo de nómina mostrar.
         internal static void SubmenuMostrarNomina()
         {
             byte seleccion = 0;
@@ -426,7 +546,7 @@ namespace Nominas
                 }
 
             } while (!flag);
-        }
+        }*/
         #endregion
 
         #region Interfaz Nómina - Antonio Baena
@@ -449,7 +569,9 @@ namespace Nominas
             throw new NotImplementedException();
         }
 
-        //Interfaz de volcado de pantalla de mostrar Nomina
+
+
+        /*Interfaz de volcado de pantalla de mostrar Nomina
         public static string MostrarNomina(Nomina[] nomina)
         {
             String cadena = null;
@@ -481,7 +603,7 @@ namespace Nominas
             cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
             return cadena;
         }
-
+        */
         //Cabecera de la Nomina con los datos del trabajador
         private static string HeaderNominaTrabajador(Trabajador trabajador)
         {
@@ -520,7 +642,7 @@ namespace Nominas
         internal static void SolicitarRetencion(ref Nomina nomina)//TODO:DESARROLLAR
         {
             throw new NotImplementedException();
-        }
+        }*/
             #endregion
 
         }
