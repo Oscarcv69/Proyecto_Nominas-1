@@ -9,7 +9,7 @@ namespace Nominas
     class Gestion_Nomina
     {
         //TODO: Cargar ajustes por dfecto
-        
+        /*
         private static byte horas = Nomina.Horas_pre;
         private static byte extra = Nomina.extra_pre;
         private static byte jornada = Nomina.jornada_pre;
@@ -334,6 +334,6 @@ namespace Nominas
 
         
         #endregion
-        
+        */
     }
 }
