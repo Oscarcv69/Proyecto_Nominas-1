@@ -50,6 +50,7 @@ namespace Nominas
             Trabajador[] copia = null;
             bool salida = false;
             string mensaje = null;
+            bool existe = false;
 
             // Entrada de Datos
             do
@@ -57,34 +58,45 @@ namespace Nominas
                 // ENTRADA
                 // NO COMPRUEBA SI EXISTE EL TRABAJADOR ------------------------->>>>>>
                 trabtemp = Interfaz.PlantillaCrearTrabajador();
+                existe = ExisteTrabajador(listaTrabajadores, trabtemp.dni_pre);
 
                     if (listaTrabajadores == null)
                     {
                         listaTrabajadores = new Trabajador[1];
                     }
-                    else
+                    if(listaTrabajadores != null)
+                    {
+                    if (existe == false)
                     {
                         copia = new Trabajador[listaTrabajadores.Length];
                         listaTrabajadores.CopyTo(copia, 0);
                         listaTrabajadores = new Trabajador[listaTrabajadores.Length + 1];
                         copia.CopyTo(listaTrabajadores, 0);
                         copia = null;
+
+                        listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp;
+
+                        mensaje = "Trabajador registrado correctamente";
+                        mensaje = mensaje + "\n\t\tDesea registrar otro Trabajador (s/n): ";
+                        salida = Interfaz.Continuar(mensaje) ? false : true;
                     }
 
-                    listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp;
+                    else
+                    {
+                        mensaje = "Trabajador no registrado";
+                        Interfaz.Continuar(mensaje);
+                        salida = false;
+                    }
 
-                    mensaje = "Trabajador registrado correctamente";
-              
+                    }
+             
 
-                // SALIDA
-                mensaje = mensaje + "\n\t\tDesea registrar otro Trabajador (s/n): ";
-
-
-                salida = Interfaz.Continuar(mensaje) ? false : true;
 
             } while (!salida);
 
         }
+
+
 
         public static void ModificarTrabajador(ref Trabajador[] listaTrabajadores)
         {
@@ -198,6 +210,30 @@ namespace Nominas
             }
             Interfaz.Continuar("Pulsa una tecla para continuar");
         }
+
+        public static bool ComprobarDni(string dni)
+        {
+            Trabajador[] temp = null;
+            bool correcto = false;
+            int i = 0;
+            temp = Ficheros.getTrabajadores();
+
+            for (i = 0; i <= temp.Length; i++)
+            {
+                if (dni.Equals(temp[i].dni_pre))
+                {
+                    correcto = true;
+                    return correcto;
+                }
+                else
+                {
+                    correcto = false;
+
+                }
+            }
+            return correcto;
+        }
+
         // Método para mostrar a todos los trabajadores que hay en la nómina
         public static void ComprobarListaTrabajadores()
         {

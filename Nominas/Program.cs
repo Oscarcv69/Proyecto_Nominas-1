@@ -22,7 +22,7 @@ namespace Nominas
                         Interfaz.OperacionesEmpleado();
                         break;
                     case 2:
-                        Interfaz.OperacionesNomina();
+                     //   Interfaz.OperacionesNomina();
                         break;
                     case 3:
                         salir = true;

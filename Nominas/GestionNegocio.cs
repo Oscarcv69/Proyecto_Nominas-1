@@ -7,7 +7,7 @@ namespace Nominas
     class GestionNegocio
     {
 
-        #region GestionNegocio - LLAMADA INTERFAZ
+        #region GestionNegocio - LLAMADA INTERFAZ (ÓSCAR)
         public static void GestionOperaciones(int numb, ref bool flag)
         {
             Trabajador[] listaTrabajador = null;
@@ -49,7 +49,7 @@ namespace Nominas
         #endregion
 
         #region GestionNomina - LLAMADA INTERFAZ (Antonio Baena)
-
+/*
         public static void GestionNominas(int numb, ref bool flag)
         {
             Nomina[] Nomina = null;
@@ -124,7 +124,7 @@ namespace Nominas
             return cadena;
         }
         #endregion
-
+        */
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
         {
@@ -177,7 +177,7 @@ namespace Nominas
 
         }
 
-        
+       
         /*  ANTONIO - Métodos para recuperar los datos de app.conf
 public void getJornada()//Obtiene el valor por defecto de la jornada
 {
@@ -191,6 +191,8 @@ public void getPrecio()//Obtiene el valor por defecto del precio por hora
 {
 
 }*/
+
         #endregion
     } // FIN CLASE
 } // FIN ESP. NOMBRES
+        #endregion
