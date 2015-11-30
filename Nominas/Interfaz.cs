@@ -36,6 +36,7 @@ namespace Nominas
                     Error(msg);
                 }
                 Console.WriteLine("\t\t\t1 -> Operaciones trabajadores");
+                //Console.WriteLine("\t\t\t2 -> Operaciones nómina"); -> Añadido por Antonio
                 Console.WriteLine("\t\t\t3 -> Salir\n");
                 Console.Write("\t\t\tEleccion: ");
                 aux = Console.ReadLine();
@@ -93,6 +94,8 @@ namespace Nominas
 
             } while (!flag);
         }
+
+       
         #endregion
 
         #region Mostrar Error - Francisco Romero
@@ -125,7 +128,7 @@ namespace Nominas
                 }
             } while (!salir);
             return password;
-        }
+        }     
         #endregion
         #region Pedir <Modificar Contraseña> - Francisco Romero
         public static string PedirContraseñaModificar()
@@ -176,6 +179,7 @@ namespace Nominas
             // SALIDA
             return seguir;
         }
+
         #endregion
         #region Header Tabla Trabajadores - Francisco Romero
         public static void HeaderVerTrabajadores()
@@ -388,5 +392,184 @@ namespace Nominas
         }
         #endregion
 
-    }
+        #region Menús Nómina - Antonio Baena
+        //Menú general de opciones de nómina
+        public static void OperacionesNomina()
+        {
+            byte seleccion = 0;
+            bool fail = false;
+            bool flag = false;  // Control de datos correctos
+            string eleccion = null;
+            string msg = null;
+
+            do
+            {
+                Header();
+                if (fail)
+                {
+                    Error(msg);
+                }
+                Console.WriteLine("\n\t\t\t1 -> Introducir nueva nómina");
+                Console.WriteLine("\t\t\t2 -> Modificar nómina ");
+                Console.WriteLine("\t\t\t3 -> Eliminar nómina ");
+                Console.WriteLine("\t\t\t4 -> Mostrar nómina");
+                Console.WriteLine("\t\t\t5 -> Cerrar nómina");
+                Console.WriteLine("\t\t\t0 -> Salir\n");
+                Console.Write("\t\t\tEleccion: ");
+                eleccion = Console.ReadLine();
+                eleccion = eleccion.Trim();
+
+                if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 5))
+                {
+                    GestionNegocio.GestionNominas(Int32.Parse(eleccion), ref flag);
+                }
+                else
+                {
+                    fail = true;
+                    msg = "Opción Incorrecta (seleccione una opción del menú: 0 - 5)";
+                }
+
+            } while (!flag);
+        }
+        
+        //Submenú para elegir que tipo de nómina mostrar.
+        internal static void SubmenuMostrarNomina()
+        {
+            byte seleccion = 0;
+            bool fail = false;
+            bool flag = false;  // Control de datos correctos
+            string eleccion = null;
+            string msg = null;
+
+            do
+            {
+                Header();
+                if (fail)
+                {
+                    Error(msg);
+                }
+                Console.WriteLine("\n\t\t\t1 -> Mostrar nómina del mes actual");
+                Console.WriteLine("\t\t\t2 -> Mostrar histórico de nóminas ");
+                Console.WriteLine("\t\t\t0 -> Salir\n");
+                Console.Write("\t\t\tEleccion: ");
+                eleccion = Console.ReadLine();
+                eleccion = eleccion.Trim();
+
+                if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 2))
+                {
+                    if (seleccion == 0)
+                    {
+                        GestionNegocio.GestionNominas(Int32.Parse(eleccion), ref flag);
+                    }
+                    else
+                    {
+                        GestionNegocio.GestionNominas(Int32.Parse(eleccion)+5, ref flag);
+                    } 
+
+                }
+                else
+                {
+                    fail = true;
+                    msg = "Opción Incorrecta (seleccione una opción del menú: 0 -2)";
+                }
+
+            } while (!flag);
+        }
+        #endregion
+
+        #region Interfaz Nómina - Antonio Baena
+        //Recoge los datos de la nómina
+        internal static Nomina DatosNomina()//TODO: DESARROLLAR
+        {
+            
+            throw new NotImplementedException();
+        }
+
+        //Pide los datos de la semana
+        internal static byte PedirSemana()
+        {
+            throw new NotImplementedException();
+        }
+
+        //Interfaz del método de modificar nómina
+        public static byte NominaModificar(Nomina nomina)//TODO: DESARROLLAR
+        {
+            throw new NotImplementedException();
+        }
+
+        //Interfaz de volcado de pantalla de mostrar Nomina
+        public static string MostrarNomina(Nomina[] nomina)
+        {
+            String cadena = null;
+            cadena += "\n";
+
+            cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;
+            cadena += LineaSeparador("-");
+            cadena += "\t\t\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
+            cadena += LineaSeparador("-");
+            for (int i = 0; i < nomina.Length; i++)
+            {
+                cadena += "\tSemana " + (i + 1);
+                cadena += "\t" + nomina[i].Horas_pre;
+                cadena += "\t" + nomina[i].Precio_pre;
+                cadena += "\t" + nomina[i].SalExtra_pre;
+                cadena += "\t" + nomina[i].SalBruto_pre;
+                cadena += "\t" + nomina[i].SalRetencion_pre;
+                cadena += "\t" + nomina[i].SalNeto_pre;
+                cadena += LineaSeparador("-");
+            }
+            cadena += LineaSeparador("=");
+            cadena += "TOTAL MES:\t\t";
+            cadena += Gestion_Nomina.CalculaTotal(nomina, 1) + "\t";
+            cadena += Gestion_Nomina.Precio_pre + "\t";
+            cadena += Gestion_Nomina.CalculaTotal(nomina, 2) + "\t";
+            cadena += Gestion_Nomina.CalculaTotal(nomina, 3) + "\t";
+            cadena += Gestion_Nomina.CalculaTotal(nomina, 4) + "\t";
+            cadena += Gestion_Nomina.CalculaTotal(nomina, 5) + "\t";
+            cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
+            return cadena;
+        }
+
+        //Cabecera de la Nomina con los datos del trabajador
+        private static string HeaderNominaTrabajador(Trabajador trabajador)
+        {
+            string cadena = null;
+            cadena += LineaSeparador("-");
+            cadena += "Trabajador";
+            cadena += "DNI: \t" + trabajador.dni_pre+"\t";
+            cadena += "Nombre: \t" + trabajador.nombre_pre + "\t";
+            cadena += "Apellido: \t" + trabajador.apellidos_pre + "\t";
+            cadena += LineaSeparador("-");
+            return cadena;
+
+        }
+
+        private static string LineaSeparador(String car)
+        {
+            String cadena = null;
+            for (int i = 0; i < Console.WindowWidth; i++)
+            {
+                cadena += car;
+            }
+            cadena += "\r";
+            return cadena;
+        }
+
+        internal static void SolicitarHoras(ref Nomina nomina)//TODO: DESARROLLAR
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void SolicitarPrecio(ref Nomina nomina)//TODO: DESARROLLAR
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void SolicitarRetencion(ref Nomina nomina)//TODO:DESARROLLAR
+        {
+            throw new NotImplementedException();
+        }
+            #endregion
+
+        }
 }

@@ -48,6 +48,83 @@ namespace Nominas
         }
         #endregion
 
+        #region GestionNomina - LLAMADA INTERFAZ (Antonio Baena)
+
+        public static void GestionNominas(int numb, ref bool flag)
+        {
+            Nomina[] Nomina = null;
+            Nomina = Ficheros.getNomina();
+            Byte semana = 0;
+
+
+            switch (numb)
+            {
+
+                //Necesitamos pedir antes el DNI del trabajador para operar con sus nóminas
+                case 0: // SALIR
+                    flag = true;
+                    break;
+                //Introducir nóminas
+                case 1:
+                    semana = Interfaz.PedirSemana();
+                    Gestion_Nomina.NuevaSemana(ref Nomina, semana);
+                    break;
+                //Modificar Nóminas
+                case 2:
+                    Gestion_Nomina.CambiaSemana(ref Nomina);
+                    break;
+
+                //Eliminar Nómina 
+                case 3: 
+                    Gestion_Nomina.eliminarNomina(ref Nomina, semana);
+                    break;
+                    //Lanza Submenú Mostrar Nómina
+                case 4: Interfaz.SubmenuMostrarNomina();
+                    break;
+                //Cerrar Nómina del Mes
+                case 5:
+                    Gestion_Nomina.CierraNomina(ref Nomina);
+                    break;
+                //Mostrar Nómina temporal
+                case 6:
+                    Gestion_Nomina.CalculaParcial(ref Nomina);
+                    Interfaz.MostrarNomina(Nomina);
+                    break;
+                //Mostrar Histórico Nóminas
+                case 7:
+                    Gestion_Nomina.ListarNominaHist();//TODO: POR DESARROLLAR
+                    break;
+
+            }
+            Ficheros.GuardarNominas(Nomina);
+        }
+
+        internal static string CambiaNomina(ref Nomina nomina, byte opcion)
+        {
+            String cadena = null;
+            switch (opcion)
+            {
+                case 0:
+                    cadena = "Modificación cancelada";
+                    break;
+                //Modificación de los datos
+                case 1:
+                    Interfaz.SolicitarHoras(ref nomina);
+                    cadena = "Horas modificadas con éxito";
+                    break;
+                case 2:
+                    Interfaz.SolicitarPrecio(ref nomina);
+                    cadena = "Precio de la hora de trabajo modificado con éxito";
+                    break;
+                case 3:
+                    Interfaz.SolicitarRetencion(ref nomina);
+                    cadena = "Porcentaje de retención por impuestos modificado con éxito";
+                    break;
+            }
+            return cadena;
+        }
+        #endregion
+
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
         {
@@ -99,6 +176,21 @@ namespace Nominas
         {
 
         }
+
+        
+        /*  ANTONIO - Métodos para recuperar los datos de app.conf
+public void getJornada()//Obtiene el valor por defecto de la jornada
+{
+
+}
+public void getRetencion()//Obtiene el valor por defecto del porcentaje de retención
+{
+
+}
+public void getPrecio()//Obtiene el valor por defecto del precio por hora
+{
+
+}*/
         #endregion
     } // FIN CLASE
 } // FIN ESP. NOMBRES
