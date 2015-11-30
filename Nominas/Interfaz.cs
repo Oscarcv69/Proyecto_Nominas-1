@@ -605,6 +605,7 @@ namespace Nominas
         }
         */
         //Cabecera de la Nomina con los datos del trabajador
+        /*
         private static string HeaderNominaTrabajador(Trabajador trabajador)
         {
             string cadena = null;

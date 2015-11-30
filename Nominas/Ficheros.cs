@@ -140,7 +140,6 @@ namespace Nominas
                 nodo.AppendChild(retencion);
                 doc.Save(ruta);
             }
-
         }
 
         public static void getConfig(ref int jornada, ref float Hextras, ref float retencion)
@@ -158,7 +157,7 @@ namespace Nominas
             }
             catch (FileNotFoundException)
             {
-                throw new Exception("Archivo no encontrado");
+                throw new Exception("Archivo no encontrado.");
     }
             catch (ArgumentException)
             {

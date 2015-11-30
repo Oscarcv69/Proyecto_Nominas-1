@@ -6,8 +6,7 @@ namespace Nominas
 {
     class GestionNegocio
     {
-
-        #region GestionNegocio - LLAMADA INTERFAZ
+        #region GestionEmpleado - LLAMADA INTERFAZ
         public static void GestionOperaciones(int numb, ref bool flag)
         {
             Trabajador[] listaTrabajador = null;
@@ -74,10 +73,10 @@ namespace Nominas
                     break;
 
                 //Eliminar Nómina 
-                case 3: 
+                case 3:
                     Gestion_Nomina.eliminarNomina(ref Nomina, semana);
                     break;
-                    //Lanza Submenú Mostrar Nómina
+                //Lanza Submenú Mostrar Nómina
                 case 4:
                     Interfaz.SubmenuMostrarNomina();
                     break;
@@ -99,6 +98,7 @@ namespace Nominas
             Ficheros.GuardarNominas(Nomina);
         }
         */
+        /*
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)
         {
             String cadena = null;
@@ -124,6 +124,7 @@ namespace Nominas
             return cadena;
         }
         #endregion
+    */
 
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
@@ -178,19 +179,16 @@ namespace Nominas
         }
 
         public static string getJornada()//Obtiene el valor por defecto de la jornada
-{
+        {
             string jor = ConfigurationManager.AppSettings["Jornada"];
             return jor;
-}
+        }
         public string getRetencion()//Obtiene el valor por defecto del porcentaje de retención
-{
+        {
             string ret = ConfigurationManager.AppSettings["Retenciones"];
             return ret;
-}
-public void getPrecio()//Obtiene el valor por defecto del precio por hora
-{
-
-}
+        }
         #endregion
     } // FIN CLASE
+    #endregion
 } // FIN ESP. NOMBRES
