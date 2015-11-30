@@ -124,7 +124,7 @@ namespace Nominas
             return cadena;
         }
         #endregion
-        */
+
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
         {
@@ -190,8 +190,7 @@ namespace Nominas
 public void getPrecio()//Obtiene el valor por defecto del precio por hora
 {
 
-}*/
+}
         #endregion
     } // FIN CLASE
 } // FIN ESP. NOMBRES
-        #endregion

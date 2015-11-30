@@ -10,26 +10,34 @@ namespace Nominas
     {
         //TODO: Cargar ajustes por dfecto
 
-        Nomina Nominas = new Nomina();
-
-        int jornada;
-        float horasExtra;
-        float retencion;
-
-        //Al llamar a get config se pasa por referencia esas tres variables, asi lee el fichero y se pasa los valores 
-
-        private static short horas= Nominas.Horas_pre;
-        private static short extra = Nominas.extra_pre;
-        private static short jornada = Nominas.jornada_pre;
-        private static short precio = Nominas.precio_pre;
+         
+        private static float horasExtra =0.0F;
+        private static short horas = 0; 
+        private static short extra = 0; 
+        private static short precio = 0; 
         private static float salarioExtra = 0.0F;
         private static float bruto = 0.0F;
         private static float neto = 0.0F;
-        private static short retenciones = GestionNegocio.getRetencion();
+        private static float retenciones = 0.0F;
+        private static int jornada = 0;
 
         #region GESTION NOMINAS - ANTONIO
 
+       
         //Métodos para el cálculo de la nómina
+
+            //Inicialización de nóminas
+            public void InicializaNomina(Nomina nomina)
+        {
+            Ficheros.getConfig(ref jornada, ref horasExtra, ref retenciones);
+            horas = nomina.Horas_pre;
+            extra = nomina.HExtra_pre;
+            precio = nomina.Precio_pre;
+            salarioExtra = nomina.SalExtra_pre;
+            bruto = nomina.SalBruto_pre;
+            neto = nomina.SalNeto_pre;
+        }
+        //Fichero temporal lleva las horas por semana
 
         //Cálculo de las horas extra
         private static short CalculoExtra(short hora)
@@ -42,7 +50,7 @@ namespace Nominas
         }
 
         //Cálculo del salario bruto
-        private static float CalculoSalarioBruto(short horas, short jornada, float precio)
+        private static float CalculoSalarioBruto(short horas, int jornada, float precio)
         {
             if (horas > jornada)
             {
@@ -60,7 +68,7 @@ namespace Nominas
         //Calculo del salario Extra
         private static float CalculoSalarioExtra(short extra, float precio)
         {
-            return (extra * precio * 1.5F);
+            return (extra * precio * horasExtra);
         }
 
         //Cálculo del salario Neto
