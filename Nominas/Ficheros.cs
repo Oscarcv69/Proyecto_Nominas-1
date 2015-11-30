@@ -121,11 +121,10 @@ namespace Nominas
 
         #region FICHEROS TXT - Francisco Romero
         // CREAR TXT
-        public static void CrearTxtNomina()
+        public static void CrearTxtNomina(string cadena)
         {
             bool salir = false;
             string fic = @"..\\..\\..\\Nominas\\Nominas_empleados\\nomina_empleado.txt";
-            string formato = "Prueba escribir";
             try
             {
                 do
@@ -139,7 +138,7 @@ namespace Nominas
                     else
                     {
                         StreamWriter sw = new StreamWriter(fic, true);
-                        sw.WriteLine(formato);
+                        sw.WriteLine(cadena);
                         sw.Close();
                         salir = true;
                     }

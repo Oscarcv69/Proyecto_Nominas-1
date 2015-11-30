@@ -10,7 +10,7 @@ namespace Nominas
     {
         //TODO: Cargar ajustes por dfecto
 
-        private static byte horas = Nomina.horas_pre;
+        private static byte horas = Nomina.Horas_pre;
         private static byte extra = Nomina.extra_pre;
         private static byte jornada = Nomina.jornada_pre;
         private static byte precio = Nomina.precio_pre;

@@ -57,7 +57,7 @@ namespace Nominas
             return seleccion;
         }
 
-        public static void Operaciones()
+        public static void OperacionesEmpleado()
         {
             byte seleccion = 0;
             bool fail = false;

@@ -19,10 +19,10 @@ namespace Nominas
                     // Ver trabajadores
                     case 1:
                         Ficheros.ExistOrEmpty();
-                        Interfaz.Operaciones();
+                        Interfaz.OperacionesEmpleado();
                         break;
                     case 2:
-                        //Interfaz.OperacionesNomina();
+                        Interfaz.OperacionesNomina();
                         break;
                     case 3:
                         salir = true;
