@@ -203,7 +203,26 @@ namespace Nominas
         {
 
         }
-
+        public static bool ComprobarDni(string dni)
+        {
+            Trabajador[] temp = null;
+            bool correcto = false;
+            int i = 0;
+            temp = Ficheros.getTrabajadores();
+            while (!correcto)
+            {
+                if (dni.Equals(temp[i].dni_pre))
+                {
+                    correcto = true;
+                }
+                else
+                {
+                    correcto = false;
+                    i++;
+                }
+            }
+            return correcto;
+        }
         #endregion
     }
 }

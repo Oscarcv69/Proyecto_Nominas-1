@@ -6,8 +6,7 @@ namespace Nominas
 {
     class GestionNegocio
     {
-
-        #region GestionNegocio - LLAMADA INTERFAZ
+        #region GestionEmpleado - LLAMADA INTERFAZ
         public static void GestionOperaciones(int numb, ref bool flag)
         {
             Trabajador[] listaTrabajador = null;
@@ -49,7 +48,7 @@ namespace Nominas
         #endregion
 
         #region GestionNomina - LLAMADA INTERFAZ (Antonio Baena)
-
+        /*
         public static void GestionNominas(int numb, ref bool flag)
         {
             Nomina[] Nomina = null;
@@ -59,7 +58,6 @@ namespace Nominas
 
             switch (numb)
             {
-
                 //Necesitamos pedir antes el DNI del trabajador para operar con sus nóminas
                 case 0: // SALIR
                     flag = true;
@@ -75,11 +73,12 @@ namespace Nominas
                     break;
 
                 //Eliminar Nómina 
-                case 3: 
+                case 3:
                     Gestion_Nomina.eliminarNomina(ref Nomina, semana);
                     break;
-                    //Lanza Submenú Mostrar Nómina
-                case 4: Interfaz.SubmenuMostrarNomina();
+                //Lanza Submenú Mostrar Nómina
+                case 4:
+                    Interfaz.SubmenuMostrarNomina();
                     break;
                 //Cerrar Nómina del Mes
                 case 5:
@@ -98,7 +97,7 @@ namespace Nominas
             }
             Ficheros.GuardarNominas(Nomina);
         }
-
+        */
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)
         {
             String cadena = null;
@@ -177,20 +176,16 @@ namespace Nominas
 
         }
 
-        
-        /*  ANTONIO - Métodos para recuperar los datos de app.conf
-public void getJornada()//Obtiene el valor por defecto de la jornada
-{
-
-}
-public void getRetencion()//Obtiene el valor por defecto del porcentaje de retención
-{
-
-}
-public void getPrecio()//Obtiene el valor por defecto del precio por hora
-{
-
-}*/
+        public static string getJornada()//Obtiene el valor por defecto de la jornada
+        {
+            string jor = ConfigurationManager.AppSettings["Jornada"];
+            return jor;
+        }
+        public string getRetencion()//Obtiene el valor por defecto del porcentaje de retención
+        {
+            string ret = ConfigurationManager.AppSettings["Retenciones"];
+            return ret;
+        }
         #endregion
     } // FIN CLASE
 } // FIN ESP. NOMBRES

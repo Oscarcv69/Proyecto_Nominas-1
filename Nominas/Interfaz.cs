@@ -353,38 +353,46 @@ namespace Nominas
             bool flag = false;  // Control de datos correctos
             string eleccion = null;
             string msg = null;
+            string dni = null;
 
-            do
+            dni = Interfaz.PlantillaPedirDni();
+            if (Gestion_Empleado.ComprobarDni(dni)) {
+                do
+                {
+                    Header();
+                    if (fail)
+                    {
+                        Error(msg);
+                    }
+                    Console.WriteLine("\n\t\t\t1 -> Introducir nueva nómina");
+                    Console.WriteLine("\t\t\t2 -> Modificar nómina ");
+                    Console.WriteLine("\t\t\t3 -> Eliminar nómina ");
+                    Console.WriteLine("\t\t\t4 -> Mostrar nómina");
+                    Console.WriteLine("\t\t\t5 -> Cerrar nómina");
+                    Console.WriteLine("\t\t\t0 -> Salir\n");
+                    Console.Write("\t\t\tEleccion: ");
+                    eleccion = Console.ReadLine();
+                    eleccion = eleccion.Trim();
+
+                    if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 5))
+                    {
+
+                    }
+                    else
+                    {
+                        fail = true;
+                        msg = "Opción Incorrecta (seleccione una opción del menú: 0 - 5)";
+                    }
+
+                } while (!flag);
+            } else
             {
-                Header();
-                if (fail)
-                {
-                    Error(msg);
-                }
-                Console.WriteLine("\n\t\t\t1 -> Introducir nueva nómina");
-                Console.WriteLine("\t\t\t2 -> Modificar nómina ");
-                Console.WriteLine("\t\t\t3 -> Eliminar nómina ");
-                Console.WriteLine("\t\t\t4 -> Mostrar nómina");
-                Console.WriteLine("\t\t\t5 -> Cerrar nómina");
-                Console.WriteLine("\t\t\t0 -> Salir\n");
-                Console.Write("\t\t\tEleccion: ");
-                eleccion = Console.ReadLine();
-                eleccion = eleccion.Trim();
+                Console.WriteLine("El trabajador no se encuentra registrado");
 
-                if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 5))
-                {
-                    GestionNegocio.GestionNominas(Int32.Parse(eleccion), ref flag);
-                }
-                else
-                {
-                    fail = true;
-                    msg = "Opción Incorrecta (seleccione una opción del menú: 0 - 5)";
-                }
-
-            } while (!flag);
+            }
         }
         
-        //Submenú para elegir que tipo de nómina mostrar.
+        /*Submenú para elegir que tipo de nómina mostrar.
         internal static void SubmenuMostrarNomina()
         {
             byte seleccion = 0;
@@ -426,7 +434,7 @@ namespace Nominas
                 }
 
             } while (!flag);
-        }
+        }*/
         #endregion
 
         #region Interfaz Nómina - Antonio Baena
@@ -449,7 +457,9 @@ namespace Nominas
             throw new NotImplementedException();
         }
 
-        //Interfaz de volcado de pantalla de mostrar Nomina
+
+
+        /*Interfaz de volcado de pantalla de mostrar Nomina
         public static string MostrarNomina(Nomina[] nomina)
         {
             String cadena = null;
@@ -481,7 +491,7 @@ namespace Nominas
             cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
             return cadena;
         }
-
+        */
         //Cabecera de la Nomina con los datos del trabajador
         private static string HeaderNominaTrabajador(Trabajador trabajador)
         {

@@ -10,10 +10,12 @@ namespace Nominas
     public class Trabajador
     {
         private string dni, nombre, apellidos;
+        private bool isActivo;
         public Trabajador() {
             this.dni = null;
             this.nombre = null;
             this.apellidos = null;
+            this.isActivo = true;
         }
         public string dni_pre
         {
@@ -84,6 +86,15 @@ namespace Nominas
                 {
                     throw new Exception("El apellido introducido no es correcto");
                 }
+            }
+        }
+
+        public bool activo
+        {
+            get { return isActivo; }
+            set
+            {
+                isActivo = value;
             }
         }
     }
