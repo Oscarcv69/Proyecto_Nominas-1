@@ -23,9 +23,9 @@ namespace Nominas
             }
             set
             {
-                char[] comprobacion = { 't', 'r', 'w', 'a', 'g', 'm', 'y', 'f', 'p', 'd', 'x', 'b', 'n', 'j', 'z', 's', 'q', 'v', 'h', 'l', 'c', 'k', 'e' };
+                char[] comprobacion = { 'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E' };
                 int resto = 0;
-                char letra = (char)0;
+                char letra;
                 int numero = 0;
                 if (value.Length < 9)
                 {
@@ -38,7 +38,7 @@ namespace Nominas
                 else if (Int32.TryParse(value.Substring(0, 8), out numero) || (Int32.TryParse(value[8].ToString(), out numero)))
                 {
                     letra = value[8];
-                    resto = numero % 23;
+                    resto = (numero % 23);
                     if (letra != comprobacion[resto])
                     {
                         throw new Exception("DNI Incorrecto: Letra del DNI es incorrecta");

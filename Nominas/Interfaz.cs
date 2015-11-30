@@ -99,7 +99,7 @@ namespace Nominas
         public static void Error(string err)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\n\tERROR >> {0}", err);
+            Console.WriteLine("\n\t\tERROR >> {0}", err);
             Console.ResetColor();
         }
         #endregion Mostrar Error
@@ -164,7 +164,7 @@ namespace Nominas
             string aux = null;
 
             // ENTRADA
-            Console.Write(message);
+            Console.Write("\n\t\t" + message);
             aux = Console.ReadLine();
             aux = aux.Trim().ToLower(); // Métodos en cadena: 1º limpia ; 2º minúsculas
 
@@ -216,19 +216,27 @@ namespace Nominas
 
             } while (!salir);
         }
-        public static string PlantillaBorrarUsuario()
+        public static string PlantillaPedirDni()
         {
             string dni = null;
-            string eleccion = null;
             bool salir = false;
             do
             {
-                Console.Clear();
                 Interfaz.Header();
-                Console.WriteLine("\tA continuacion, introduce el DNI del empleado a eliminar.");
+                Console.WriteLine("\t\tA continuacion, introduce el DNI del empleado.");
                 Console.Write("\n\t\t\tIntroduce el DNI: ");
                 dni = Console.ReadLine();
-                Console.Write("\n\t\t¿Desea borrar otro empleado? s/n =>> ");
+                salir = true;
+            } while (!salir);
+            return dni;
+        }
+        public static bool Pregunta(ref string pregunta)
+        {
+            bool salir = false;
+            do
+            {
+                string eleccion = null;
+                Console.Write("\n\t\t " + pregunta);
                 eleccion = Console.ReadLine();
                 if (eleccion.Equals("s"))
                 {
@@ -244,41 +252,7 @@ namespace Nominas
                     Continuar();
                 }
             } while (!salir);
-            return dni;
-        }
-        public static string PlantillaModificarUsuario()
-        {
-            string dni = null;
-            string eleccion = null;
-            bool salir = false;
-            do
-            {
-                Console.Clear();
-                Interfaz.Header();
-                if (GestionNegocio.GestionContraseña())
-                {
-                    Console.WriteLine("\tA continuacion, introduce el DNI del empleado a modificar.");
-                    Console.Write("\n\t\t\tIntroduce el DNI: ");
-                    dni = Console.ReadLine();
-                    dni.ToUpper();
-                    Console.Write("\n\t\t¿Desea modificar otro empleado? s/n =>> ");
-                    eleccion = Console.ReadLine();
-                    if (eleccion.Equals("s"))
-                    {
-                        salir = false;
-                    }
-                    else if (eleccion.Equals("n"))
-                    {
-                        salir = true;
-                    }
-                    else
-                    {
-                        Error("Introduce una 's' para modificar otro empleado o una 'n' para salir.");
-                        Continuar();
-                    }
-                }
-            } while (!salir);
-            return dni;
+            return salir;
         }
 
         #endregion
@@ -286,7 +260,6 @@ namespace Nominas
         public static String PlantillaEleccionModificar()
         {
             string eleccion = null;
-            string salida = null;
             byte seleccion = 0;
             bool salir = false;
             do
@@ -300,18 +273,9 @@ namespace Nominas
                 Console.Write("\n\t\t\tIntroduce tu elección: ");
                 eleccion = Console.ReadLine();
 
-                if (Byte.TryParse(eleccion, out seleccion) && (seleccion > 0) && (seleccion <= 3))
+                if (Byte.TryParse(eleccion, out seleccion) && (seleccion > 0) && (seleccion <= 4))
                 {
-                    Console.Write("\n\t\t¿Desea realizar otra operacion? s/n =>> ");
-                    salida = Console.ReadLine();
-                    if (salida.Equals("s"))
-                    {
-                        salir = false;
-                    }
-                    else if (salida.Equals("n")) {
-                        salir = true;
-                    }
-
+                    salir = true;
                 }
                 else
                 {
@@ -324,43 +288,31 @@ namespace Nominas
 
         public static String ElementoModificar(string eleccion)
         {
-            string salida = null;
             bool salir = false;
             byte seleccion = 0;
             string cambio = null;
             do
             {
-                
-            switch (eleccion)
-            {
+                Header();
+                switch (eleccion)
+                {
 
-                case "1":
-                    Console.Write("\n\t\t\tIntroduce el DNI nuevo: ");
-                    cambio = Console.ReadLine();
-                    break;
-                case "2":
-                    Console.Write("\n\t\t\tIntroduce el Nombre nuevo: ");
-                    cambio = Console.ReadLine();
+                    case "1":
+                        Console.Write("\n\t\tIntroduce el DNI nuevo: ");
+                        cambio = Console.ReadLine();
                         break;
-                case "3":
-                    Console.Write("\n\t\t\tIntroduce el Apellido nuevo: ");
-                    cambio = Console.ReadLine();
-                    break;
-            }
-
+                    case "2":
+                        Console.Write("\n\t\tIntroduce el Nombre nuevo: ");
+                        cambio = Console.ReadLine();
+                        break;
+                    case "3":
+                        Console.Write("\n\t\tIntroduce el Apellido nuevo: ");
+                        cambio = Console.ReadLine();
+                        break;
+                }
                 if (Byte.TryParse(eleccion, out seleccion) && (seleccion > 0) && (seleccion <= 3))
                 {
-                    Console.Write("\n\t\t¿Desea realizar otra operacion? s/n =>> ");
-                    salida = Console.ReadLine();
-                    if (salida.Equals("s"))
-                    {
-                        salir = false;
-                    }
-                    else if (salida.Equals("n"))
-                    {
-                        salir = true;
-                    }
-
+                    salir = true;
                 }
                 else
                 {

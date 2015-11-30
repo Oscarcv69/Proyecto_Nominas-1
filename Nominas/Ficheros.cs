@@ -18,6 +18,8 @@ namespace Nominas
             Format(); // FORMATEA EL ARCHIVO
             do
             {
+                if (trb.Length != 0)
+                {
                     for (int i = 0; i < trb.Length; i++)
                     {
                         doc.Load(ruta);
@@ -39,6 +41,10 @@ namespace Nominas
                         doc.Save(ruta);
                         salir = true;
                     }
+                } else
+                {
+                    salir = true;
+                }
             } while (!salir);
         }
         // FIN CREAR TRABAJADORES

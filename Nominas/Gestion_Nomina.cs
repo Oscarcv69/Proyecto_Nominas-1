@@ -188,7 +188,7 @@ namespace Nominas
                 cadena = GestionNegocio.OperacionesNomina(opcion);
                 Interfaz.Continuar(cadena);
 
-                /* PASAR ESTO A EL METODO GESTIONNEGOCIO.OPERACIONESNOMINA(byte opcion)
+                /* PASAR ESTO A EL METODO GESTIONNEGOCIO.OPERACIONESNOMINA(byte opcion) */
                 switch (opcion)
                 {
                     case 0:
@@ -208,7 +208,7 @@ namespace Nominas
                         cadena = "Porcentaje de retención por impuestos modificado con éxito";
                         break;
                 }
-                cadena += "Pulse ENTER para continuar";*/
+                cadena += "Pulse ENTER para continuar";
 
             }
 
@@ -295,6 +295,5 @@ namespace Nominas
             //Eliminar fichero
         }
             #endregion
-        
     }
 }
