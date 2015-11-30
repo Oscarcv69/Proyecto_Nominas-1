@@ -99,6 +99,7 @@ namespace Nominas
             Ficheros.GuardarNominas(Nomina);
         }
         */
+        /*
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)
         {
             String cadena = null;
@@ -170,7 +171,7 @@ namespace Nominas
             }
         }
         #endregion
-
+/*
         #region GET VALORES POR DEFECTO APP.CONF
         public void getHextras() // obtiene el valor por defecto de las horas extraordinarias
         {
@@ -194,4 +195,3 @@ public void getPrecio()//Obtiene el valor por defecto del precio por hora
         #endregion
     } // FIN CLASE
 } // FIN ESP. NOMBRES
-        #endregion

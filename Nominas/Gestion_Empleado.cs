@@ -218,7 +218,7 @@ namespace Nominas
             int i = 0;
             temp = Ficheros.getTrabajadores();
 
-            for (i = 0; i <= temp.Length; i++)
+            for (i = 0; i < temp.Length; i++)
             {
                 if (dni.Equals(temp[i].dni_pre))
                 {
