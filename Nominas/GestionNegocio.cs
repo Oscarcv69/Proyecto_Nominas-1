@@ -98,6 +98,7 @@ namespace Nominas
             Ficheros.GuardarNominas(Nomina);
         }
         */
+        /*
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)
         {
             String cadena = null;
@@ -123,6 +124,7 @@ namespace Nominas
             return cadena;
         }
         #endregion
+    */
 
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
@@ -188,4 +190,5 @@ namespace Nominas
         }
         #endregion
     } // FIN CLASE
+    #endregion
 } // FIN ESP. NOMBRES
