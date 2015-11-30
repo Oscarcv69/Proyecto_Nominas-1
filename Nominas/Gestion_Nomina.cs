@@ -10,7 +10,7 @@ namespace Nominas
     {
         //TODO: Cargar ajustes por dfecto
 
-         
+        /*
         private static float horasExtra =0.0F;
         private static short horas = 0; 
         private static short extra = 0; 
@@ -350,6 +350,6 @@ namespace Nominas
 
         
         #endregion
-
+        */
     }
 }

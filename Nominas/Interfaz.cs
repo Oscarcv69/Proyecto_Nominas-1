@@ -265,7 +265,6 @@ namespace Nominas
                             // Limpieza de entrada (espacios en blanco)
                             // Validación Nombre --> NO TESTADO (PENDIENTE)
                             aux = Console.ReadLine();
-                            aux = aux.Trim();
                             trabajador.nombre_pre = aux;
                         }
                         catch (Exception e)
@@ -288,8 +287,7 @@ namespace Nominas
                     {
                         try
                         {
-                            aux = Console.ReadLine();
-                            aux = aux.Trim();   // Limpieza de entrada (espacios en blanco)
+                            aux = Console.ReadLine();  // Limpieza de entrada (espacios en blanco)
                                                 // Validación Apellidos --> NO TESTADO (PENDIENTE)
                             trabajador.apellidos_pre = aux;
                             correcto = true;
@@ -314,24 +312,7 @@ namespace Nominas
         }
 
 
-       /* public static Trabajador PlantillaCrearTrabajador()
-        {
-            Trabajador trb = null;
-            bool salir = false;
-            do
-            {
-                Header();
-                trb = new Trabajador();
-                Console.Write("\n\t\t\tIntroduce el DNI: ");
-                trb.dni_pre = Console.ReadLine();
-                Console.Write("\t\t\tIntroduce el Nombre: ");
-                trb.nombre_pre = Console.ReadLine();
-                Console.Write("\t\t\tIntroduce los apellidos: ");
-                trb.apellidos_pre = Console.ReadLine();
-                return trb;
-
-            } while (!salir);
-        }*/
+      
         public static string PlantillaPedirDni()
         {
             string dni = null;

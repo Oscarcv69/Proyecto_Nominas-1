@@ -151,18 +151,18 @@ namespace Nominas
                 XmlNodeList raiz = doc.SelectNodes("Configuracion");
                 XmlNode configuracion;
                 configuracion = raiz.Item(0);
-                jornada =  Int32.Parse(configuracion.SelectSingleNode("Jornada").InnerText);
+                jornada = Int32.Parse(configuracion.SelectSingleNode("Jornada").InnerText);
                 Hextras = Int64.Parse(configuracion.SelectSingleNode("Horas_Extras").InnerText);
                 retencion = Int64.Parse(configuracion.SelectSingleNode("Retenecion").InnerText);
             }
             catch (FileNotFoundException)
             {
                 throw new Exception("Archivo no encontrado.");
-    }
+            }
             catch (ArgumentException)
             {
                 throw new Exception("El archivo al que trata de acceder esta vacio. Por favor inserte minimo un trabajador.");
-}
+            }
             catch (XmlException)
             {
                 throw new Exception("No se ha podido abrir el archivo, revise el contenido.");
@@ -174,53 +174,41 @@ namespace Nominas
         #region FICHEROS TXT - Francisco Romero
         // CREAR TXT
         public static void CrearTxtNomina(string cadena)
-{
-    bool salir = false;
-    string fic = @"..\\..\\..\\Nominas\\Nominas_empleados\\nomina_empleado.txt";
-    try
-    {
-        do
         {
-            if (!File.Exists(fic)) // ARCHIVO EXISTE -> COMPROBADO
+            bool salir = false;
+            string fic = @"..\\..\\..\\Nominas\\Nominas_empleados\\nomina_empleado.txt";
+            try
             {
-                StreamWriter writer = File.CreateText(fic);
-                salir = false;
-                writer.Close();
+                do
+                {
+                    if (!File.Exists(fic)) // ARCHIVO EXISTE -> COMPROBADO
+                    {
+                        StreamWriter writer = File.CreateText(fic);
+                        salir = false;
+                        writer.Close();
+                    }
+                    else
+                    {
+                        StreamWriter sw = new StreamWriter(fic, true);
+                        sw.WriteLine(cadena);
+                        sw.Close();
+                        salir = true;
+                    }
+                } while (!salir);
             }
-            else
+            catch (FileNotFoundException)
             {
-                StreamWriter sw = new StreamWriter(fic, true);
-                sw.WriteLine(cadena);
-                sw.Close();
-                salir = true;
+                throw new Exception("Archivo no encontrado.");
             }
-        } while (!salir);
-    }
-    catch (FileNotFoundException)
-    {
-        throw new Exception("Archivo no encontrado.");
-    }
-    catch (FileLoadException)
-    {
-        throw new Exception("Fallo al cargar el archivo.");
-    }
-}
-public static void getNomina(string dni)
-{
-    try
-    {
-        StreamReader sr = new StreamReader(@"..\\..\\..\\Nominas\\Nominas_empleados\\nomina_empleado.txt", false);
-        string linea;
-        while ((linea = sr.ReadLine()) != null)
-        {
-            Console.WriteLine(linea);
+            catch (FileLoadException)
+            {
+                throw new Exception("Fallo al cargar el archivo.");
+            }
         }
-    }
-    catch (Exception)
-    {
-        Console.WriteLine("El archivo no se puede leer");
-    }
-}
+        public static void getNomina(string dni)
+        {
+            
+        }
         // FIN CREAR TXT
         #endregion FIN TXT
     }

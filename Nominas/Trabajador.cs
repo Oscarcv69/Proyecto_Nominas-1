@@ -10,12 +10,10 @@ namespace Nominas
     public class Trabajador
     {
         private string dni, nombre, apellidos;
-        private bool isActivo;
         public Trabajador() {
             this.dni = null;
             this.nombre = null;
             this.apellidos = null;
-            this.isActivo = true;
         }
         public string dni_pre
         {
@@ -66,7 +64,7 @@ namespace Nominas
             set
             {
                 //COMPROBACIÓN DE QUE NOMBRE ESTE COMPUESTO SOLO POR LETRAS
-                if (Regex.IsMatch(value.ToString(), @"^[a-zA-Z ]+$"))
+                if (Regex.IsMatch(value.ToString(), @"^[a-ño-zA-Z ]+$"))
                 {
                     nombre = value;
                 }
@@ -85,7 +83,7 @@ namespace Nominas
             set
             {
                 //COMPROBACIÓN DE QUE NOMBRE ESTE COMPUESTO SOLO POR LETRAS
-                if (Regex.IsMatch(value.ToString(), @"^[a-zA-Z ]+$"))
+                if (Regex.IsMatch(value.ToString(), @"^[a-ño-zA-Z ]+$"))
                 {
                     apellidos = value;
                 }
@@ -93,15 +91,6 @@ namespace Nominas
                 {
                     throw new Exception("El apellido introducido no es correcto");
                 }
-            }
-        }
-
-        public bool activo
-        {
-            get { return isActivo; }
-            set
-            {
-                isActivo = value;
             }
         }
     }
