@@ -50,6 +50,13 @@ namespace Nominas
                 {
                     throw new Exception("Las horas no pueden ser menores que 0");
                 }
+
+                if(value <= 168) {
+                    horas = value;
+                }
+                else {
+                    throw new Exception("No puedo haber más de 168 horas.");
+                }
             }
         }
 
