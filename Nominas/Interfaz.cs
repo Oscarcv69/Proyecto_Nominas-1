@@ -492,34 +492,32 @@ namespace Nominas
         internal static Nomina DatosNomina()//TODO: Comprobacion de errores
         {
             String aux=null;
-            short numeroInt = 0 ;
+            int numeroInt = 0 ;
 
             Nomina nomtemp = new Nomina();
             Gestion_Nomina.InicializaNomina(ref nomtemp);
 
             Console.WriteLine("Por favor, introduzca las horas trabajadas esta semana");
             aux = Console.ReadLine();
-            if (!Int16.TryParse(aux, out numeroInt))
+            if (!Int32.TryParse(aux, out numeroInt))
             {
                 throw new Exception("El número no es válido, por favor introduzca un valor numérico");
             }
             else
             {
                 nomtemp.Horas_pre = numeroInt;
-
             }
             Console.WriteLine("Las horas tiene un precio de "+nomtemp.PrecioPre + ", si desea modificarlo, introduzca el precio por hora para la semana, en caso contrario, pulse ENTER");
             aux = Console.ReadLine();
             if (aux != null)
             {
-                if (!Int16.TryParse(aux, out numeroInt))
+                if (!Int32.TryParse(aux, out numeroInt))
                 {
                     throw new Exception("El número no es válido, por favor introduzca un valor numérico");
                 }
                 else
                 {
                     nomtemp.PrecioPre = numeroInt;
-
                 }
             }
             return nomtemp;
