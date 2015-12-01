@@ -7,7 +7,7 @@ namespace Nominas
     class Ficheros
     {
         private static string ruta = @"..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
-        private static string rutaConf = @"..\\..\\..\\Nominas\\Conf.xml";
+        private static string rutaConf = @"..\\..\\..\\Nominas\\Recursos\\Conf.xml";
         #region FICHEROS XML - Francisco Romero
         // CREAR TRABAJADORES
         public static void GuardarTrabajadores(Trabajador[] trb)
@@ -121,24 +121,25 @@ namespace Nominas
             XmlDocument doc = new XmlDocument();
             if (!File.Exists(rutaConf))
             {
-                XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+               XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
                 XmlElement root = doc.DocumentElement;
                 doc.InsertBefore(xmlDeclaration, root);
-                XmlElement nodo = doc.CreateElement("Configuracion");
-                root.AppendChild(nodo);
+
+                XmlElement element1 = doc.CreateElement(string.Empty, "Plantilla", string.Empty);
+                doc.AppendChild(element1);
 
                 XmlElement jornada = doc.CreateElement("Jornada");
                 jornada.AppendChild(doc.CreateTextNode("40"));
-                nodo.AppendChild(jornada);
+                element1.AppendChild(jornada);
 
                 XmlElement Hextras = doc.CreateElement("Horas_Extras");
                 Hextras.AppendChild(doc.CreateTextNode("1,5"));
-                nodo.AppendChild(Hextras);
+                element1.AppendChild(Hextras);
 
                 XmlElement retencion = doc.CreateElement("Retencion");
                 retencion.AppendChild(doc.CreateTextNode("0,16"));
-                nodo.AppendChild(retencion);
-                doc.Save(ruta);
+                element1.AppendChild(retencion);
+                doc.Save(rutaConf);
             }
         }
 

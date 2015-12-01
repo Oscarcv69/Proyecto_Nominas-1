@@ -82,7 +82,7 @@ namespace Nominas
                 eleccion = Console.ReadLine();
                 eleccion = eleccion.Trim();
 
-                if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 1) && (seleccion <= 5))
+                if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 1) && (seleccion <= 6))
                 {
                     GestionNegocio.GestionOperaciones(Int32.Parse(eleccion), ref flag);
                 }
