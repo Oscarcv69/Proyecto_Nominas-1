@@ -15,7 +15,7 @@ namespace Nominas
         private float salarioExtra;
         private float salarioBruto;
         private float salarioNeto;
-        private short retencion;
+        private float retencion;
         
         public Nomina()
         {
