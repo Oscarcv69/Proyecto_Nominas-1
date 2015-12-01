@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Nominas
@@ -37,17 +38,16 @@ namespace Nominas
             this.precio = 0;
             this.retencion_pre = 0.0F;
         }
+        private Regex regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
 
 
-        public int Horas_pre
-        {
+        public int Horas_pre {
             get { return horas; }
             set {
-                if (value >= 0)
-                {
+                if(value >= 0) {
                     horas = value;
-                } else
-                {
+                }
+                else {
                     throw new Exception("Las horas no pueden ser menores que 0");
                 }
 
@@ -56,6 +56,14 @@ namespace Nominas
                 }
                 else {
                     throw new Exception("No puedo haber más de 168 horas.");
+                }
+                if(!regex.IsMatch(horas.ToString())) {
+
+                    throw new Exception("Introduce sólo valores numéricos");
+
+                }
+                else {
+                    horas = value;
                 }
             }
         }
