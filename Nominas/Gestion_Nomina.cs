@@ -140,9 +140,9 @@ namespace Nominas
 
         }
         //Calculo de los totales de nomina
-        internal static string CalculaTotal(Nomina[] Nomina, int v)
+        internal static float CalculaTotal(Nomina[] Nomina, int v)
         {
-            String cadena = null;
+            float cadena = 0;
             switch (v)
             {
                 case 1:
