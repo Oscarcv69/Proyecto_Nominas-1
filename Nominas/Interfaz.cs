@@ -499,7 +499,7 @@ namespace Nominas
             int numeroInt = 0;
 
             Nomina nomtemp = new Nomina();
-            Gestion_Nomina.InicializaNomina(nomtemp);
+            Gestion_Nomina.InicializaNomina(ref nomtemp);
 
             Console.WriteLine("Por favor, introduzca las horas trabajadas esta semana");
             aux = Console.ReadLine();
