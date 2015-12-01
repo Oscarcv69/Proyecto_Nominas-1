@@ -54,7 +54,7 @@ namespace Nominas {
                     horas = value;
                 }
                 else {
-                    throw new Exception("No puedo haber más de 168 horas.");
+                    throw new Exception("No puede haber más de 168 horas.");
                 }
 
                 if(!regex.IsMatch(horas.ToString())) {
