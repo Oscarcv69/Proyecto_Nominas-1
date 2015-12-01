@@ -1,4 +1,6 @@
-﻿namespace Nominas
+﻿using System;
+
+namespace Nominas
 {
     class Gestion_Empleado
     {
@@ -77,13 +79,11 @@
 
                     else
                     {
-                        mensaje = "Trabajador no registrado";
-                        Interfaz.Continuar(mensaje);
                         salida = false;
                     }
 
                 }
-       
+
             } while (!salida);
 
         }
@@ -95,44 +95,58 @@
             string dni = null;
             bool existe = false;
             bool salir = false;
+            bool error = false;
             string pregunta = null;
             string mensaje = null;
 
             do
             {
-                dni = Interfaz.PlantillaPedirDni();
-                existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
-
-                if (existe)
+                try
                 {
-                    eleccion = Interfaz.PlantillaEleccionModificar();
-                    switch (eleccion)
-                    {
-                        case "1":
-                            listaTrabajadores[posicion].dni_pre = Interfaz.ElementoModificar(eleccion);
-                            break;
-                        case "2":
-                            listaTrabajadores[posicion].nombre_pre = Interfaz.ElementoModificar(eleccion);
-                            break;
-                        case "3":
-                            listaTrabajadores[posicion].apellidos_pre = Interfaz.ElementoModificar(eleccion);
-                            break;
+                    if(error == false) { 
+                    dni = Interfaz.PlantillaPedirDni();
+                    existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
                     }
-                    mensaje = "Operación realizada con éxito.";
-                    pregunta = "¿Quieres modificar otro usuario? s/n >> ";
-                    Interfaz.Continuar(mensaje);
-                    Interfaz.Pregunta(ref pregunta, ref salir);
-                }
+                    if (existe)
+                    {
+                        eleccion = Interfaz.PlantillaEleccionModificar();
 
-                else
+                        switch (eleccion)
+                        {
+                            case "1":
+                                listaTrabajadores[posicion].dni_pre = Interfaz.ElementoModificar(eleccion);
+                                break;
+                            case "2":
+                                listaTrabajadores[posicion].nombre_pre = Interfaz.ElementoModificar(eleccion);
+                                break;
+                            case "3":
+                                listaTrabajadores[posicion].apellidos_pre = Interfaz.ElementoModificar(eleccion);
+                                break;
+                        }
+                        error = false;
+                        mensaje = "Operación realizada con éxito.";
+                        pregunta = "¿Quieres modificar otro usuario? s/n >> ";
+                        Interfaz.Continuar(mensaje);
+                        Interfaz.Pregunta(ref pregunta, ref salir);
+                    }
+
+                    else
+                    {
+                        mensaje = "El Trabajador no existe";
+                        salir = false;
+                        error = true;
+                    }
+                }
+                catch (Exception ex)
                 {
-                    mensaje = "El Trabajador no existe";
-                    salir = false; 
+                    Interfaz.Error(ex.Message);
+                    Interfaz.Continuar("Pulse una tecla para continuar...");
+                    salir = false;
+                    error = true;
                 }
-
             } while (!salir);
         }
-       
+
         //Método para borrar un trabajador
         public static void BorrarTrabajador(ref Trabajador[] listaTrabajadores)
         {

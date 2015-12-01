@@ -217,17 +217,22 @@ namespace Nominas
             {
                 do
                 {
-
-                    Header();
+                    
                     if (error)
                     {
-                        Continuar(mensaje);  // Presentación de Errores
+                        Error(mensaje);  // Presentación de Errores
+                        Continuar("Pulse una tecla para continuar...");
                         error = false;          // Reinicio del Control de Errores
                     }
-                    Console.WriteLine("\t APERTURA CUENTA: DATOS DEL NUEVO TRABAJADOR\n");
+                    Header();
+                    Console.WriteLine("\n\t\t APERTURA CUENTA: DATOS DEL NUEVO TRABAJADOR\n");
 
                     // ENTRADA: DNI del Cliente
-                    trabajador.dni_pre = dni_trb;
+                    if (dni_trb != null) // SI NO ES NULL LO ASIGNA A DNI
+                    {
+                        trabajador.dni_pre = dni_trb;
+                    } 
+
                     if (trabajador.dni_pre == null)
                     {
                         try
@@ -239,8 +244,8 @@ namespace Nominas
                             existe = Gestion_Empleado.ComprobarDni(aux);
                             if (existe)
                             {
-
-                                Continuar("YA SE ENCUENTRA REGISTRADO");
+                                Error("El empleado ya se encuentra registrado");
+                                Continuar("Pulsa una tecla para continuar");
                                 correcto = false;
                             }
                             else
@@ -267,14 +272,15 @@ namespace Nominas
                     {
                         try
                         {
-                            // Limpieza de entrada (espacios en blanco)
                             // Validación Nombre --> NO TESTADO (PENDIENTE)
                             aux = Console.ReadLine();
                             trabajador.nombre_pre = aux;
+                            error = false;
                         }
                         catch (Exception e)
                         {
                             error = true;
+                            correcto = false;
                             mensaje = e.Message;
                         }
 
@@ -285,9 +291,10 @@ namespace Nominas
                     }
                 }
 
-                Console.Write("\t\t Introduzca Apellidos: ");
+               
                 if (!error)
                 {
+                    Console.Write("\t\t Introduzca Apellidos: ");
                     if (trabajador.apellidos_pre == null) // Dato introducido?
                     {
                         try
@@ -295,12 +302,13 @@ namespace Nominas
                             aux = Console.ReadLine();  // Limpieza de entrada (espacios en blanco)
                                                        // Validación Apellidos --> NO TESTADO (PENDIENTE)
                             trabajador.apellidos_pre = aux;
-                            correcto = true;
+                            error = false;
                         }
 
                         catch (Exception e)
                         {
                             error = true;
+                            correcto = false;
                             mensaje = e.Message;
                         }
                     }

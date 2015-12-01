@@ -64,7 +64,7 @@ namespace Nominas
             set
             {
                 //COMPROBACIÓN DE QUE NOMBRE ESTE COMPUESTO SOLO POR LETRAS
-                if (Regex.IsMatch(value.ToString(), @"^[a-ño-zA-Z ]+$"))
+                if (Regex.IsMatch(value.ToString(), @"^[a-zA-ZñÑ\s]+$"))
                 {
                     nombre = value;
                 }
@@ -83,7 +83,7 @@ namespace Nominas
             set
             {
                 //COMPROBACIÓN DE QUE NOMBRE ESTE COMPUESTO SOLO POR LETRAS
-                if (Regex.IsMatch(value.ToString(), @"^[a-ño-zA-Z ]+$"))
+                if (Regex.IsMatch(value.ToString(), @"^[a-zA-ZñÑ\s]+$"))
                 {
                     apellidos = value;
                 }
