@@ -52,7 +52,7 @@ namespace Nominas
         public static void GestionNominas(int numb, ref bool flag, string dni)
         {
             Nomina[] Nomina = null;
-            Nomina = Ficheros.getNomina(dni);
+            Nomina = Ficheros.GetNomina(dni);
             Byte semana = 0;
 
 
@@ -79,14 +79,15 @@ namespace Nominas
                 //Mostrar Nómina Temporal
                 case 4:
                     Gestion_Nomina.CalculaParcial(ref Nomina);
-                    Interfaz.MostrarNomina(Nomina);
+                    Console.WriteLine(Interfaz.MostrarNomina(Nomina));
+                    Console.ReadLine();
                     break;
                 //Cerrar Nómina del Mes
                 case 5:
                     Gestion_Nomina.CierraNomina(ref Nomina);
                     break;              
             }
-            Ficheros.GuardarNominas(Nomina);
+           /* Ficheros.GuardarNominas(Nomina);*/
         }
 
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)

@@ -36,7 +36,7 @@ namespace Nominas
                     Error(msg);
                 }
                 Console.WriteLine("\t\t\t1 -> Operaciones trabajadores");
-                //Console.WriteLine("\t\t\t2 -> Operaciones nómina"); -> Añadido por Antonio
+                Console.WriteLine("\t\t\t2 -> Operaciones nómina");
                 Console.WriteLine("\t\t\t3 -> Salir\n");
                 Console.Write("\t\t\tEleccion: ");
                 aux = Console.ReadLine();
@@ -450,6 +450,7 @@ namespace Nominas
 
             dni = Interfaz.PlantillaPedirDni();
             if (Gestion_Empleado.ComprobarDni(dni)) {
+                Ficheros.ExistOrEmptyNOM(dni);
                 do
                 {
                     Header();
@@ -469,7 +470,7 @@ namespace Nominas
 
                     if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 5))
                     {
-
+                        GestionNegocio.GestionNominas(seleccion, ref flag ,dni);
                     }
                     else
                     {
@@ -507,7 +508,7 @@ namespace Nominas
                 nomtemp.Horas_pre = numeroInt;
 
             }
-            Console.WriteLine("Las horas tiene un precio de "+nomtemp.Precio_pre + ", si desea modificarlo, introduzca el precio por hora para la semana, en caso contrario, pulse ENTER");
+            Console.WriteLine("Las horas tiene un precio de "+nomtemp.PrecioPre + ", si desea modificarlo, introduzca el precio por hora para la semana, en caso contrario, pulse ENTER");
             aux = Console.ReadLine();
             if (aux != null)
             {
@@ -517,7 +518,7 @@ namespace Nominas
                 }
                 else
                 {
-                    nomtemp.Precio_pre = numeroInt;
+                    nomtemp.PrecioPre = numeroInt;
 
                 }
             }
@@ -541,12 +542,13 @@ namespace Nominas
         //Interfaz de volcado de pantalla de mostrar Nomina
         public static string MostrarNomina(Nomina[] nomina)
         {
+            Header();
             String cadena = null;
             cadena += "\n";
             float precioMedio = 0.0F;
             int i = 0;
 
-            cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;
+           /* cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;*/
             cadena += LineaSeparador("-");
             cadena += "\t\t\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
             cadena += LineaSeparador("-");
@@ -554,13 +556,13 @@ namespace Nominas
             {
                 cadena += "\tSemana " + (i + 1);
                 cadena += "\t" + nomina[i].Horas_pre;
-                cadena += "\t" + nomina[i].Precio_pre;
+                cadena += "\t" + nomina[i].PrecioPre;
                 cadena += "\t" + nomina[i].SalExtra_pre;
                 cadena += "\t" + nomina[i].SalBruto_pre;
                 cadena += "\t" + nomina[i].SalRetencion_pre;
                 cadena += "\t" + nomina[i].SalNeto_pre;
                 cadena += LineaSeparador("-");
-                precioMedio += nomina[i].Precio_pre;
+                precioMedio += nomina[i].PrecioPre;
             }
             cadena += LineaSeparador("=");
             cadena += "TOTAL MES:\t\t";

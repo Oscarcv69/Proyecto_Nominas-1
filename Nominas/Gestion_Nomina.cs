@@ -33,7 +33,7 @@ namespace Nominas
             Ficheros.getConfig(ref jornada, ref horasExtra, ref retenciones);
             horas = nomina.Horas_pre;
             extra = nomina.HExtra_pre;
-            precio = nomina.Precio_pre;
+            precio = nomina.PrecioPre;
             salarioExtra = nomina.SalExtra_pre;
             bruto = nomina.SalBruto_pre;
             neto = nomina.SalNeto_pre;
@@ -131,7 +131,6 @@ namespace Nominas
         {
             for (int i = 0; i < Nomina.Length; i++)
             {
-                Nomina[i].Horas_pre = horas;
                 Nomina[i].HExtra_pre = CalculoExtra(horas, jornada);
                 Nomina[i].SalBruto_pre = CalculoSalarioBruto(horas, jornada, precio);
                 Nomina[i].SalExtra_pre = CalculoSalarioExtra(Nomina[i].Horas_pre, precio);
