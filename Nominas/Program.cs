@@ -9,7 +9,8 @@ namespace Nominas
             #region Ejecutar Menu Principal
             byte opcion = 0;
             bool salir = false;
-            Ficheros.ExistOrEmptyEMP();
+
+            GestionNegocio.InicializarComponentes();
             do
             {
                 opcion = Interfaz.MenuPrincipal();
@@ -21,7 +22,6 @@ namespace Nominas
                         Interfaz.OperacionesEmpleado();
                         break;
                     case 2:
-                        Ficheros.setConfig();
                         Interfaz.OperacionesNomina();
                         break;
                     case 3:

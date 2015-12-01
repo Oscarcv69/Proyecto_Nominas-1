@@ -180,5 +180,11 @@ namespace Nominas
             return ret;
         }
         #endregion
+
+        public static void InicializarComponentes()
+        {
+            Ficheros.setConfig();
+            Ficheros.ExistOrEmptyEMP();
+        }
     } // FIN CLASE
 } // FIN ESP. NOMBRES

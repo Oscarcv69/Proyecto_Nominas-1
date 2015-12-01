@@ -122,7 +122,7 @@ namespace Nominas
 
         #region FICHEROS XML NOMINAS - Francisco Romero
 
-        public static void GuardarNomina()
+        public static void GuardarNominaTemporal()
         {
 
         }
@@ -259,6 +259,17 @@ namespace Nominas
                         XmlAttribute numero = doc.CreateAttribute("ID"); // ID ES EL NÚMERO DE SEMANA
                         numero.Value = (i + 1).ToString();
                         element2.Attributes.Append(numero);
+
+                        XmlElement element3 = doc.CreateElement(string.Empty, "Horas_Totales", string.Empty);
+                        element2.AppendChild(element2);
+
+                        XmlElement element4 = doc.CreateElement(string.Empty, "Horas_Extras", string.Empty);
+                        element2.AppendChild(element2);
+
+                        XmlElement element5 = doc.CreateElement(string.Empty, "Salario_Extra", string.Empty);
+                        element2.AppendChild(element2);
+
+                        
                     }
                     doc.Save(rutaNOM + dni + ".xml");
                 }
