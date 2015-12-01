@@ -156,9 +156,9 @@ namespace Nominas
         {
             string ruta = null;
             int horas = 0, hextras = 0;
-            float salarioExtra = 0, salarioBruto = 0, salarioNeto = 0, impuestos = 0;
+            float salarioExtra = 0.0F, salarioBruto = 0.0F, salarioNeto = 0.0F, impuestos = 0.0F;
             int jornadapre = 0;
-            float hextraspre = 0, retencionespre = 0, preciopre = 0;
+            float hextraspre = 0.0F, retencionespre = 0.0F, preciopre = 0.0F;
 
             ruta = BuscarNombre(dni);
             Nomina Nom = null;
