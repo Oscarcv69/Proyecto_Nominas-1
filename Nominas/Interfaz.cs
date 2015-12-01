@@ -439,7 +439,7 @@ namespace Nominas
 
         #region Menús Nómina - Antonio Baena
         //Menú general de opciones de nómina
-   /*     public static void OperacionesNomina()
+  public static void OperacionesNomina()
         {
             byte seleccion = 0;
             bool fail = false;
@@ -484,62 +484,48 @@ namespace Nominas
 
             }
         }
-        
-        /*Submenú para elegir que tipo de nómina mostrar.
-        internal static void SubmenuMostrarNomina()
-        {
-            byte seleccion = 0;
-            bool fail = false;
-            bool flag = false;  // Control de datos correctos
-            string eleccion = null;
-            string msg = null;
-
-            do
-            {
-                Header();
-                if (fail)
-                {
-                    Error(msg);
-                }
-                Console.WriteLine("\n\t\t\t1 -> Mostrar nómina del mes actual");
-                Console.WriteLine("\t\t\t2 -> Mostrar histórico de nóminas ");
-                Console.WriteLine("\t\t\t0 -> Salir\n");
-                Console.Write("\t\t\tEleccion: ");
-                eleccion = Console.ReadLine();
-                eleccion = eleccion.Trim();
-
-                if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 2))
-                {
-                    if (seleccion == 0)
-                    {
-                        GestionNegocio.GestionNominas(Int32.Parse(eleccion), ref flag);
-                    }
-                    else
-                    {
-                        GestionNegocio.GestionNominas(Int32.Parse(eleccion)+5, ref flag);
-                    } 
-
-                }
-                else
-                {
-                    fail = true;
-                    msg = "Opción Incorrecta (seleccione una opción del menú: 0 -2)";
-                }
-
-            } while (!flag);
-        }*/
         #endregion
 
         #region Interfaz Nómina - Antonio Baena
         //Recoge los datos de la nómina
-        internal static Nomina DatosNomina()//TODO: DESARROLLAR
+        internal static Nomina DatosNomina()//TODO: Comprobacion de errores
         {
-            
-            throw new NotImplementedException();
+            String aux=null;
+            short numeroInt = 0 ;
+
+            Nomina nomtemp = new Nomina();
+            Gestion_Nomina.InicializaNomina(nomtemp);
+
+            Console.WriteLine("Por favor, introduzca las horas trabajadas esta semana");
+            aux = Console.ReadLine();
+            if (!Int16.TryParse(aux, out numeroInt))
+            {
+                throw new Exception("El número no es válido, por favor introduzca un valor numérico");
+            }
+            else
+            {
+                nomtemp.Horas_pre = numeroInt;
+
+            }
+            Console.WriteLine("Las horas tiene un precio de "+nomtemp.Precio_pre + ", si desea modificarlo, introduzca el precio por hora para la semana, en caso contrario, pulse ENTER");
+            aux = Console.ReadLine();
+            if (aux != null)
+            {
+                if (!Int16.TryParse(aux, out numeroInt))
+                {
+                    throw new Exception("El número no es válido, por favor introduzca un valor numérico");
+                }
+                else
+                {
+                    nomtemp.Precio_pre = numeroInt;
+
+                }
+            }
+            return nomtemp;
         }
 
         //Pide los datos de la semana
-        internal static byte PedirSemana()
+        internal static byte PedirSemana()//TODO: DESARROLLAR
         {
             throw new NotImplementedException();
         }
@@ -552,17 +538,19 @@ namespace Nominas
 
 
 
-        /*Interfaz de volcado de pantalla de mostrar Nomina
+        //Interfaz de volcado de pantalla de mostrar Nomina
         public static string MostrarNomina(Nomina[] nomina)
         {
             String cadena = null;
             cadena += "\n";
+            float precioMedio = 0.0F;
+            int i = 0;
 
             cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;
             cadena += LineaSeparador("-");
             cadena += "\t\t\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
             cadena += LineaSeparador("-");
-            for (int i = 0; i < nomina.Length; i++)
+            for (i = 0; i < nomina.Length; i++)
             {
                 cadena += "\tSemana " + (i + 1);
                 cadena += "\t" + nomina[i].Horas_pre;
@@ -572,11 +560,12 @@ namespace Nominas
                 cadena += "\t" + nomina[i].SalRetencion_pre;
                 cadena += "\t" + nomina[i].SalNeto_pre;
                 cadena += LineaSeparador("-");
+                precioMedio += nomina[i].Precio_pre;
             }
             cadena += LineaSeparador("=");
             cadena += "TOTAL MES:\t\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 1) + "\t";
-            cadena += Gestion_Nomina.Precio_pre + "\t";
+            cadena += precioMedio/i + "\t";//Hacemos el cálculo del precio de la hora media
             cadena += Gestion_Nomina.CalculaTotal(nomina, 2) + "\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 3) + "\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 4) + "\t";
@@ -584,9 +573,9 @@ namespace Nominas
             cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
             return cadena;
         }
-        */
+        
         //Cabecera de la Nomina con los datos del trabajador
-        /*
+        
         private static string HeaderNominaTrabajador(Trabajador trabajador)
         {
             string cadena = null;
@@ -624,7 +613,7 @@ namespace Nominas
         internal static void SolicitarRetencion(ref Nomina nomina)//TODO:DESARROLLAR
         {
             throw new NotImplementedException();
-        }*/
+        }
             #endregion
 
         }

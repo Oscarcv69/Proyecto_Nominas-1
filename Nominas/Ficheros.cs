@@ -206,9 +206,10 @@ namespace Nominas
                 throw new Exception("Fallo al cargar el archivo.");
             }
         }
-        public static void getNomina(string dni)
+        public static Nomina[] getNomina(string dni)
         {
-            
+            Nomina[] nomina = new Nomina[1];//ESTO HAY QUE QUITARLO, ES SOLO PARA QUE NO DE ERRORES
+            return nomina;
         }
         // FIN CREAR TXT
         #endregion FIN TXT
