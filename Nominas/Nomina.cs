@@ -9,13 +9,13 @@ namespace Nominas
 	//Comentario
     class Nomina
     {
-        private short horas;
-        private short hextras;
-        private short precio;
+        private int horas;
+        private int hextras;
+        private float precio;
         private float salarioExtra;
         private float salarioBruto;
         private float salarioNeto;
-        private short retencion;
+        private float retencion;
         
         public Nomina()
         {
@@ -29,7 +29,7 @@ namespace Nominas
         }
 
 
-        public short Horas_pre
+        public int Horas_pre
         {
             get { return horas; }
             set {
@@ -43,7 +43,7 @@ namespace Nominas
             }
         }
 
-        public short HExtra_pre
+        public int HExtra_pre
         {
             get { return hextras; }
             set
@@ -59,14 +59,14 @@ namespace Nominas
             }
         }
 
-        public short Precio_pre
+        public float Precio_pre
         {
             get { return precio; }
             set
             {
                 if (value >= 0)
                 {
-                    precio = value;
+                    precio = Single.Parse(value.ToString());
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace Nominas
             {
                 if (value >= 0)
                 {
-                    salarioExtra = value;
+                    salarioExtra = Single.Parse(value.ToString());
                 }
                 else
                 {
@@ -98,7 +98,7 @@ namespace Nominas
             {
                 if (value >= 0)
                 {
-                    salarioBruto = value;
+                    salarioBruto = Single.Parse(value.ToString());
                 }
                 else
                 {
@@ -114,7 +114,7 @@ namespace Nominas
             {
                 if (value >= 0)
                 {
-                    retencion = value;
+                    retencion = Single.Parse(value.ToString());
                 }
                 else
                 {
@@ -130,7 +130,7 @@ namespace Nominas
             {
                 if (value >= 0)
                 {
-                    salarioNeto = value;
+                    salarioNeto = Single.Parse(value.ToString());
                 }
                 else
                 {

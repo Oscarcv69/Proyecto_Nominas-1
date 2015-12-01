@@ -8,6 +8,7 @@ namespace Nominas
 {
     class Gestion_Nomina
     {
+      
         //TODO: Cargar ajustes por dfecto
         private static short horas = 0; //Total de horas trabajadas en la semana (se almacena en el temporal)
         private static short extra = 0; //Horas extra trabajadas en la semana (se almacena en el temporal)
@@ -43,7 +44,6 @@ namespace Nominas
         private static short CalculoExtra(short hora, int jornada)
         {
             extra = (short)(hora - jornada);
-
             return extra;
 
         }
@@ -343,6 +343,6 @@ namespace Nominas
 
         
         #endregion
-
+        
     }
 }
