@@ -95,7 +95,7 @@ namespace Nominas
             } while (!flag);
         }
 
-       
+
         #endregion
 
         #region Mostrar Error - Francisco Romero
@@ -128,7 +128,7 @@ namespace Nominas
                 }
             } while (!salir);
             return password;
-        }     
+        }
         #endregion
         #region Pedir <Modificar Contraseña> - Francisco Romero
         public static string PedirContraseñaModificar()
@@ -214,18 +214,19 @@ namespace Nominas
 
             do
             {
-                do { 
-
-                Header();
-                if (error)
+                do
                 {
-                    Continuar(mensaje);  // Presentación de Errores
-                    error = false;          // Reinicio del Control de Errores
-                }
-                Console.WriteLine("\t APERTURA CUENTA: DATOS DEL NUEVO TRABAJADOR\n");
 
-                // ENTRADA: DNI del Cliente
-              
+                    Header();
+                    if (error)
+                    {
+                        Continuar(mensaje);  // Presentación de Errores
+                        error = false;          // Reinicio del Control de Errores
+                    }
+                    Console.WriteLine("\t APERTURA CUENTA: DATOS DEL NUEVO TRABAJADOR\n");
+
+                    // ENTRADA: DNI del Cliente
+
                     if (trabajador.dni_pre == null)
                     {
                         try
@@ -247,12 +248,12 @@ namespace Nominas
                                 correcto = true;
                             }
                         }
-                    catch (Exception e)
-                    {
-                        error = true;
-                        mensaje = e.Message;
+                        catch (Exception e)
+                        {
+                            error = true;
+                            mensaje = e.Message;
+                        }
                     }
-                }
                 } while (!correcto);
                 // ENTRADA: Nombre y Apellidos
                 if (!error)
@@ -288,7 +289,7 @@ namespace Nominas
                         try
                         {
                             aux = Console.ReadLine();  // Limpieza de entrada (espacios en blanco)
-                                                // Validación Apellidos --> NO TESTADO (PENDIENTE)
+                                                       // Validación Apellidos --> NO TESTADO (PENDIENTE)
                             trabajador.apellidos_pre = aux;
                             correcto = true;
                         }
@@ -303,7 +304,7 @@ namespace Nominas
                 else
                 {
                     Console.WriteLine("{0}", trabajador.apellidos_pre);    // Apellidos válidos
-                  
+
                 }
 
             } while (!correcto);
@@ -312,7 +313,7 @@ namespace Nominas
         }
 
 
-      
+
         public static string PlantillaPedirDni()
         {
             string dni = null;
@@ -327,7 +328,7 @@ namespace Nominas
             } while (!salir);
             return dni;
         }
-        public static bool Pregunta(ref string pregunta)
+        public static void Pregunta(ref string pregunta, ref bool salida)
         {
             bool salir = false;
             do
@@ -337,11 +338,13 @@ namespace Nominas
                 eleccion = Console.ReadLine();
                 if (eleccion.Equals("s"))
                 {
-                    salir = false;
+                    salir = true;
+                    salida = false;
                 }
                 else if (eleccion.Equals("n"))
                 {
                     salir = true;
+                    salida = true;
                 }
                 else
                 {
@@ -349,7 +352,6 @@ namespace Nominas
                     Continuar();
                 }
             } while (!salir);
-            return salir;
         }
 
         #endregion
@@ -439,7 +441,7 @@ namespace Nominas
 
         #region Menús Nómina - Antonio Baena
         //Menú general de opciones de nómina
-  public static void OperacionesNomina()
+        public static void OperacionesNomina()
         {
             byte seleccion = 0;
             bool fail = false;
@@ -449,7 +451,8 @@ namespace Nominas
             string dni = null;
 
             dni = Interfaz.PlantillaPedirDni();
-            if (Gestion_Empleado.ComprobarDni(dni)) {
+            if (Gestion_Empleado.ComprobarDni(dni))
+            {
                 Ficheros.ExistOrEmptyNOM(dni);
                 do
                 {
@@ -470,7 +473,7 @@ namespace Nominas
 
                     if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 5))
                     {
-                        GestionNegocio.GestionNominas(seleccion, ref flag ,dni);
+                        GestionNegocio.GestionNominas(seleccion, ref flag, dni);
                     }
                     else
                     {
@@ -479,7 +482,8 @@ namespace Nominas
                     }
 
                 } while (!flag);
-            } else
+            }
+            else
             {
                 Console.WriteLine("El trabajador no se encuentra registrado");
 
@@ -491,8 +495,8 @@ namespace Nominas
         //Recoge los datos de la nómina
         internal static Nomina DatosNomina()//TODO: Comprobacion de errores
         {
-            String aux=null;
-            int numeroInt = 0 ;
+            String aux = null;
+            int numeroInt = 0;
 
             Nomina nomtemp = new Nomina();
             Gestion_Nomina.InicializaNomina(nomtemp);
@@ -507,7 +511,7 @@ namespace Nominas
             {
                 nomtemp.Horas_pre = numeroInt;
             }
-            Console.WriteLine("Las horas tiene un precio de "+nomtemp.PrecioPre + ", si desea modificarlo, introduzca el precio por hora para la semana, en caso contrario, pulse ENTER");
+            Console.WriteLine("Las horas tiene un precio de " + nomtemp.PrecioPre + ", si desea modificarlo, introduzca el precio por hora para la semana, en caso contrario, pulse ENTER");
             aux = Console.ReadLine();
             if (aux != null)
             {
@@ -546,7 +550,7 @@ namespace Nominas
             float precioMedio = 0.0F;
             int i = 0;
 
-           /* cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;*/
+            /* cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;*/
             cadena += LineaSeparador("-");
             cadena += "\t\t\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
             cadena += LineaSeparador("-");
@@ -565,7 +569,7 @@ namespace Nominas
             cadena += LineaSeparador("=");
             cadena += "TOTAL MES:\t\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 1) + "\t";
-            cadena += precioMedio/i + "\t";//Hacemos el cálculo del precio de la hora media
+            cadena += precioMedio / i + "\t";//Hacemos el cálculo del precio de la hora media
             cadena += Gestion_Nomina.CalculaTotal(nomina, 2) + "\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 3) + "\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 4) + "\t";
@@ -573,15 +577,15 @@ namespace Nominas
             cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
             return cadena;
         }
-        
+
         //Cabecera de la Nomina con los datos del trabajador
-        
+
         private static string HeaderNominaTrabajador(Trabajador trabajador)
         {
             string cadena = null;
             cadena += LineaSeparador("-");
             cadena += "Trabajador";
-            cadena += "DNI: \t" + trabajador.dni_pre+"\t";
+            cadena += "DNI: \t" + trabajador.dni_pre + "\t";
             cadena += "Nombre: \t" + trabajador.nombre_pre + "\t";
             cadena += "Apellido: \t" + trabajador.apellidos_pre + "\t";
             cadena += LineaSeparador("-");
@@ -614,7 +618,7 @@ namespace Nominas
         {
             throw new NotImplementedException();
         }
-            #endregion
+        #endregion
 
-        }
+    }
 }

@@ -98,12 +98,9 @@
             string pregunta = null;
             string mensaje = null;
 
-          
+            do
+            {
                 dni = Interfaz.PlantillaPedirDni();
-
-                do
-                {
-
                 existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
 
                 if (existe)
@@ -124,7 +121,7 @@
                     mensaje = "Operación realizada con éxito.";
                     pregunta = "¿Quieres modificar otro usuario? s/n >> ";
                     Interfaz.Continuar(mensaje);
-                    salir = Interfaz.Pregunta(ref pregunta);
+                    Interfaz.Pregunta(ref pregunta, ref salir);
                 }
 
                 else
