@@ -8,6 +8,7 @@ namespace Nominas
 {
     class Interfaz
     {
+        private static string dni_trb = null;
         #region Header - Francisco Romero
         public static void Header()
         {
@@ -226,7 +227,7 @@ namespace Nominas
                     Console.WriteLine("\t APERTURA CUENTA: DATOS DEL NUEVO TRABAJADOR\n");
 
                     // ENTRADA: DNI del Cliente
-
+                    trabajador.dni_pre = dni_trb;
                     if (trabajador.dni_pre == null)
                     {
                         try
@@ -253,6 +254,9 @@ namespace Nominas
                             error = true;
                             mensaje = e.Message;
                         }
+                    } else
+                    {
+                        correcto = true;
                     }
                 } while (!correcto);
                 // ENTRADA: Nombre y Apellidos
@@ -355,7 +359,7 @@ namespace Nominas
         }
 
         #endregion
-        #region
+        #region Modificar Trabajador - Óscar Calvente
         public static String PlantillaEleccionModificar()
         {
             string eleccion = null;
@@ -423,7 +427,7 @@ namespace Nominas
         }
 
         #endregion
-        #region Metodo ListarTrabajadores(Todavia no implementado) - Óscar
+        #region Metodo ListarTrabajadores - Óscar Calvente
         public static void MostrarLista(Trabajador[] listaTrabajadores)
         {
             int indice = 0;
@@ -449,13 +453,15 @@ namespace Nominas
             string eleccion = null;
             string msg = null;
             string dni = null;
+            string cadena = null;
 
-            dni = Interfaz.PlantillaPedirDni();
-            if (Gestion_Empleado.ComprobarDni(dni))
+            do
             {
-                Ficheros.ExistOrEmptyNOM(dni);
-                do
+                dni = Interfaz.PlantillaPedirDni(); // PIDE EL DNI
+                if (Gestion_Empleado.ComprobarDni(dni))
                 {
+                    Ficheros.ExistOrEmptyNOM(dni);
+
                     Header();
                     if (fail)
                     {
@@ -466,28 +472,31 @@ namespace Nominas
                     Console.WriteLine("\t\t\t3 -> Eliminar nómina ");
                     Console.WriteLine("\t\t\t4 -> Mostrar nómina");
                     Console.WriteLine("\t\t\t5 -> Cerrar nómina");
-                    Console.WriteLine("\t\t\t0 -> Salir\n");
+                    Console.WriteLine("\t\t\t6 -> Salir\n");
                     Console.Write("\t\t\tEleccion: ");
                     eleccion = Console.ReadLine();
                     eleccion = eleccion.Trim();
 
-                    if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 5))
+                    if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 1) && (seleccion <= 6))
                     {
                         GestionNegocio.GestionNominas(seleccion, ref flag, dni);
                     }
                     else
                     {
                         fail = true;
-                        msg = "Opción Incorrecta (seleccione una opción del menú: 0 - 5)";
+                        msg = "Opción Incorrecta (seleccione una opción del menú: 1 - 6)";
                     }
 
-                } while (!flag);
-            }
-            else
-            {
-                Console.WriteLine("El trabajador no se encuentra registrado");
-
-            }
+                } else
+                {
+                    Console.WriteLine("\t\tEl trabajador no se encuentra registrado");
+                    cadena = "¿Quieres registrar este trabajador?";
+                    Interfaz.Pregunta(ref cadena, ref flag);
+                    dni_trb = dni;
+                    GestionNegocio.GestionOperaciones(1, ref flag);
+                    
+                }
+            } while (!flag);
         }
         #endregion
 
