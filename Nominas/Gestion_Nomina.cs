@@ -28,7 +28,7 @@ namespace Nominas
         //Métodos para el cálculo de la nómina
 
             //Inicialización de nóminas
-            public static void InicializaNomina(Nomina nomina)
+            public static void InicializaNomina(ref Nomina nomina)
         {
             Ficheros.getConfig(ref jornada, ref horasExtra, ref retenciones);
             horas = nomina.Horas_pre;
