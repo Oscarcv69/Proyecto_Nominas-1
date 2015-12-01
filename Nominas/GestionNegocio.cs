@@ -48,11 +48,11 @@ namespace Nominas
         #endregion
 
         #region GestionNomina - LLAMADA INTERFAZ (Antonio Baena)
-        /*
-        public static void GestionNominas(int numb, ref bool flag)
+
+        public static void GestionNominas(int numb, ref bool flag, string dni)
         {
             Nomina[] Nomina = null;
-            Nomina = Ficheros.getNomina();
+            Nomina = Ficheros.GetNomina(dni);
             Byte semana = 0;
 
 
@@ -76,29 +76,20 @@ namespace Nominas
                 case 3:
                     Gestion_Nomina.eliminarNomina(ref Nomina, semana);
                     break;
-                //Lanza Submenú Mostrar Nómina
+                //Mostrar Nómina Temporal
                 case 4:
-                    Interfaz.SubmenuMostrarNomina();
+                    Gestion_Nomina.CalculaParcial(ref Nomina);
+                    Console.WriteLine(Interfaz.MostrarNomina(Nomina));
+                    Console.ReadLine();
                     break;
                 //Cerrar Nómina del Mes
                 case 5:
                     Gestion_Nomina.CierraNomina(ref Nomina);
-                    break;
-                //Mostrar Nómina temporal
-                case 6:
-                    Gestion_Nomina.CalculaParcial(ref Nomina);
-                    Interfaz.MostrarNomina(Nomina);
-                    break;
-                //Mostrar Histórico Nóminas
-                case 7:
-                    Gestion_Nomina.ListarNominaHist();//TODO: POR DESARROLLAR
-                    break;
-
+                    break;              
             }
-            Ficheros.GuardarNominas(Nomina);
+           /* Ficheros.GuardarNominas(Nomina);*/
         }
-        */
-        /*
+
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)
         {
             String cadena = null;
@@ -124,7 +115,7 @@ namespace Nominas
             return cadena;
         }
         #endregion
-    */
+
 
         #region Gestion Contraseña - Francisco Romero
         public static bool GestionContraseña()
@@ -190,5 +181,4 @@ namespace Nominas
         }
         #endregion
     } // FIN CLASE
-    #endregion
 } // FIN ESP. NOMBRES

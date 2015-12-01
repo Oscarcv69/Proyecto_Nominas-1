@@ -8,10 +8,11 @@ namespace Nominas
 {
     class Gestion_Nomina
     {
+      
         //TODO: Cargar ajustes por dfecto
-        private static short horas = 0; //Total de horas trabajadas en la semana (se almacena en el temporal)
-        private static short extra = 0; //Horas extra trabajadas en la semana (se almacena en el temporal)
-        private static short precio = 0; //Precio de la hora trabajada (se almacena en el temporal)
+        private static int horas = 0; //Total de horas trabajadas en la semana (se almacena en el temporal)
+        private static int extra = 0; //Horas extra trabajadas en la semana (se almacena en el temporal)
+        private static float precio = 0; //Precio de la hora trabajada (se almacena en el temporal)
         private static int jornada = 0; //Horas a partir de las cuales se consideran extras (se almacena en el temporal)
         private static float horasExtra = 0.0F;//Multplicador de precio para horas extra (se almacena en el temporal)
 
@@ -27,12 +28,12 @@ namespace Nominas
         //Métodos para el cálculo de la nómina
 
             //Inicialización de nóminas
-            public void InicializaNomina(Nomina nomina)
+            public static void InicializaNomina(Nomina nomina)
         {
             Ficheros.getConfig(ref jornada, ref horasExtra, ref retenciones);
             horas = nomina.Horas_pre;
             extra = nomina.HExtra_pre;
-            precio = nomina.Precio_pre;
+            precio = nomina.PrecioPre;
             salarioExtra = nomina.SalExtra_pre;
             bruto = nomina.SalBruto_pre;
             neto = nomina.SalNeto_pre;
@@ -40,16 +41,15 @@ namespace Nominas
         //Fichero temporal lleva las horas por semana
 
         //Cálculo de las horas extra
-        private static short CalculoExtra(short hora, int jornada)
+        private static int CalculoExtra(int hora, int jornada)
         {
             extra = (short)(hora - jornada);
-
             return extra;
 
         }
 
         //Cálculo del salario bruto
-        private static float CalculoSalarioBruto(short horas, int jornada, float precio)
+        private static float CalculoSalarioBruto(int horas, int jornada, float precio)
         {
             if (horas > jornada)
             {
@@ -65,7 +65,7 @@ namespace Nominas
         }
 
         //Calculo del salario Extra
-        private static float CalculoSalarioExtra(short extra, float precio)
+        private static float CalculoSalarioExtra(int extra, float precio)
         {
             return (extra * precio * horasExtra);
         }
@@ -131,7 +131,6 @@ namespace Nominas
         {
             for (int i = 0; i < Nomina.Length; i++)
             {
-                Nomina[i].Horas_pre = horas;
                 Nomina[i].HExtra_pre = CalculoExtra(horas, jornada);
                 Nomina[i].SalBruto_pre = CalculoSalarioBruto(horas, jornada, precio);
                 Nomina[i].SalExtra_pre = CalculoSalarioExtra(Nomina[i].Horas_pre, precio);
@@ -343,6 +342,6 @@ namespace Nominas
 
         
         #endregion
-
+        
     }
 }

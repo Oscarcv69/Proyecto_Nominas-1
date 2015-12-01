@@ -9,27 +9,37 @@ namespace Nominas
 	//Comentario
     class Nomina
     {
-        private short horas;
-        private short hextras;
-        private short precio;
+        private int horas;
+        private int hextras;
+        private float precio;
         private float salarioExtra;
         private float salarioBruto;
         private float salarioNeto;
-        private short retencion;
-        
+        private float impuestos;
+
+        // Variables del archivo de configuración
+        private int jornada_pre;
+        private float hextras_pre;
+        private float retencion_pre;
+        //
+
         public Nomina()
         {
             this.horas = 0;
             this.hextras = 0;
-            this.precio = 0;
             this.salarioExtra = 0;
             this.salarioBruto = 0;
             this.salarioNeto = 0;
-            this.retencion = 0;
+            this.impuestos = 0;
+
+            this.jornada_pre = 0;
+            this.hextras_pre = 0.0F;
+            this.precio = 0;
+            this.retencion_pre = 0.0F;
         }
 
 
-        public short Horas_pre
+        public int Horas_pre
         {
             get { return horas; }
             set {
@@ -43,7 +53,7 @@ namespace Nominas
             }
         }
 
-        public short HExtra_pre
+        public int HExtra_pre
         {
             get { return hextras; }
             set
@@ -59,21 +69,6 @@ namespace Nominas
             }
         }
 
-        public short Precio_pre
-        {
-            get { return precio; }
-            set
-            {
-                if (value >= 0)
-                {
-                    precio = value;
-                }
-                else
-                {
-                    throw new Exception("El precio no puede ser menor que 0");
-                }
-            }
-        }
 
         public float SalExtra_pre
         {
@@ -82,7 +77,7 @@ namespace Nominas
             {
                 if (value >= 0)
                 {
-                    salarioExtra = value;
+                    salarioExtra = Single.Parse(value.ToString());
                 }
                 else
                 {
@@ -98,7 +93,7 @@ namespace Nominas
             {
                 if (value >= 0)
                 {
-                    salarioBruto = value;
+                    salarioBruto = Single.Parse(value.ToString());
                 }
                 else
                 {
@@ -109,12 +104,12 @@ namespace Nominas
 
         public float SalRetencion_pre
         {
-            get { return retencion; }
+            get { return impuestos; }
             set
             {
                 if (value >= 0)
                 {
-                    retencion = value;
+                    impuestos = Single.Parse(value.ToString());
                 }
                 else
                 {
@@ -130,12 +125,80 @@ namespace Nominas
             {
                 if (value >= 0)
                 {
-                    salarioNeto = value;
+                    salarioNeto = Single.Parse(value.ToString());
                 }
                 else
                 {
                     throw new Exception("El salario neto no puede ser menor que 0");
                 }
+            }
+        }
+
+        public int JornadaPre {
+            get { return jornada_pre; }
+            set
+            {
+                if (value >= 0 && value <= 40)
+                {
+                    jornada_pre = Int32.Parse(value.ToString());
+                }
+                else
+                {
+                    throw new Exception("La jornada predeterminada no puede ser menor que 0 ni mayor que 40 horas.");
+                }
+
+            }
+
+        }
+
+        public float HextrasPre
+        {
+            get { return hextras_pre; }
+            set
+            {
+                if (value >= 0)
+                {
+                    hextras_pre = Single.Parse(value.ToString());
+                }
+                else
+                {
+                    throw new Exception("El valor de horas extras no puede ser menor que 0");
+                }
+
+            }
+
+        }
+
+        public float PrecioPre
+        {
+            get { return precio; }
+            set
+            {
+                if (value >= 0)
+                {
+                    precio = Single.Parse(value.ToString());
+                }
+                else
+                {
+                    throw new Exception("El precio no puede ser menor que 0");
+                }
+            }
+        }
+
+        public float RetencionPre
+        {
+            get { return retencion_pre; }
+            set
+            {
+                if (value >= 0)
+                {
+                    retencion_pre = Single.Parse(value.ToString());
+                }
+                else
+                {
+                    throw new Exception("El valor de la retención no puede ser menor que 0");
+                }
+
             }
         }
     }

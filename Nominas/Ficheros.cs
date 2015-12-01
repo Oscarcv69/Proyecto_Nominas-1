@@ -6,9 +6,11 @@ namespace Nominas
 {
     class Ficheros
     {
-        private static string ruta = @"..\\..\\..\\Nominas\\Nominas_empleados\\trabajador.xml";
-        private static string rutaConf = @"..\\..\\..\\Nominas\\Conf.xml";
-        #region FICHEROS XML - Francisco Romero
+        private static string rutaEMP = @"..\\..\\..\\Nominas\\Empleados\\trabajador.xml"; // RUTA POR DEFECTO DE LA BASE DE DATOS DE EMPLEADO
+        private static string rutaNOM = @"..\\..\\..\\Nominas\\Nominas\\"; // RUTA POR DEFECTO DE LAS NOMINAS DE LOS TRABAJADORES
+        private static string rutaConf = @"..\\..\\..\\Nominas\\Recursos\\Conf.xml"; // RUTA DEL ARCHIVO DE CONFIGURACIÓN
+
+        #region FICHEROS XML EMPLEADOS - Francisco Romero
         // CREAR TRABAJADORES
         public static void GuardarTrabajadores(Trabajador[] trb)
         {
@@ -21,7 +23,7 @@ namespace Nominas
                 {
                     for (int i = 0; i < trb.Length; i++)
                     {
-                        doc.Load(ruta);
+                        doc.Load(rutaEMP);
                         XmlNode root = doc.DocumentElement;
                         XmlElement nodo = doc.CreateElement("Trabajador");
                         root.AppendChild(nodo);
@@ -37,7 +39,7 @@ namespace Nominas
                         XmlElement apellidos = doc.CreateElement("Apellidos");
                         apellidos.AppendChild(doc.CreateTextNode(Encriptacion.Encriptar(trb[i].apellidos_pre)));
                         nodo.AppendChild(apellidos);
-                        doc.Save(ruta);
+                        doc.Save(rutaEMP);
                         salir = true;
                     }
                 }
@@ -58,7 +60,7 @@ namespace Nominas
             XmlDocument doc = new XmlDocument();
             try
             {
-                doc.Load(ruta);
+                doc.Load(rutaEMP);
 
                 XmlNodeList listaEmpleados = doc.SelectNodes("Plantilla/Trabajador");
                 XmlNode unEmpleado;
@@ -95,16 +97,16 @@ namespace Nominas
         public static void Format() // FORMATEA EL ARCHIVO XML ANTES DE INGRESAR LOS DATOS DE LOS TRABAJADORES
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(ruta);
+            doc.Load(rutaEMP);
             XmlNode root = doc.DocumentElement;
             root.RemoveAll();
-            doc.Save(ruta);
+            doc.Save(rutaEMP);
         }
 
-        public static void ExistOrEmpty()
+        public static void ExistOrEmptyEMP() // COMPRUEBA SI EXISTE LA BASE DE DATOS DE TRABAJADOR O ESTÁ VACIA. SI ES ASÍ, CREA UNO POR DEFECTO.
         {
             XmlDocument doc = new XmlDocument();
-            if (!File.Exists(ruta) || new FileInfo(ruta).Length == 0)
+            if (!File.Exists(rutaEMP) || new FileInfo(rutaEMP).Length == 0)
             {
                 XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
                 XmlElement root = doc.DocumentElement;
@@ -112,10 +114,161 @@ namespace Nominas
 
                 XmlElement element1 = doc.CreateElement(string.Empty, "Plantilla", string.Empty);
                 doc.AppendChild(element1);
-                doc.Save(ruta);
+                doc.Save(rutaEMP);
+            }
+        }
+        #endregion FIN XML EMPLEADOS
+
+
+        #region FICHEROS XML NOMINAS - Francisco Romero
+
+        public static void GuardarNomina()
+        {
+
+        }
+
+        public static string BuscarNombre(string dni)
+        {
+            FileInfo[] archivos = null;
+            string name = null;
+            string result = null;
+
+
+            DirectoryInfo d = new DirectoryInfo(rutaNOM);
+            archivos = d.GetFiles("*.xml");
+
+            if (archivos != null)
+            {
+                foreach (FileInfo file in archivos)
+                {
+                    name = Path.GetFileNameWithoutExtension(file.Name);
+                    if (dni.Equals(name))
+                    {
+                        result = rutaNOM + "\\" + name + ".xml";
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static Nomina[] GetNomina(string dni)
+        {
+            string ruta = null;
+            int horas = 0, hextras = 0;
+            float salarioExtra = 0, salarioBruto = 0, salarioNeto = 0, impuestos = 0;
+            int jornadapre = 0;
+            float hextraspre = 0, retencionespre = 0, preciopre = 0;
+
+            ruta = BuscarNombre(dni);
+            Nomina Nom = null;
+            Nomina[] ArraySemanas = null;
+            XmlDocument doc = new XmlDocument();
+
+            try
+            {
+                doc.Load(ruta);
+                XmlNodeList ListaSemanas = doc.SelectNodes("NOMINA/SEMANA");
+                XmlNode UnaSemana = null;
+
+                ArraySemanas = new Nomina[ListaSemanas.Count];
+                for (int i = 0; i < ListaSemanas.Count; i++)
+                {
+                    Nom = new Nomina();
+                    UnaSemana = ListaSemanas.Item(i);
+
+                    horas = Int32.Parse(UnaSemana.SelectSingleNode("Horas_Totales").InnerText);
+                    Nom.Horas_pre = horas;
+                    hextras = Int32.Parse(UnaSemana.SelectSingleNode("Horas_Extras").InnerText);
+                    Nom.HExtra_pre = hextras;
+                    salarioExtra = Single.Parse(UnaSemana.SelectSingleNode("Salario_Extra").InnerText);
+                    Nom.SalExtra_pre = salarioExtra;
+                    salarioBruto = Single.Parse(UnaSemana.SelectSingleNode("Salario_Bruto").InnerText);
+                    Nom.SalBruto_pre = salarioBruto;
+                    salarioNeto = Int32.Parse(UnaSemana.SelectSingleNode("Salario_Neto").InnerText);
+                    Nom.SalNeto_pre = salarioNeto;
+                    impuestos = Int32.Parse(UnaSemana.SelectSingleNode("Impuestos").InnerText); // RESULTADO DE LA OPERACION (SALARIO BRUTO * RETENCION)
+                    Nom.SalRetencion_pre = impuestos;
+
+                    // Valores predeterminados CONF
+                    jornadapre = Int32.Parse(UnaSemana.SelectSingleNode("Jornada_Pre").InnerText);
+                    Nom.JornadaPre = jornadapre;
+                    hextraspre = Single.Parse(UnaSemana.SelectSingleNode("ValHExtras_Pre").InnerText);
+                    Nom.HextrasPre = hextraspre;
+                    preciopre = Single.Parse(UnaSemana.SelectSingleNode("ValPrecio_Hora_Pre").InnerText);
+                    Nom.PrecioPre = preciopre;
+                    retencionespre = Single.Parse(UnaSemana.SelectSingleNode("ValRetencion_Pre").InnerText);
+                    Nom.RetencionPre = retencionespre;
+                    //
+
+                    ArraySemanas[i] = Nom;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                throw new Exception("Archivo no encontrado");
+            }
+            catch (ArgumentException)
+            {
+                throw new Exception("El archivo al que trata de acceder esta vacio. Por favor inserte minimo un trabajador.");
+            }
+            catch (XmlException)
+            {
+                throw new Exception("No se ha podido abrir el archivo, revise el contenido.");
+            }
+            return ArraySemanas;
+
+        }
+
+        public static void ExistOrEmptyNOM(string dni) // COMPRUEBA SI 
+        {
+            FileInfo[] archivos = null;
+            bool flag = false;
+
+            DirectoryInfo d = new DirectoryInfo(rutaNOM);
+            archivos = d.GetFiles("*.xml");
+
+            if (archivos != null)
+            {
+                foreach (FileInfo file in archivos)
+                {
+                    if (dni.Equals(Path.GetFileNameWithoutExtension(file.Name)))
+                    {
+                        flag = true;
+                    }
+                }
+            }
+
+            if (flag == false)
+            {
+                XmlDocument doc = new XmlDocument();
+                if (!File.Exists(rutaNOM) || new FileInfo(rutaEMP).Length == 0)
+                {
+                    XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+                    XmlElement root = doc.DocumentElement;
+                    doc.InsertBefore(xmlDeclaration, root);
+
+                    XmlElement element1 = doc.CreateElement(string.Empty, "NOMINA", string.Empty);
+                    doc.AppendChild(element1);
+                    for (int i = 0; i <= 5; i++)
+                    {
+
+                        XmlElement element2 = doc.CreateElement(string.Empty, "SEMANA", string.Empty);
+                        element1.AppendChild(element2);
+
+                        XmlAttribute numero = doc.CreateAttribute("ID"); // ID ES EL NÚMERO DE SEMANA
+                        numero.Value = (i + 1).ToString();
+                        element2.Attributes.Append(numero);
+                    }
+                    doc.Save(rutaNOM + dni + ".xml");
+                }
             }
         }
 
+        #endregion
+
+
+        #region ARCHIVO DE CONFIGURACIÓN
         public static void setConfig()
         {
             XmlDocument doc = new XmlDocument();
@@ -124,21 +277,22 @@ namespace Nominas
                 XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
                 XmlElement root = doc.DocumentElement;
                 doc.InsertBefore(xmlDeclaration, root);
-                XmlElement nodo = doc.CreateElement("Configuracion");
-                root.AppendChild(nodo);
+
+                XmlElement element1 = doc.CreateElement(string.Empty, "Plantilla", string.Empty);
+                doc.AppendChild(element1);
 
                 XmlElement jornada = doc.CreateElement("Jornada");
                 jornada.AppendChild(doc.CreateTextNode("40"));
-                nodo.AppendChild(jornada);
+                element1.AppendChild(jornada);
 
                 XmlElement Hextras = doc.CreateElement("Horas_Extras");
                 Hextras.AppendChild(doc.CreateTextNode("1,5"));
-                nodo.AppendChild(Hextras);
+                element1.AppendChild(Hextras);
 
                 XmlElement retencion = doc.CreateElement("Retencion");
                 retencion.AppendChild(doc.CreateTextNode("0,16"));
-                nodo.AppendChild(retencion);
-                doc.Save(ruta);
+                element1.AppendChild(retencion);
+                doc.Save(rutaConf);
             }
         }
 
@@ -169,11 +323,11 @@ namespace Nominas
             }
 
         }
-        #endregion FIN XML - Francisco Romero
+        #endregion FIN ARCHIVO CONFIGURACIÓN
 
         #region FICHEROS TXT - Francisco Romero
         // CREAR TXT
-        public static void CrearTxtNomina(string cadena)
+        public static void CerrarNomina(string cadena)
         {
             bool salir = false;
             string fic = @"..\\..\\..\\Nominas\\Nominas_empleados\\nomina_empleado.txt";
@@ -204,10 +358,6 @@ namespace Nominas
             {
                 throw new Exception("Fallo al cargar el archivo.");
             }
-        }
-        public static void getNomina(string dni)
-        {
-            
         }
         // FIN CREAR TXT
         #endregion FIN TXT

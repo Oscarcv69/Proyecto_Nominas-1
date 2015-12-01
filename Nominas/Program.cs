@@ -9,7 +9,7 @@ namespace Nominas
             #region Ejecutar Menu Principal
             byte opcion = 0;
             bool salir = false;
-            
+            Ficheros.ExistOrEmptyEMP();
             do
             {
                 opcion = Interfaz.MenuPrincipal();
@@ -18,11 +18,11 @@ namespace Nominas
                 {
                     // Ver trabajadores
                     case 1:
-                        Ficheros.ExistOrEmpty();
                         Interfaz.OperacionesEmpleado();
                         break;
                     case 2:
                         Ficheros.setConfig();
+                        Interfaz.OperacionesNomina();
                         break;
                     case 3:
                         salir = true;
