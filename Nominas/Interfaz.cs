@@ -261,6 +261,9 @@ namespace Nominas
                         }
                     } else
                     {
+                        Console.Write("\t\t Introduzca DNI (12345678A): ");
+                        Console.WriteLine("{0}", trabajador.dni_pre);
+                    
                         correcto = true;
                     }
                 } while (!correcto);
@@ -316,7 +319,7 @@ namespace Nominas
                 else
                 {
                     Console.WriteLine("{0}", trabajador.apellidos_pre);    // Apellidos válidos
-
+              
                 }
 
             } while (!correcto);
@@ -328,15 +331,45 @@ namespace Nominas
 
         public static string PlantillaPedirDni()
         {
-            string dni = null;
+            string dni = null, mensaje = null, mensaje2 =null;
             bool salir = false;
+            bool existe = false;
+            Trabajador trabajador = new Trabajador();
             do
             {
-                Interfaz.Header();
-                Console.WriteLine("\t\tA continuacion, introduce el DNI del empleado.");
-                Console.Write("\n\t\t\tIntroduce el DNI: ");
-                dni = Console.ReadLine();
-                salir = true;
+                try {
+                    Interfaz.Header();
+                    Console.WriteLine("\t\tA continuacion, introduce el DNI del empleado.");
+                    Console.Write("\n\t\t\tIntroduce el DNI: ");
+                    dni = Console.ReadLine();
+                    trabajador.dni_pre = dni; //COMPROBAR DNI PARA VER SI ES REAL 
+                    trabajador = null; //VACIAR OBJETO TRABAJADOR PARA AHORRAR MEMORIA
+                    existe = Gestion_Empleado.ComprobarDni(dni);
+                    if(existe == true)
+                    {
+                        salir = true;
+                    }
+                    else
+                    {
+                        
+                        salir = false;
+                        mensaje = "DNI Válido, pero no está en la base de datos";
+                        mensaje2 = "Pulse Enter para Continuar";
+                        Error(mensaje);
+                        Continuar(mensaje2);
+
+                    }
+                }
+                catch
+                {
+                  
+                    salir = false;
+                    mensaje = "DNI Válido, pero no está en la base de datos";
+                    mensaje2 = "Pulse Enter para Continuar";
+                    Error(mensaje);
+                    Continuar(mensaje2);
+
+                }
             } while (!salir);
             return dni;
         }
@@ -350,8 +383,8 @@ namespace Nominas
                 eleccion = Console.ReadLine();
                 if (eleccion.Equals("s"))
                 {
-                    salir = true;
-                    salida = false;
+                    salir = false;
+                    salida = true;
                 }
                 else if (eleccion.Equals("n"))
                 {
