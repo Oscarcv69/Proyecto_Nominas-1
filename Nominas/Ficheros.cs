@@ -122,73 +122,74 @@ namespace Nominas
 
         #region FICHEROS XML NOMINAS - Francisco Romero
 
-        public static void GuardarNominaTemporal(Nomina[] nomina)
+        public static void GuardarNominaTemporal(ref Nomina[] nomina)
         {
             XmlDocument doc = new XmlDocument();
             bool salir = false;
-            FormatNomina(); // FORMATEA EL ARCHIVO
+            FormatNomina();
             do
             {
-                if (nomina.Length != 0)
+                for (int i = 0; i < nomina.Length; i++)
                 {
-                    for (int i = 0; i < nomina.Length; i++)
+                    if (nomina[i] != null)
                     {
-                        doc.Load(rutaEMP);
+                        doc.Load(rutaNOM + "\\" + dni_glo + ".xml");
                         XmlNode root = doc.DocumentElement;
-                        XmlElement nodo = doc.CreateElement("Trabajador");
-                        root.AppendChild(nodo);
+
+                        XmlElement SEMANA = doc.CreateElement("Semana");
+                        root.AppendChild(SEMANA);
 
                         XmlAttribute ID = doc.CreateAttribute("ID");
                         ID.Value = nomina[i].ID_pre.ToString();
-                        nodo.Attributes.Append(ID);
+                        SEMANA.Attributes.Append(ID);
 
-                        XmlAttribute horas = doc.CreateAttribute("Horas_Totales");
-                        horas.Value = nomina[i].Horas_pre.ToString();
-                        nodo.Attributes.Append(horas);
+                        XmlElement horas = doc.CreateElement("Horas_Totales");
+                        horas.AppendChild(doc.CreateTextNode(nomina[i].Horas_pre.ToString()));
+                        SEMANA.AppendChild(horas);
 
-                        XmlAttribute hextras = doc.CreateAttribute("Horas_Extras");
-                        hextras.Value = nomina[i].HExtra_pre.ToString();
-                        nodo.Attributes.Append(hextras);
+                        XmlElement hextras = doc.CreateElement("Horas_Extras");
+                        hextras.AppendChild(doc.CreateTextNode(nomina[i].HExtra_pre.ToString()));
+                        SEMANA.AppendChild(hextras);
 
-                        XmlAttribute SalExtra = doc.CreateAttribute("Salario_Extra");
-                        SalExtra.Value = nomina[i].SalExtra_pre.ToString();
-                        nodo.Attributes.Append(SalExtra);
+                        XmlElement SalExtra = doc.CreateElement("Salario_Extra");
+                        SalExtra.AppendChild(doc.CreateTextNode(nomina[i].SalExtra_pre.ToString()));
+                        SEMANA.AppendChild(SalExtra);
 
-                        XmlAttribute SalBruto = doc.CreateAttribute("Salario_Bruto");
-                        SalBruto.Value = nomina[i].SalBruto_pre.ToString();
-                        nodo.Attributes.Append(SalBruto);
+                        XmlElement SalBruto = doc.CreateElement("Salario_Bruto");
+                        SalBruto.AppendChild(doc.CreateTextNode(nomina[i].SalBruto_pre.ToString()));
+                        SEMANA.AppendChild(SalBruto);
 
-                        XmlAttribute Salneto = doc.CreateAttribute("Salario_Neto");
-                        Salneto.Value = nomina[i].SalNeto_pre.ToString();
-                        nodo.Attributes.Append(Salneto);
+                        XmlElement Salneto = doc.CreateElement("Salario_Neto");
+                        Salneto.AppendChild(doc.CreateTextNode(nomina[i].SalNeto_pre.ToString()));
+                        SEMANA.AppendChild(Salneto);
 
-                        XmlAttribute impuestos = doc.CreateAttribute("Impuestos");
-                        impuestos.Value = nomina[i].SalRetencion_pre.ToString();
-                        nodo.Attributes.Append(ID);
+                        XmlElement impuestos = doc.CreateElement("Impuestos");
+                        impuestos.AppendChild(doc.CreateTextNode(nomina[i].SalRetencion_pre.ToString()));
+                        SEMANA.AppendChild(impuestos);
 
-                        XmlAttribute Jorpre = doc.CreateAttribute("Jornada_Pre");
-                        Jorpre.Value = nomina[i].JornadaPre.ToString();
-                        nodo.Attributes.Append(ID);
+                        XmlElement Jorpre = doc.CreateElement("Jornada_Pre");
+                        Jorpre.AppendChild(doc.CreateTextNode(nomina[i].JornadaPre.ToString()));
+                        SEMANA.AppendChild(Jorpre);
 
-                        XmlAttribute ValHExtrasPre = doc.CreateAttribute("ValHExtras_Pre");
-                        ValHExtrasPre.Value = nomina[i].HextrasPre.ToString();
-                        nodo.Attributes.Append(ValHExtrasPre);
+                        XmlElement ValHExtrasPre = doc.CreateElement("ValHExtras_Pre");
+                        ValHExtrasPre.AppendChild(doc.CreateTextNode(nomina[i].HextrasPre.ToString()));
+                        SEMANA.AppendChild(ValHExtrasPre);
 
-                        XmlAttribute ValPHora = doc.CreateAttribute("ValPrecio_Hora_Pre");
-                        ValPHora.Value = nomina[i].PrecioPre.ToString();
-                        nodo.Attributes.Append(ValPHora);
+                        XmlElement ValPHora = doc.CreateElement("ValPrecio_Hora_Pre");
+                        ValPHora.AppendChild(doc.CreateTextNode(nomina[i].PrecioPre.ToString()));
+                        SEMANA.AppendChild(ValPHora);
 
-                        XmlAttribute ValRet = doc.CreateAttribute("ValRetencion_Pre");
-                        ValRet.Value = nomina[i].RetencionPre.ToString();
-                        nodo.Attributes.Append(ValRet);
+                        XmlElement ValRet = doc.CreateElement("ValRetencion_Pre");
+                        ValRet.AppendChild(doc.CreateTextNode(nomina[i].RetencionPre.ToString()));
+                        SEMANA.AppendChild(ValRet);
 
-                        doc.Save(rutaNOM+ "\\" + dni_glo + ".xml");
+                        doc.Save(rutaNOM + "\\" + dni_glo + ".xml");
                         salir = true;
                     }
-                }
-                else
-                {
-                    salir = true;
+                    else
+                    {
+                        salir = true;
+                    }
                 }
             } while (!salir);
         }
@@ -196,7 +197,7 @@ namespace Nominas
         public static void FormatNomina()
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(rutaNOM+"\\"+dni_glo+".xml");
+            doc.Load(rutaNOM + "\\" + dni_glo + ".xml");
             XmlNode root = doc.DocumentElement;
             root.RemoveAll();
             doc.Save(rutaNOM + "\\" + dni_glo + ".xml");
@@ -243,7 +244,7 @@ namespace Nominas
             try
             {
                 doc.Load(ruta);
-                XmlNodeList ListaSemanas = doc.SelectNodes("NOMINA/SEMANA");
+                XmlNodeList ListaSemanas = doc.SelectNodes("Nomina/Semana");
                 XmlNode UnaSemana = null;
 
                 ArraySemanas = new Nomina[ListaSemanas.Count];

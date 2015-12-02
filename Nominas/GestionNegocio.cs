@@ -66,8 +66,8 @@ namespace Nominas
                 case 1:
                     Gestion_Nomina.CargaNomina(ref Nomina);
                     semana = Interfaz.PedirSemana(Nomina);
-                    Gestion_Nomina.Grabar(ref Nomina, semana);
-                    Ficheros.GuardarNominaTemporal(Nomina);
+                    Gestion_Nomina.Grabar(ref Nomina, ref semana);
+                    Ficheros.GuardarNominaTemporal(ref Nomina);
                     break;
                 //Modificar Nóminas
                 case 2:

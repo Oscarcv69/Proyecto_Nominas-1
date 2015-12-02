@@ -160,7 +160,6 @@ namespace Nominas
                 Nomina[i].SalRetencion_pre = CalculoRetenciones(bruto, retenciones);
                 Nomina[i].SalNeto_pre = CalculoSalarioNeto(bruto, retenciones);
             }
-
         }
         //Calculo de los totales de nomina
         internal static float CalculaTotal(Nomina[] Nomina, int v)
@@ -209,7 +208,7 @@ namespace Nominas
         }
 
         //Método de creación de semanas
-        public static void Grabar(ref Nomina[] Nomina, Nomina semana)
+        public static void Grabar(ref Nomina[] Nomina, ref Nomina semana)
         {
             String cadena = null;
 
@@ -223,11 +222,11 @@ namespace Nominas
             {
                 nomcop = new Nomina[Nomina.Length];
                 Nomina.CopyTo(nomcop, 0);
-                Nomina = new Nomina[semana.ID_pre - 1];
+                Nomina = new Nomina[semana.ID_pre + 1];
                 nomcop.CopyTo(Nomina, 0);
                 nomcop = null;
             }
-            Nomina[semana.ID_pre - 1] = semana;
+            Nomina[semana.ID_pre -1] = semana;
 
             // SALIDA
             cadena += "\n\n\t Se ha añadido la semana " + semana.ID_pre;
@@ -239,15 +238,14 @@ namespace Nominas
         public static bool ExisteNomina(ref Nomina[] Nomina, int semana)
         {
             bool existe = false;
-            if (Nomina==null)
+            if (Nomina.Length == 0)
             {
                 Nomina = new Nomina[semana];
                 existe = false;
-
             }
             else if (Nomina.Length < semana)
             {
-                existe = true;
+                existe = false;
             }
             else if (Nomina[semana - 1] != null)
             {
@@ -256,6 +254,22 @@ namespace Nominas
             return existe;
         }
 
+        public static bool LimiteSemanas(Nomina[] Nomina) // COMPRUEBA SI LAS 6 SEMANAS HAN SIDO RELLENADAS
+        {
+            bool limite = true;
+            if (Nomina.Length == 6)
+            {
+                for (int i = 0; i < Nomina.Length; i++)
+                {
+                    if (Nomina[i] == null)
+                    {
+                        limite = false;
+                        return limite;
+                    }
+                }
+            }
+            return limite;
+        }
         //Método de modificacion de nómina semanal
         public static void CambiaSemana(ref Nomina[] Nomina)
         {
@@ -279,7 +293,6 @@ namespace Nominas
                 Interfaz.Continuar(cadena);
 
             }
-
         }
 
         //Método de eliminación de nómina

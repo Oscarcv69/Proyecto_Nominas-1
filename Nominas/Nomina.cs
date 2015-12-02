@@ -40,7 +40,7 @@ namespace Nominas {
         public int ID_pre {
             get { return ID; }
             set {
-                if(value < 1 || value >= 6) {
+                if(value < 1 || value >= 7) {
                     throw new Exception("El mes no puede tener menos de una semana o más de seis");
                 }
 
