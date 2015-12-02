@@ -262,6 +262,8 @@ namespace Nominas
                     }
                     else
                     {
+                        Console.Write("\t\t Introduzca DNI (12345678A): ");
+                        Console.WriteLine("{0}", trabajador.dni_pre);              
                         correcto = true;
                     }
                 } while (!correcto);
@@ -329,15 +331,45 @@ namespace Nominas
 
         public static string PlantillaPedirDni()
         {
-            string dni = null;
+            string dni = null, mensaje = null, mensaje2 =null;
             bool salir = false;
+            bool existe = false;
+            Trabajador trabajador = new Trabajador();
             do
             {
+                try {
                 Interfaz.Header();
                 Console.WriteLine("\t\tA continuacion, introduce el DNI del empleado.");
                 Console.Write("\n\t\t\tIntroduce el DNI: ");
                 dni = Console.ReadLine();
+                    trabajador.dni_pre = dni; //COMPROBAR DNI PARA VER SI ES REAL 
+                    trabajador = null; //VACIAR OBJETO TRABAJADOR PARA AHORRAR MEMORIA
+                    existe = Gestion_Empleado.ComprobarDni(dni);
+                    if(existe == true)
+                    {
                 salir = true;
+                    }
+                    else
+                    {
+                        
+                        salir = false;
+                        mensaje = "DNI Válido, pero no está en la base de datos";
+                        mensaje2 = "Pulse Enter para Continuar";
+                        Error(mensaje);
+                        Continuar(mensaje2);
+
+                    }
+                }
+                catch
+                {
+                  
+                    salir = false;
+                    mensaje = "DNI Válido, pero no está en la base de datos";
+                    mensaje2 = "Pulse Enter para Continuar";
+                    Error(mensaje);
+                    Continuar(mensaje2);
+
+                }
             } while (!salir);
             return dni;
         }
@@ -351,8 +383,8 @@ namespace Nominas
                 eleccion = Console.ReadLine();
                 if (eleccion.Equals("s"))
                 {
-                    salir = true;
-                    salida = false;
+                    salir = false;
+                    salida = true;
                 }
                 else if (eleccion.Equals("n"))
                 {
@@ -467,7 +499,6 @@ namespace Nominas
             do
             {
                 dni = Interfaz.PlantillaPedirDni(); // PIDE EL DNI
-
                 if (Gestion_Empleado.ComprobarDni(dni))
                 {
                     Ficheros.ExistOrEmptyNOM(dni);
@@ -556,31 +587,26 @@ namespace Nominas
             int jornada = 0;
             float retencion = 0.0F;
             float valorHExtra = 0.0F;
-            bool correcto = false;
 
             Nomina nomtemp = new Nomina();
 
-            do {
-                Header();
-                Console.Write("\n\t\tPor favor, introduzca la semana que quiere añadir" + 
-                               "\n\t\tSemana:");
+
+            Console.WriteLine("Por favor, introduzca la semana que quiere añadir");
                 semana = Convert.ToInt32(Console.ReadLine());
                 if (Gestion_Nomina.ExisteNomina(ref nominas, semana))
                 {
                     Error("La semana que está intentando crear ya existe. por favor, introduzca otra semana");
                     Continuar("Pulsa una tecla para continuar...");
                     correcto = false;
-                    //
                 }
                 else
                 {
 
                     nomtemp.ID_pre = semana;
-                    Console.Write("\t\tPor favor, introduzca el número de horas trabajadas" +
-                               "\n\t\tHoras:");
+
+                Console.WriteLine("Por favor, introduzca el número de horas trabajadas");
                     horas = Int32.Parse(Console.ReadLine());
-                    Console.Write("\t\tPor favor, introduzca el precio por hora trabajada" +
-                               "\n\t\tPrecio:");
+                Console.WriteLine("Por favor, introduzca el precio por hora trabajada");
                     precio = Int32.Parse(Console.ReadLine());
                     nomtemp.Horas_pre = horas;
                     nomtemp.PrecioPre = precio;
@@ -588,9 +614,7 @@ namespace Nominas
                     nomtemp.JornadaPre = jornada;
                     nomtemp.HextrasPre = valorHExtra;
                     nomtemp.RetencionPre = retencion;
-                    correcto = true;
                 }
-            }while (!correcto) ;
             return nomtemp;
         }
 
