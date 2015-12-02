@@ -46,6 +46,7 @@ namespace Nominas
             Trabajador[] copia = null;
             bool salida = false;
             string mensaje = null;
+            string mensaje2 = null;
             bool existe = false;
 
             // Entrada de Datos
@@ -73,7 +74,8 @@ namespace Nominas
                         listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp;
 
                         mensaje = "Trabajador registrado correctamente";
-                        mensaje = mensaje + "\n\t\tDesea registrar otro Trabajador (s/n): ";
+                        mensaje2 = "Desea registrar otro Trabajador (s/n): ";
+                        Interfaz.Pregunta(ref mensaje2, ref salida);
                         salida = Interfaz.Continuar(mensaje) ? false : true;
                     }
 
