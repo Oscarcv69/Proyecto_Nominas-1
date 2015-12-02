@@ -556,12 +556,12 @@ namespace Nominas
             float retencion = 0.0F;
             float valorHExtra = 0.0F;
 
-            Nomina nomtemp = null;
+            Nomina nomtemp = new Nomina();
 
 
             Console.WriteLine("Por favor, introduzca la semana que quiere añadir");
             semana = Convert.ToInt32(Console.ReadLine());
-            if (Gestion_Nomina.ExisteNomina(nominas, semana))
+            if (Gestion_Nomina.ExisteNomina(ref nominas, semana))
             {
                 throw new Exception("La semana que está intentando crear ya existe. por favor, introduzca otra semana");
             }
