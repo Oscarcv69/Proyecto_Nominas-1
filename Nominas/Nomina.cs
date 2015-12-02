@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Nominas {
     //Comentario
     class Nomina {
+        private int ID;
         private int horas;
         private int hextras;
         private float precio;
@@ -23,6 +24,7 @@ namespace Nominas {
         //
 
         public Nomina() {
+            this.ID = 1;
             this.horas = 0;
             this.hextras = 0;
             this.salarioExtra = 0;
@@ -36,11 +38,34 @@ namespace Nominas {
             this.retencion_pre = 0.0F;
         }
         private Regex regexfloat = new Regex(@"^[0-9]*(?:\.[0-9]*)?$"); // regex float.
-        Regex regex = new Regex("`[0-9]*$"); // regex only numbers
+        Regex regex = new Regex("^[0-9]*$"); // regex only numbers
 
 
+        public int ID_pre
+        {
+            get { return ID; }
+            set
+            {
+                if (value < 1 || value >= 6)
+                {
+                    throw new Exception("El mes no puede tener menos de una semana o más de seis");
+                }
 
-        public int Horas_pre {
+                else if (!regex.IsMatch(ID.ToString()))
+                {
+
+                    throw new Exception("Introduce sólo valores numéricos");
+
+                }
+                else
+                {
+                    ID = value;
+                }
+            }
+        }
+
+
+            public int Horas_pre {
             get { return horas; }
             set {
                 if(value >= 0) {

@@ -64,8 +64,10 @@ namespace Nominas
                     break;
                 //Introducir nóminas
                 case 1:
-                    semana = Interfaz.PedirSemana();
-                    Gestion_Nomina.NuevaSemana(ref Nomina, semana);
+                    Gestion_Nomina.CargaNomina(ref Nomina);
+                    //semana = Interfaz.PedirSemana();
+                    // Gestion_Nomina.NuevaSemana(ref Nomina, semana);
+                    Console.ReadLine();
                     break;
                 //Modificar Nóminas
                 case 2:

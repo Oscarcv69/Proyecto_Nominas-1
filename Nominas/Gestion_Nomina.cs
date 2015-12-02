@@ -8,8 +8,8 @@ namespace Nominas
 {
     class Gestion_Nomina
     {
-      
-        //TODO: Cargar ajustes por dfecto
+
+        //TODO: Cargar ajustes por defecto
         private static int horas = 0; //Total de horas trabajadas en la semana (se almacena en el temporal)
         private static int extra = 0; //Horas extra trabajadas en la semana (se almacena en el temporal)
         private static float precio = 0; //Precio de la hora trabajada (se almacena en el temporal)
@@ -24,11 +24,11 @@ namespace Nominas
 
         #region GESTION NOMINAS - ANTONIO
 
-       
+
         //Métodos para el cálculo de la nómina
 
-            //Inicialización de nóminas
-            public static void InicializaNomina(ref Nomina nomina)
+        //Inicialización de nóminas
+        public static void InicializaNomina(ref Nomina nomina)
         {
             Ficheros.getConfig(ref jornada, ref horasExtra, ref retenciones);
             horas = nomina.Horas_pre;
@@ -39,6 +39,29 @@ namespace Nominas
             neto = nomina.SalNeto_pre;
         }
         //Fichero temporal lleva las horas por semana
+        public static void CargaNomina(ref Nomina[] Nomina)
+        {
+            Nomina[] nominatemp = null;
+            int max = 0;
+            for (int i = 0; i < Nomina.Length; i++)
+            {
+                if (Nomina[i] != null && max < Nomina[i].ID_pre)
+                {
+                    max = Nomina[i].ID_pre;
+                }
+
+            }
+            nominatemp = new Nomina[max];
+            for (int i = 0; i < Nomina.Length; i++)
+            {
+                nominatemp[(Nomina[i].ID_pre) - 1] = Nomina[i];
+            }
+            Nomina = null;
+            Nomina = new Nomina[nominatemp.Length];
+            Nomina = nominatemp;
+            nominatemp = null;
+            Console.WriteLine(Nomina.ToString());
+        }
 
         //Cálculo de las horas extra
         private static int CalculoExtra(int hora, int jornada)
@@ -267,7 +290,7 @@ namespace Nominas
             }
 
         }
-        
+
         //Método de eliminación de nómina
         public static void eliminarNomina(ref Nomina[] Nomina, byte semana)
         {
@@ -314,7 +337,7 @@ namespace Nominas
                             copiaNomina = null;
                             cadena = "\n\t Semana eliminada con éxito\n";
                         }
-                       
+
                         break;
                     case 2:
                         //Borrar toda la nómina
@@ -340,8 +363,8 @@ namespace Nominas
             //Eliminar fichero - Llamar metodos de Fran
         }//TERMINAR
 
-        
+
         #endregion
-        
+
     }
 }
