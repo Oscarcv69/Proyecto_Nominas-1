@@ -570,6 +570,7 @@ namespace Nominas
                     Error("La semana que está intentando crear ya existe. por favor, introduzca otra semana");
                     Continuar("Pulsa una tecla para continuar...");
                     correcto = false;
+                    //
                 }
                 else
                 {
