@@ -70,7 +70,7 @@ namespace Nominas
                 }
                 else
                 {
-                    throw new Exception("El nombre introducido no es correcto");
+                    throw new Exception("El apellido introducido no tiene el formato correcto");
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace Nominas
                 }
                 else
                 {
-                    throw new Exception("El apellido introducido no es correcto");
+                    throw new Exception("El apellido introducido no tiene el formato correcto");
                 }
             }
         }
