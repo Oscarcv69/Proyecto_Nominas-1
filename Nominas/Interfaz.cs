@@ -545,9 +545,10 @@ namespace Nominas
         }
 
         //Pide los datos de la semana
-        internal static byte PedirSemana()//TODO: DESARROLLAR
+        internal static Nomina PedirSemana(Nomina[] nominas)//TODO: DESARROLLAR
         {
-            throw new NotImplementedException();
+            Nomina nom = null;
+            return nom;
         }
 
         //Interfaz del método de modificar nómina
