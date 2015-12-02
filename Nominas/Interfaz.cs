@@ -587,11 +587,15 @@ namespace Nominas
             int jornada = 0;
             float retencion = 0.0F;
             float valorHExtra = 0.0F;
+            bool correcto = false;
 
             Nomina nomtemp = new Nomina();
 
-
-            Console.WriteLine("Por favor, introduzca la semana que quiere añadir");
+            do
+            {
+                Header();
+                Console.Write("\n\t\tPor favor, introduzca la semana que quiere añadir" +
+                               "\n\t\tSemana:");
                 semana = Convert.ToInt32(Console.ReadLine());
                 if (Gestion_Nomina.ExisteNomina(ref nominas, semana))
                 {
@@ -603,10 +607,11 @@ namespace Nominas
                 {
 
                     nomtemp.ID_pre = semana;
-
-                Console.WriteLine("Por favor, introduzca el número de horas trabajadas");
+                    Console.Write("\t\tPor favor, introduzca el número de horas trabajadas" +
+                               "\n\t\tHoras:");
                     horas = Int32.Parse(Console.ReadLine());
-                Console.WriteLine("Por favor, introduzca el precio por hora trabajada");
+                    Console.Write("\t\tPor favor, introduzca el precio por hora trabajada" +
+                               "\n\t\tPrecio:");
                     precio = Int32.Parse(Console.ReadLine());
                     nomtemp.Horas_pre = horas;
                     nomtemp.PrecioPre = precio;
@@ -614,12 +619,14 @@ namespace Nominas
                     nomtemp.JornadaPre = jornada;
                     nomtemp.HextrasPre = valorHExtra;
                     nomtemp.RetencionPre = retencion;
+                    correcto = true;
                 }
+            } while (!correcto);
             return nomtemp;
         }
 
-    //Interfaz del método de modificar nómina
-    public static byte NominaModificar(Nomina nomina)//TODO: DESARROLLAR
+        //Interfaz del método de modificar nómina
+        public static byte NominaModificar(Nomina nomina)//TODO: DESARROLLAR
     {
         throw new NotImplementedException();
     }
