@@ -106,7 +106,6 @@
   <ItemGroup>
     <Folder Include="B.D_Empleados\" />
     <Folder Include="B.D_Nominas\" />
-    <Folder Include="Nominas_empleados\" />
     <Folder Include="Recursos\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
