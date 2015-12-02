@@ -68,9 +68,10 @@ namespace Nominas
                 {
                     nombre = value;
                 }
+                //EXEPCIÓN DE NOMBRE INTRODUCIDO INCORRECTO
                 else
                 {
-                    throw new Exception("El nombre introducido no es correcto");
+                    throw new Exception("El apellido introducido no tiene el formato correcto");
                 }
             }
         }
@@ -87,9 +88,10 @@ namespace Nominas
                 {
                     apellidos = value;
                 }
+                //EXCEPCIÓN EN EL APELLIDO
                 else
                 {
-                    throw new Exception("El apellido introducido no es correcto");
+                    throw new Exception("El apellido introducido no tiene el formato correcto");
                 }
             }
         }
