@@ -263,7 +263,8 @@ namespace Nominas
                     else
                     {
                         Console.Write("\t\t Introduzca DNI (12345678A): ");
-                        Console.WriteLine("{0}", trabajador.dni_pre);              
+                        Console.WriteLine("{0}", trabajador.dni_pre);
+                    
                         correcto = true;
                     }
                 } while (!correcto);
