@@ -6,8 +6,8 @@ namespace Nominas
 {
     class Ficheros
     {
-        private static string rutaEMP = @"..\\..\\..\\Nominas\\Empleados\\trabajador.xml"; // RUTA POR DEFECTO DE LA BASE DE DATOS DE EMPLEADO
-        private static string rutaNOM = @"..\\..\\..\\Nominas\\Nominas\\"; // RUTA POR DEFECTO DE LAS NOMINAS DE LOS TRABAJADORES
+        private static string rutaEMP = @"..\\..\\..\\Nominas\\B.D_Empleados\\trabajador.xml"; // RUTA POR DEFECTO DE LA BASE DE DATOS DE EMPLEADO
+        private static string rutaNOM = @"..\\..\\..\\Nominas\\B.D_Nominas\\"; // RUTA POR DEFECTO DE LAS NOMINAS DE LOS TRABAJADORES
         private static string rutaConf = @"..\\..\\..\\Nominas\\Recursos\\Conf.xml"; // RUTA DEL ARCHIVO DE CONFIGURACIÓN
 
         #region FICHEROS XML EMPLEADOS - Francisco Romero
@@ -122,9 +122,84 @@ namespace Nominas
 
         #region FICHEROS XML NOMINAS - Francisco Romero
 
-        public static void GuardarNominaTemporal()
+        public static void GuardarNominaTemporal(Nomina[] nomina)
         {
+            XmlDocument doc = new XmlDocument();
+            bool salir = false;
+            FormatNomina(); // FORMATEA EL ARCHIVO
+            do
+            {
+                if (nomina.Length != 0)
+                {
+                    for (int i = 0; i < nomina.Length; i++)
+                    {
+                        doc.Load(rutaEMP);
+                        XmlNode root = doc.DocumentElement;
+                        XmlElement nodo = doc.CreateElement("Trabajador");
+                        root.AppendChild(nodo);
 
+                        XmlAttribute ID = doc.CreateAttribute("ID");
+                        ID.Value = nomina[i].ID_pre.ToString();
+                        nodo.Attributes.Append(ID);
+
+                        XmlAttribute horas = doc.CreateAttribute("Horas_Totales");
+                        horas.Value = nomina[i].Horas_pre.ToString();
+                        nodo.Attributes.Append(horas);
+
+                        XmlAttribute hextras = doc.CreateAttribute("Horas_Extras");
+                        hextras.Value = nomina[i].HExtra_pre.ToString();
+                        nodo.Attributes.Append(hextras);
+
+                        XmlAttribute SalExtra = doc.CreateAttribute("Salario_Extra");
+                        SalExtra.Value = nomina[i].SalExtra_pre.ToString();
+                        nodo.Attributes.Append(SalExtra);
+
+                        XmlAttribute SalBruto = doc.CreateAttribute("Salario_Bruto");
+                        SalBruto.Value = nomina[i].SalBruto_pre.ToString();
+                        nodo.Attributes.Append(SalBruto);
+
+                        XmlAttribute Salneto = doc.CreateAttribute("Salario_Neto");
+                        Salneto.Value = nomina[i].SalNeto_pre.ToString();
+                        nodo.Attributes.Append(Salneto);
+
+                        XmlAttribute impuestos = doc.CreateAttribute("Impuestos");
+                        impuestos.Value = nomina[i].SalRetencion_pre.ToString();
+                        nodo.Attributes.Append(ID);
+
+                        XmlAttribute Jorpre = doc.CreateAttribute("Jornada_Pre");
+                        Jorpre.Value = nomina[i].JornadaPre.ToString();
+                        nodo.Attributes.Append(ID);
+
+                        XmlAttribute ValHExtrasPre = doc.CreateAttribute("ValHExtras_Pre");
+                        ValHExtrasPre.Value = nomina[i].HextrasPre.ToString();
+                        nodo.Attributes.Append(ValHExtrasPre);
+
+                        XmlAttribute ValPHora = doc.CreateAttribute("ValPrecio_Hora_Pre");
+                        ValPHora.Value = nomina[i].PrecioPre.ToString();
+                        nodo.Attributes.Append(ValPHora);
+
+                        XmlAttribute ValRet = doc.CreateAttribute("ValRetencion_Pre");
+                        ValRet.Value = nomina[i].RetencionPre.ToString();
+                        nodo.Attributes.Append(ValRet);
+
+                        doc.Save(rutaNOM);
+                        salir = true;
+                    }
+                }
+                else
+                {
+                    salir = true;
+                }
+            } while (!salir);
+        }
+
+        public static void FormatNomina()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(rutaNOM);
+            XmlNode root = doc.DocumentElement;
+            root.RemoveAll();
+            doc.Save(rutaNOM);
         }
 
         public static string BuscarNombre(string dni)
@@ -155,7 +230,7 @@ namespace Nominas
         public static Nomina[] GetNomina(string dni)
         {
             string ruta = null;
-            int horas = 0, hextras = 0;
+            int id = 0, horas = 0, hextras = 0;
             float salarioExtra = 0.0F, salarioBruto = 0.0F, salarioNeto = 0.0F, impuestos = 0.0F;
             int jornadapre = 0;
             float hextraspre = 0.0F, retencionespre = 0.0F, preciopre = 0.0F;
@@ -177,6 +252,8 @@ namespace Nominas
                     Nom = new Nomina();
                     UnaSemana = ListaSemanas.Item(i);
 
+                    id = Int32.Parse(UnaSemana.Attributes.GetNamedItem("ID").InnerText);
+                    Nom.ID_pre = id;
                     horas = Int32.Parse(UnaSemana.SelectSingleNode("Horas_Totales").InnerText);
                     Nom.Horas_pre = horas;
                     hextras = Int32.Parse(UnaSemana.SelectSingleNode("Horas_Extras").InnerText);
@@ -250,25 +327,12 @@ namespace Nominas
 
                     XmlElement element1 = doc.CreateElement(string.Empty, "NOMINA", string.Empty);
                     doc.AppendChild(element1);
-                    for (int i = 0; i <= 5; i++)
-                    {
-
-                        XmlElement element2 = doc.CreateElement(string.Empty, "SEMANA", string.Empty);
-                        element1.AppendChild(element2);
-
-                        XmlAttribute numero = doc.CreateAttribute("ID"); // ID ES EL NÚMERO DE SEMANA
-                        numero.Value = (i + 1).ToString();
-                        element2.Attributes.Append(numero);
-
-                        
-                    }
                     doc.Save(rutaNOM + dni + ".xml");
                 }
             }
         }
 
         #endregion
-
 
         #region ARCHIVO DE CONFIGURACIÓN
         public static void setConfig()
