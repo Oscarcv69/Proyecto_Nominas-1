@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Nominas {
     //Comentario
@@ -37,35 +33,38 @@ namespace Nominas {
             this.precio = 0;
             this.retencion_pre = 0.0F;
         }
-        private Regex regexfloat = new Regex(@"^[0-9]*(?:\.[0-9]*)?$"); // regex float.
+        private Regex regexfloat = new Regex(@"\d*\.?\d+?"); // regex float.
         Regex regex = new Regex("^[0-9]*$"); // regex only numbers
 
 
-        public int ID_pre
-        {
+        public int ID_pre {
             get { return ID; }
-            set
-            {
-                if (value < 1 || value >= 6)
-                {
+            set {
+                if(value < 1 || value >= 7) {
                     throw new Exception("El mes no puede tener menos de una semana o más de seis");
                 }
 
-                else if (!regex.IsMatch(ID.ToString()))
-                {
+                else if(!regex.IsMatch(ID.ToString())) {
 
                     throw new Exception("Introduce sólo valores numéricos");
 
                 }
-                else
-                {
+                else {
+                    ID = value;
+                }
+
+                if(String.IsNullOrEmpty(ID.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
+                else {
                     ID = value;
                 }
             }
         }
 
 
-            public int Horas_pre {
+        public int Horas_pre {
             get { return horas; }
             set {
                 if(value >= 0) {
@@ -87,6 +86,13 @@ namespace Nominas {
                     throw new Exception("Introduce sólo valores numéricos");
 
                 }
+                else {
+                    horas = value;
+                }
+                if(String.IsNullOrEmpty(horas.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
                 else {
                     horas = value;
                 }
@@ -112,6 +118,14 @@ namespace Nominas {
                 else {
                     hextras = value;
                 }
+
+                if(String.IsNullOrEmpty(hextras.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
+                else {
+                    hextras = value;
+                }
             }
         }
 
@@ -134,6 +148,13 @@ namespace Nominas {
                 else {
                     salarioExtra = value;
                 }
+                if(String.IsNullOrEmpty(salarioExtra.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
+                else {
+                    salarioExtra = value;
+                }
             }
         }
 
@@ -152,6 +173,14 @@ namespace Nominas {
                     throw new Exception("Introduce sólo valores numéricos");
 
                 }
+                else {
+                    salarioBruto = value;
+                }
+
+                if(String.IsNullOrEmpty(salarioBruto.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
                 else {
                     salarioBruto = value;
                 }
@@ -177,6 +206,14 @@ namespace Nominas {
                     impuestos = value;
                 }
 
+                if(String.IsNullOrEmpty(impuestos.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
+                else {
+                    impuestos = value;
+                }
+
 
             }
         }
@@ -195,6 +232,14 @@ namespace Nominas {
                     throw new Exception("Introduce sólo valores numéricos");
 
                 }
+                else {
+                    salarioNeto = value;
+                }
+
+                if(String.IsNullOrEmpty(salarioNeto.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
                 else {
                     salarioNeto = value;
                 }
@@ -220,6 +265,14 @@ namespace Nominas {
                     jornada_pre = value;
                 }
 
+                if(String.IsNullOrEmpty(jornada_pre.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
+                else {
+                    jornada_pre = value;
+                }
+
             }
 
         }
@@ -228,7 +281,7 @@ namespace Nominas {
             get { return hextras_pre; }
             set {
                 if(value >= 0) {
-                    hextras_pre = Single.Parse(value.ToString());
+                    hextras_pre = float.Parse(value.ToString());
                 }
                 else {
                     throw new Exception("El valor de horas extras no puede ser menor que 0");
@@ -239,6 +292,13 @@ namespace Nominas {
                     throw new Exception("Introduce sólo valores numéricos");
 
                 }
+                else {
+                    hextras_pre = value;
+                }
+                if(String.IsNullOrEmpty(hextras_pre.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
                 else {
                     hextras_pre = value;
                 }
@@ -265,6 +325,14 @@ namespace Nominas {
                 else {
                     precio = value;
                 }
+
+                if(String.IsNullOrEmpty(precio.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
+                else {
+                    precio = value;
+                }
             }
         }
 
@@ -283,6 +351,14 @@ namespace Nominas {
                     throw new Exception("Introduce sólo valores numéricos");
 
                 }
+                else {
+                    retencion_pre = value;
+                }
+
+                if(String.IsNullOrEmpty(retencion_pre.ToString())) {
+                    throw new Exception("La cadena está vacía o es Null.");
+                }
+
                 else {
                     retencion_pre = value;
                 }

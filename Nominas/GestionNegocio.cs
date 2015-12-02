@@ -53,7 +53,7 @@ namespace Nominas
         {
             Nomina[] Nomina = null;
             Nomina = Ficheros.GetNomina(dni);
-            Byte semana = 0;
+            Nomina semana = null;
 
 
             switch (numb)
@@ -65,9 +65,9 @@ namespace Nominas
                 //Introducir nóminas
                 case 1:
                     Gestion_Nomina.CargaNomina(ref Nomina);
-                    //semana = Interfaz.PedirSemana();
-                    // Gestion_Nomina.NuevaSemana(ref Nomina, semana);
-                    Console.ReadLine();
+                    semana = Interfaz.PedirSemana(Nomina);
+                    Gestion_Nomina.Grabar(ref Nomina, ref semana);
+                    Ficheros.GuardarNominaTemporal(ref Nomina);
                     break;
                 //Modificar Nóminas
                 case 2:
@@ -76,7 +76,7 @@ namespace Nominas
 
                 //Eliminar Nómina 
                 case 3:
-                    Gestion_Nomina.eliminarNomina(ref Nomina, semana);
+                   // Gestion_Nomina.eliminarNomina(ref Nomina, semana);
                     break;
                 //Mostrar Nómina Temporal
                 case 4:
