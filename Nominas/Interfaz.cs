@@ -467,6 +467,7 @@ namespace Nominas
             do
             {
                 dni = Interfaz.PlantillaPedirDni(); // PIDE EL DNI
+
                 if (Gestion_Empleado.ComprobarDni(dni))
                 {
                     Ficheros.ExistOrEmptyNOM(dni);
@@ -555,32 +556,40 @@ namespace Nominas
             int jornada = 0;
             float retencion = 0.0F;
             float valorHExtra = 0.0F;
+            bool correcto = false;
 
             Nomina nomtemp = new Nomina();
 
+            do {
+                Header();
+                Console.Write("\n\t\tPor favor, introduzca la semana que quiere añadir" + 
+                               "\n\t\tSemana:");
+                semana = Convert.ToInt32(Console.ReadLine());
+                if (Gestion_Nomina.ExisteNomina(ref nominas, semana))
+                {
+                    Error("La semana que está intentando crear ya existe. por favor, introduzca otra semana");
+                    Continuar("Pulsa una tecla para continuar...");
+                    correcto = false;
+                }
+                else
+                {
 
-            Console.WriteLine("Por favor, introduzca la semana que quiere añadir");
-            semana = Convert.ToInt32(Console.ReadLine());
-            if (Gestion_Nomina.ExisteNomina(ref nominas, semana))
-            {
-                throw new Exception("La semana que está intentando crear ya existe. por favor, introduzca otra semana");
-            }
-            else
-            {
-
-                nomtemp.ID_pre = semana;
-
-                Console.WriteLine("Por favor, introduzca el número de horas trabajadas");
-                horas = Int32.Parse(Console.ReadLine());
-                Console.WriteLine("Por favor, introduzca el precio por hora trabajada");
-                precio = Int32.Parse(Console.ReadLine());
-                nomtemp.Horas_pre = horas;
-                nomtemp.PrecioPre = precio;
-                Ficheros.getConfig(ref jornada, ref valorHExtra, ref retencion);
-                nomtemp.JornadaPre = jornada;
-                nomtemp.HextrasPre = valorHExtra;
-                nomtemp.RetencionPre = retencion;
-            }
+                    nomtemp.ID_pre = semana;
+                    Console.Write("\t\tPor favor, introduzca el número de horas trabajadas" +
+                               "\n\t\tHoras:");
+                    horas = Int32.Parse(Console.ReadLine());
+                    Console.Write("\t\tPor favor, introduzca el precio por hora trabajada" +
+                               "\n\t\tPrecio:");
+                    precio = Int32.Parse(Console.ReadLine());
+                    nomtemp.Horas_pre = horas;
+                    nomtemp.PrecioPre = precio;
+                    Ficheros.getConfig(ref jornada, ref valorHExtra, ref retencion);
+                    nomtemp.JornadaPre = jornada;
+                    nomtemp.HextrasPre = valorHExtra;
+                    nomtemp.RetencionPre = retencion;
+                    correcto = true;
+                }
+            }while (!correcto) ;
             return nomtemp;
         }
 

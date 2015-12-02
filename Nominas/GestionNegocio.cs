@@ -89,7 +89,6 @@ namespace Nominas
                     Gestion_Nomina.CierraNomina(ref Nomina);
                     break;              
             }
-           /* Ficheros.GuardarNominas(Nomina);*/
         }
 
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)

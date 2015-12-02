@@ -327,7 +327,7 @@ namespace Nominas
                     XmlElement root = doc.DocumentElement;
                     doc.InsertBefore(xmlDeclaration, root);
 
-                    XmlElement element1 = doc.CreateElement(string.Empty, "NOMINA", string.Empty);
+                    XmlElement element1 = doc.CreateElement(string.Empty, "Nomina", string.Empty);
                     doc.AppendChild(element1);
                     doc.Save(rutaNOM + dni + ".xml");
                 }
