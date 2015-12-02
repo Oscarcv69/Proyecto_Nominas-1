@@ -75,13 +75,14 @@ namespace Nominas
 
                         mensaje = "Trabajador registrado correctamente";
                         mensaje2 = "Desea registrar otro Trabajador (s/n): ";
+                        salida = Interfaz.Continuar(mensaje);
                         Interfaz.Pregunta(ref mensaje2, ref salida);
-                        salida = Interfaz.Continuar(mensaje) ? false : true;
+                     
                     }
 
                     else
                     {
-                        salida = false;
+                        salida = true;
                     }
 
                 }
