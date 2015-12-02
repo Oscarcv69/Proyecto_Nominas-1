@@ -209,7 +209,7 @@ namespace Nominas
         }
 
         //Método de creación de semanas
-        public static void NuevaSemana(ref Nomina[] Nomina, byte semana)
+        public static void Grabar(ref Nomina[] Nomina, Nomina semana)
         {
             Nomina nominastemp;
             Nomina[] nomcop = null;
@@ -221,7 +221,7 @@ namespace Nominas
             {
                 //ENTRADA
                 nominastemp = Interfaz.DatosNomina();
-                if (!ExisteNomina(Nomina, semana))
+                if (!ExisteNomina(Nomina, nominastemp.ID_pre))
                 {
                     if (Nomina == null)
                     {
@@ -255,10 +255,10 @@ namespace Nominas
         }
 
         //Comprobación existe la semana
-        private static bool ExisteNomina(Nomina[] Nomina, byte semana)
+        public static bool ExisteNomina(Nomina[] Nomina, int semana)
         {
             bool existe = false;
-            if (Nomina[semana] != null)
+            if (semana>Nomina.Length || Nomina[semana] != null)
             {
                 existe = true;
             }
@@ -268,13 +268,13 @@ namespace Nominas
         //Método de modificacion de nómina semanal
         public static void CambiaSemana(ref Nomina[] Nomina)
         {
-            byte semana = 0;
+            int semana = 0;
+            Nomina nomtemp = null;
             byte opcion = 0;
             String cadena = null;
 
-
             //Entrada de Datos
-            semana = Interfaz.PedirSemana();
+            nomtemp = Interfaz.PedirSemana(Nomina);
             //PROCESO
             //Comprobamos que existe la semana
             if (!ExisteNomina(Nomina, semana))
