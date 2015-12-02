@@ -497,9 +497,10 @@ namespace Nominas
             string dni = null;
             string cadena = null;
 
+            
+                dni = Interfaz.PlantillaPedirDni(); // PIDE EL DNI
             do
             {
-                dni = Interfaz.PlantillaPedirDni(); // PIDE EL DNI
                 if (Gestion_Empleado.ComprobarDni(dni))
                 {
                     Ficheros.ExistOrEmptyNOM(dni);
@@ -649,7 +650,7 @@ namespace Nominas
         cadena += LineaSeparador("-");
         for (i = 0; i < nomina.Length; i++)
         {
-            cadena += "\tSemana " + (i + 1);
+            cadena += "\tSemana " + (nomina[i].ID_pre);
             cadena += "\t" + nomina[i].Horas_pre;
             cadena += "\t" + nomina[i].PrecioPre;
             cadena += "\t" + nomina[i].SalExtra_pre;
@@ -660,7 +661,7 @@ namespace Nominas
             precioMedio += nomina[i].PrecioPre;
         }
         cadena += LineaSeparador("=");
-        cadena += "TOTAL MES:\t\t";
+        /*cadena += "TOTAL MES:\t\t";
         cadena += Gestion_Nomina.CalculaTotal(nomina, 1) + "\t";
         cadena += precioMedio / i + "\t";//Hacemos el cálculo del precio de la hora media
         cadena += Gestion_Nomina.CalculaTotal(nomina, 2) + "\t";
@@ -668,6 +669,7 @@ namespace Nominas
         cadena += Gestion_Nomina.CalculaTotal(nomina, 4) + "\t";
         cadena += Gestion_Nomina.CalculaTotal(nomina, 5) + "\t";
         cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
+        */
         return cadena;
     }
 

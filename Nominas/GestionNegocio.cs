@@ -59,9 +59,6 @@ namespace Nominas
             switch (numb)
             {
                 //Necesitamos pedir antes el DNI del trabajador para operar con sus nóminas
-                case 0: // SALIR
-                    flag = true;
-                    break;
                 //Introducir nóminas
                 case 1:
                     Gestion_Nomina.CargaNomina(ref Nomina);
@@ -87,7 +84,10 @@ namespace Nominas
                 //Cerrar Nómina del Mes
                 case 5:
                     Gestion_Nomina.CierraNomina(ref Nomina);
-                    break;              
+                    break;
+                case 6: // SALIR
+                    flag = true;
+                    break;
             }
            /* Ficheros.GuardarNominas(Nomina);*/
         }
