@@ -217,7 +217,7 @@ namespace Nominas
             {
                 do
                 {
-                    
+
                     if (error)
                     {
                         Error(mensaje);  // Presentación de Errores
@@ -231,7 +231,7 @@ namespace Nominas
                     if (dni_trb != null) // SI NO ES NULL LO ASIGNA A DNI
                     {
                         trabajador.dni_pre = dni_trb;
-                    } 
+                    }
 
                     if (trabajador.dni_pre == null)
                     {
@@ -259,7 +259,8 @@ namespace Nominas
                             error = true;
                             mensaje = e.Message;
                         }
-                    } else
+                    }
+                    else
                     {
                         correcto = true;
                     }
@@ -291,7 +292,7 @@ namespace Nominas
                     }
                 }
 
-               
+
                 if (!error)
                 {
                     Console.Write("\t\t Introduzca Apellidos: ");
@@ -495,14 +496,15 @@ namespace Nominas
                         msg = "Opción Incorrecta (seleccione una opción del menú: 1 - 6)";
                     }
 
-                } else
+                }
+                else
                 {
                     Console.WriteLine("\t\tEl trabajador no se encuentra registrado");
                     cadena = "¿Quieres registrar este trabajador?";
                     Interfaz.Pregunta(ref cadena, ref flag);
                     dni_trb = dni;
                     GestionNegocio.GestionOperaciones(1, ref flag);
-                    
+
                 }
             } while (!flag);
         }
@@ -547,96 +549,127 @@ namespace Nominas
         //Pide los datos de la semana
         internal static Nomina PedirSemana(Nomina[] nominas)//TODO: DESARROLLAR
         {
-            Nomina nom = null;
-            return nom;
-        }
+            int semana = 0;
+            int horas = 0;
+            int precio = 0;
+            int jornada = 0;
+            float retencion = 0.0F;
+            float valorHExtra = 0.0F;
 
-        //Interfaz del método de modificar nómina
-        public static byte NominaModificar(Nomina nomina)//TODO: DESARROLLAR
-        {
-            throw new NotImplementedException();
-        }
-
+            Nomina nomtemp = null;
 
 
-        //Interfaz de volcado de pantalla de mostrar Nomina
-        public static string MostrarNomina(Nomina[] nomina)
-        {
-            Header();
-            String cadena = null;
-            cadena += "\n";
-            float precioMedio = 0.0F;
-            int i = 0;
-
-            /* cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;*/
-            cadena += LineaSeparador("-");
-            cadena += "\t\t\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
-            cadena += LineaSeparador("-");
-            for (i = 0; i < nomina.Length; i++)
+            Console.WriteLine("Por favor, introduzca la semana que quiere añadir");
+            semana = Convert.ToInt32(Console.ReadLine());
+            if (Gestion_Nomina.ExisteNomina(nominas, semana))
             {
-                cadena += "\tSemana " + (i + 1);
-                cadena += "\t" + nomina[i].Horas_pre;
-                cadena += "\t" + nomina[i].PrecioPre;
-                cadena += "\t" + nomina[i].SalExtra_pre;
-                cadena += "\t" + nomina[i].SalBruto_pre;
-                cadena += "\t" + nomina[i].SalRetencion_pre;
-                cadena += "\t" + nomina[i].SalNeto_pre;
-                cadena += LineaSeparador("-");
-                precioMedio += nomina[i].PrecioPre;
+                throw new Exception("La semana que está intentando crear ya existe. por favor, introduzca otra semana");
             }
-            cadena += LineaSeparador("=");
-            cadena += "TOTAL MES:\t\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 1) + "\t";
-            cadena += precioMedio / i + "\t";//Hacemos el cálculo del precio de la hora media
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 2) + "\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 3) + "\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 4) + "\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 5) + "\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
-            return cadena;
-        }
-
-        //Cabecera de la Nomina con los datos del trabajador
-
-        private static string HeaderNominaTrabajador(Trabajador trabajador)
-        {
-            string cadena = null;
-            cadena += LineaSeparador("-");
-            cadena += "Trabajador";
-            cadena += "DNI: \t" + trabajador.dni_pre + "\t";
-            cadena += "Nombre: \t" + trabajador.nombre_pre + "\t";
-            cadena += "Apellido: \t" + trabajador.apellidos_pre + "\t";
-            cadena += LineaSeparador("-");
-            return cadena;
-
-        }
-
-        private static string LineaSeparador(String car)
-        {
-            String cadena = null;
-            for (int i = 0; i < Console.WindowWidth; i++)
+            else
             {
-                cadena += car;
+
+                nomtemp.ID_pre = semana;
+
+                Console.WriteLine("Por favor, introduzca el número de horas trabajadas");
+                horas = Int32.Parse(Console.ReadLine());
+                Console.WriteLine("Por favor, introduzca el precio por hora trabajada");
+                precio = Int32.Parse(Console.ReadLine());
+                nomtemp.Horas_pre = horas;
+                nomtemp.PrecioPre = precio;
+                Ficheros.getConfig(ref jornada, ref valorHExtra, ref retencion);
+                nomtemp.JornadaPre = jornada;
+                nomtemp.HextrasPre = valorHExtra;
+                nomtemp.RetencionPre = retencion;
             }
-            cadena += "\r";
-            return cadena;
+            return nomtemp;
         }
 
-        internal static void SolicitarHoras(ref Nomina nomina)//TODO: DESARROLLAR
-        {
-            throw new NotImplementedException();
-        }
+    //Interfaz del método de modificar nómina
+    public static byte NominaModificar(Nomina nomina)//TODO: DESARROLLAR
+    {
+        throw new NotImplementedException();
+    }
 
-        internal static void SolicitarPrecio(ref Nomina nomina)//TODO: DESARROLLAR
-        {
-            throw new NotImplementedException();
-        }
 
-        internal static void SolicitarRetencion(ref Nomina nomina)//TODO:DESARROLLAR
+
+    //Interfaz de volcado de pantalla de mostrar Nomina
+    public static string MostrarNomina(Nomina[] nomina)
+    {
+        Header();
+        String cadena = null;
+        cadena += "\n";
+        float precioMedio = 0.0F;
+        int i = 0;
+
+        /* cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;*/
+        cadena += LineaSeparador("-");
+        cadena += "\t\t\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
+        cadena += LineaSeparador("-");
+        for (i = 0; i < nomina.Length; i++)
         {
-            throw new NotImplementedException();
+            cadena += "\tSemana " + (i + 1);
+            cadena += "\t" + nomina[i].Horas_pre;
+            cadena += "\t" + nomina[i].PrecioPre;
+            cadena += "\t" + nomina[i].SalExtra_pre;
+            cadena += "\t" + nomina[i].SalBruto_pre;
+            cadena += "\t" + nomina[i].SalRetencion_pre;
+            cadena += "\t" + nomina[i].SalNeto_pre;
+            cadena += LineaSeparador("-");
+            precioMedio += nomina[i].PrecioPre;
         }
-        #endregion
+        cadena += LineaSeparador("=");
+        cadena += "TOTAL MES:\t\t";
+        cadena += Gestion_Nomina.CalculaTotal(nomina, 1) + "\t";
+        cadena += precioMedio / i + "\t";//Hacemos el cálculo del precio de la hora media
+        cadena += Gestion_Nomina.CalculaTotal(nomina, 2) + "\t";
+        cadena += Gestion_Nomina.CalculaTotal(nomina, 3) + "\t";
+        cadena += Gestion_Nomina.CalculaTotal(nomina, 4) + "\t";
+        cadena += Gestion_Nomina.CalculaTotal(nomina, 5) + "\t";
+        cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
+        return cadena;
+    }
+
+    //Cabecera de la Nomina con los datos del trabajador
+
+    private static string HeaderNominaTrabajador(Trabajador trabajador)
+    {
+        string cadena = null;
+        cadena += LineaSeparador("-");
+        cadena += "Trabajador";
+        cadena += "DNI: \t" + trabajador.dni_pre + "\t";
+        cadena += "Nombre: \t" + trabajador.nombre_pre + "\t";
+        cadena += "Apellido: \t" + trabajador.apellidos_pre + "\t";
+        cadena += LineaSeparador("-");
+        return cadena;
 
     }
+
+    private static string LineaSeparador(String car)
+    {
+        String cadena = null;
+        for (int i = 0; i < Console.WindowWidth; i++)
+        {
+            cadena += car;
+        }
+        cadena += "\r";
+        return cadena;
+    }
+
+    internal static void SolicitarHoras(ref Nomina nomina)//TODO: DESARROLLAR
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static void SolicitarPrecio(ref Nomina nomina)//TODO: DESARROLLAR
+    {
+        throw new NotImplementedException();
+    }
+
+    internal static void SolicitarRetencion(ref Nomina nomina)//TODO:DESARROLLAR
+    {
+        throw new NotImplementedException();
+    }
+    #endregion
+
+}
 }
