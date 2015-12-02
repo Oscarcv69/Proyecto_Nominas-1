@@ -230,8 +230,6 @@ namespace Nominas
 
             // SALIDA
             cadena += "\n\n\t Se ha añadido la semana " + semana.ID_pre;
-            Console.WriteLine(cadena);
-            Console.ReadLine();
         }
 
         //Comprobación existe la semana

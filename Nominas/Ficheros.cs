@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 
@@ -354,6 +355,7 @@ namespace Nominas
 
                 XmlElement Hextras = doc.CreateElement("Horas_Extras");
                 Hextras.AppendChild(doc.CreateTextNode("1.5"));
+                
                 element1.AppendChild(Hextras);
 
                 XmlElement retencion = doc.CreateElement("Retencion");
@@ -365,6 +367,8 @@ namespace Nominas
 
         public static void getConfig(ref int jornada, ref float Hextras, ref float retencion)
         {
+            string hextras_provisional = null;
+            string retencion_provisional = null;
             XmlDocument doc = new XmlDocument();
             try
             {
@@ -373,9 +377,11 @@ namespace Nominas
                 foreach (XmlNode conf in raiz)
                 {
                     jornada = Int32.Parse(conf.SelectSingleNode("Jornada").InnerText);
-                    Hextras = Single.Parse(conf.SelectSingleNode("Horas_Extras").InnerText);
-                    retencion = Single.Parse(conf.SelectSingleNode("Retencion").InnerText);
+                    hextras_provisional = conf.SelectSingleNode("Horas_Extras").InnerText;
+                    retencion_provisional = conf.SelectSingleNode("Retencion").InnerText;
                 }
+                Hextras = Convert.ToSingle(hextras_provisional.ToString(), CultureInfo.InvariantCulture);
+                retencion = Convert.ToSingle(retencion_provisional.ToString(), CultureInfo.InvariantCulture);
             }
             catch (FileNotFoundException)
             {

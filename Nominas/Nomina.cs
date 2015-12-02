@@ -33,7 +33,7 @@ namespace Nominas {
             this.precio = 0;
             this.retencion_pre = 0.0F;
         }
-        private Regex regexfloat = new Regex(@"^[0-9]*(?:\.[0-9]*)?$"); // regex float.
+        private Regex regexfloat = new Regex(@"\d*\.?\d+?"); // regex float.
         Regex regex = new Regex("^[0-9]*$"); // regex only numbers
 
 
@@ -281,7 +281,7 @@ namespace Nominas {
             get { return hextras_pre; }
             set {
                 if(value >= 0) {
-                    hextras_pre = Single.Parse(value.ToString());
+                    hextras_pre = float.Parse(value.ToString());
                 }
                 else {
                     throw new Exception("El valor de horas extras no puede ser menor que 0");
