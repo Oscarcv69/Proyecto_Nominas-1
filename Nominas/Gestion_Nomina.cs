@@ -60,7 +60,7 @@ namespace Nominas
             Nomina = new Nomina[nominatemp.Length];
             Nomina = nominatemp;
             nominatemp = null;
-            Console.WriteLine(Nomina.ToString());
+            Console.WriteLine(Nomina.Length);
         }
 
         //Cálculo de las horas extra
@@ -274,7 +274,7 @@ namespace Nominas
 
 
             //Entrada de Datos
-            semana = Interfaz.PedirSemana();
+                //semana = Interfaz.PedirSemana();
             //PROCESO
             //Comprobamos que existe la semana
             if (!ExisteNomina(Nomina, semana))

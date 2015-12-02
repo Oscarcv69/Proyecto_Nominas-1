@@ -104,7 +104,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="B.D_Empleados\" />
+    <Folder Include="B.D_Nominas\" />
     <Folder Include="Nominas_empleados\" />
+    <Folder Include="Recursos\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
