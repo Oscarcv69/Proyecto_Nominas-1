@@ -54,11 +54,14 @@ namespace Nominas
             Nomina[] Nomina = null;
             Nomina = Ficheros.GetNomina(dni);
             Nomina semana = null;
+            
 
 
             switch (numb)
             {
-                //Necesitamos pedir antes el DNI del trabajador para operar con sus nóminas
+                case 0:
+                    flag = true;
+                    break;
                 //Introducir nóminas
                 case 1:
                     Gestion_Nomina.CargaNomina(ref Nomina);
@@ -74,9 +77,16 @@ namespace Nominas
                 //Eliminar Nómina 
                 case 3:
                     string name = null, valor = null;
+                    int ordinal = 0, opcion =0;
                     Interfaz.PedirDatosArchivoConf(ref name, ref valor);
                     Ficheros.ModConfig(name, valor);
-                   // Gestion_Nomina.eliminarNomina(ref Nomina, semana);
+                    opcion = Interfaz.EliminarSemanaOpcion();
+                    if (opcion ==1)
+                    {
+                        ordinal = Interfaz.EliminarSemana();
+                    }
+                
+                   Gestion_Nomina.eliminarNomina(ref Nomina, ordinal, opcion);
                     break;
                 //Mostrar Nómina Temporal
                 case 4:
@@ -89,14 +99,9 @@ namespace Nominas
                     Gestion_Nomina.CierraNomina(ref Nomina);
                     Interfaz.MostrarNomina(Nomina);
                     break;
-                case 6: // SALIR
-                    flag = true;
-                    break;
-                case 7: // SALIR
-                    flag = true;
-                    break;
+            
             }
-           /* Ficheros.GuardarNominas(Nomina);*/
+            /* Ficheros.GuardarNominas(Nomina);*/
         }
 
         internal static string CambiaNomina(ref Nomina nomina, byte opcion)
