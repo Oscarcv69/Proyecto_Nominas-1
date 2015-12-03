@@ -74,13 +74,14 @@ namespace Nominas
                     Gestion_Nomina.CambiaSemana(ref Nomina);
                     break;
 
-                //Eliminar Nómina 
+                //Modificar archivo de configuracion
                 case 3:
                     string name = null, valor = null;
                     
                     Interfaz.PedirDatosArchivoConf(ref name, ref valor);
                     Ficheros.ModConfig(name, valor);
                     break;
+                    //Eliminar nominas
                 case 4:
                     int ordinal = 0, opcion = 0;
                     opcion = Interfaz.EliminarSemanaOpcion();
@@ -105,31 +106,6 @@ namespace Nominas
             
             }
             /* Ficheros.GuardarNominas(Nomina);*/
-        }
-
-        internal static string CambiaNomina(ref Nomina nomina, byte opcion)
-        {
-            String cadena = null;
-            switch (opcion)
-            {
-                case 0:
-                    cadena = "Modificación cancelada";
-                    break;
-                //Modificación de los datos
-                case 1:
-                    Interfaz.SolicitarHoras(ref nomina);
-                    cadena = "Horas modificadas con éxito";
-                    break;
-                case 2:
-                    Interfaz.SolicitarPrecio(ref nomina);
-                    cadena = "Precio de la hora de trabajo modificado con éxito";
-                    break;
-                case 3:
-                    Interfaz.SolicitarRetencion(ref nomina);
-                    cadena = "Porcentaje de retención por impuestos modificado con éxito";
-                    break;
-            }
-            return cadena;
         }
         #endregion
 
@@ -177,24 +153,6 @@ namespace Nominas
                 config.AppSettings.Settings["Password"].Value = nuevapass;
                 config.Save(ConfigurationSaveMode.Modified);
             }
-        }
-        #endregion
-
-        #region GET VALORES POR DEFECTO APP.CONF
-        public void getHextras() // obtiene el valor por defecto de las horas extraordinarias
-        {
-
-        }
-
-        public static string getJornada()//Obtiene el valor por defecto de la jornada
-        {
-            string jor = ConfigurationManager.AppSettings["Jornada"];
-            return jor;
-        }
-        public string getRetencion()//Obtiene el valor por defecto del porcentaje de retención
-        {
-            string ret = ConfigurationManager.AppSettings["Retenciones"];
-            return ret;
         }
         #endregion
 

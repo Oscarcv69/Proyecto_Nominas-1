@@ -226,7 +226,7 @@ namespace Nominas
                 nomcop.CopyTo(Nomina, 0);
                 nomcop = null;
             }
-            Nomina[semana.ID_pre -1] = semana;
+            Nomina[semana.ID_pre - 1] = semana;
 
             // SALIDA
             cadena += "\n\n\t Se ha añadido la semana " + semana.ID_pre;
@@ -271,27 +271,38 @@ namespace Nominas
         //Método de modificacion de nómina semanal
         public static void CambiaSemana(ref Nomina[] Nomina)
         {
-            byte semana = 0;
-            byte opcion = 0;
+            int semana = 0;
+            int opcion = 0;
             String cadena = null;
 
 
             //Entrada de Datos
-            //semana = Interfaz.PedirSemana();
-            //PROCESO
-            //Comprobamos que existe la semana
-            if (!ExisteNomina(ref Nomina, semana))
-            {
-                cadena = "Semana no encontrada";
-            }
-            else
-            {
-                opcion = Interfaz.NominaModificar(Nomina[semana]);
-                cadena = GestionNegocio.CambiaNomina(ref Nomina[semana], opcion);
-                Interfaz.Continuar(cadena);
+            semana = Interfaz.QueSemana(Nomina);
 
+            opcion = Interfaz.NominaModificar(Nomina[semana]);
+            //PROCESO
+            switch (opcion)
+            {
+                case 0:
+                    cadena = "Modificación cancelada";
+                    break;
+                //Modificación de los datos
+                case 1:
+                    Nomina[semana].Horas_pre = Interfaz.SolicitarHoras();
+                    cadena = "Horas modificadas con éxito";
+
+                    break;
+                case 2:
+                    Nomina[semana].PrecioPre = Interfaz.SolicitarPrecio();
+                    cadena = "Precio de la hora de trabajo modificado con éxito";
+                    break;
             }
+            Ficheros.GuardarNominaTemporal(ref Nomina);
+            Interfaz.Continuar(cadena);
+
+
         }
+
 
         //Método de eliminación de nómina
         public static void eliminarNomina(ref Nomina[] Nomina, int semana, int opcion)
@@ -338,7 +349,8 @@ namespace Nominas
                             //Ponemos el array de copia en Null para ahorrar memoria
                             copiaNomina = null;
                             cadena = "\n\t Semana eliminada con éxito";
-                        }   break;
+                        }
+                        break;
                     case 2:
                         //Borrar toda la nómina
                         for (i = 0; i < Nomina.Length; i++)
@@ -348,6 +360,7 @@ namespace Nominas
                         break;
                 }
                 cadena += "\n\tPulse ENTER para continuar\n";
+                Ficheros.GuardarNominaTemporal(ref Nomina);
                 Interfaz.Continuar(cadena);
             }
         }
@@ -357,7 +370,7 @@ namespace Nominas
         {
             //Calcula nominas semanales
             CalculaParcial(ref Nomina);
-            
+
             //Confirmacion
             //Almacena en el fichero - LLamar metodos de Fran
             //Eliminar fichero - Llamar metodos de Fran
