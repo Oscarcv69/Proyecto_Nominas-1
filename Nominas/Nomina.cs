@@ -64,11 +64,11 @@ namespace Nominas {
             get { return horas; }
             set {
                 //TODO: Revisar cambio de signo
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("Las horas no pueden ser menores que 0");
                 }
                 // TODO: Revisar
-                else if(value <= 168) {
+                else if(value > 168) {
                     throw new Exception("No puede haber más de 168 horas.");
                 }
 
@@ -88,7 +88,7 @@ namespace Nominas {
         public int HExtra_pre {
             get { return hextras; }
             set {
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("Las horas no pueden ser menores que 0");
                 }
 
@@ -108,7 +108,7 @@ namespace Nominas {
         public float SalExtra_pre {
             get { return salarioExtra; }
             set {
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("El salario extra no puede ser menor que 0");
                 }
 
@@ -129,7 +129,7 @@ namespace Nominas {
         public float SalBruto_pre {
             get { return salarioBruto; }
             set {
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("El salario bruto no puede ser menor que 0");
                 }
 
@@ -150,7 +150,7 @@ namespace Nominas {
         public float SalRetencion_pre {
             get { return impuestos; }
             set {
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("La retención no puede ser menor que 0");
                 }
 
@@ -171,7 +171,7 @@ namespace Nominas {
         public float SalNeto_pre {
             get { return salarioNeto; }
             set {
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("El salario neto no puede ser menor que 0");
                 }
 
@@ -192,7 +192,7 @@ namespace Nominas {
         public int JornadaPre {
             get { return jornada_pre; }
             set {
-                if(value <= 0 && value >= 40) {
+                if(value < 0 && value >= 40) {
                     throw new Exception("La jornada predeterminada no puede ser menor que 0 ni mayor que 40 horas.");
                 }
 
@@ -213,7 +213,7 @@ namespace Nominas {
         public float HextrasPre {
             get { return hextras_pre; }
             set {
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("El valor de horas extras no puede ser menor que 0");
                 }
 
@@ -234,7 +234,7 @@ namespace Nominas {
         public float PrecioPre {
             get { return precio; }
             set {
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("El precio no puede ser menor que 0");
                 }
 
@@ -255,7 +255,7 @@ namespace Nominas {
         public float RetencionPre {
             get { return retencion_pre; }
             set {
-                if(value <= 0) {
+                if(value < 0) {
                     throw new Exception("El valor de la retención no puede ser menor que 0");
                 }
 

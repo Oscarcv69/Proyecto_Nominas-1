@@ -39,6 +39,7 @@ namespace Nominas
             neto = nomina.SalNeto_pre;
         }
         //Fichero temporal lleva las horas por semana
+
         public static void CargaNomina(ref Nomina[] Nomina)
         {
             Nomina[] nominatemp = null;
@@ -108,7 +109,8 @@ namespace Nominas
             return retenciones;
         }
 
-        //Métodos para la gestión de las nóminas
+       //Métodos para la gestión de las nóminas
+        
         //Cálculo de las semanas del mes
         public static short CalculoSemanas(short anho, short mes)
         {
@@ -149,18 +151,23 @@ namespace Nominas
             return semanas;
 
         }
+        
         //Calculo de los parciales de nomina
         internal static void CalculaParcial(ref Nomina[] Nomina)
         {
             for (int i = 0; i < Nomina.Length; i++)
             {
-                Nomina[i].HExtra_pre = CalculoExtra(horas, jornada);
-                Nomina[i].SalBruto_pre = CalculoSalarioBruto(horas, jornada, precio);
-                Nomina[i].SalExtra_pre = CalculoSalarioExtra(Nomina[i].Horas_pre, precio);
-                Nomina[i].SalRetencion_pre = CalculoRetenciones(bruto, retenciones);
-                Nomina[i].SalNeto_pre = CalculoSalarioNeto(bruto, retenciones);
+                if (Nomina[i] != null)
+                {
+                    Nomina[i].HExtra_pre = CalculoExtra(horas, jornada);
+                    Nomina[i].SalBruto_pre = CalculoSalarioBruto(horas, jornada, precio);
+                    Nomina[i].SalExtra_pre = CalculoSalarioExtra(Nomina[i].Horas_pre, precio);
+                    Nomina[i].SalRetencion_pre = CalculoRetenciones(bruto, retenciones);
+                    Nomina[i].SalNeto_pre = CalculoSalarioNeto(bruto, retenciones);
+                }
             }
         }
+        
         //Calculo de los totales de nomina
         internal static float CalculaTotal(Nomina[] Nomina, int v)
         {
@@ -269,6 +276,7 @@ namespace Nominas
             return limite;
         }
         //Método de modificacion de nómina semanal
+
         public static void CambiaSemana(ref Nomina[] Nomina)
         {
             int semana = 0;
@@ -307,7 +315,6 @@ namespace Nominas
         //Método de eliminación de nómina
         public static void eliminarNomina(ref Nomina[] Nomina, int semana, int opcion)
         {
-            opcion = 0;
             int i = 0;
             int j = 0;
             Nomina[] copiaNomina;
@@ -321,7 +328,7 @@ namespace Nominas
             }
             else
             {
-                copiaNomina = new Nomina[Nomina.Length - 1];
+                copiaNomina = new Nomina[Nomina.Length];
 
                 switch (opcion)
                 {
@@ -335,13 +342,12 @@ namespace Nominas
                         }
                         else
                         {
-                            for (i = 0; i < Nomina.Length; i++, j++)
+                            for (i = 0; i <= copiaNomina.Length-1; i++, j++)
                             {
-                                if (i != semana)
+                                if (i != (semana-1))
                                 {
                                     copiaNomina[j] = Nomina[i];
                                 }
-                                else j -= 1;
                             }
                             //Array dinámico
                             Nomina = new Nomina[copiaNomina.Length];
@@ -360,7 +366,6 @@ namespace Nominas
                         break;
                 }
                 cadena += "\n\tPulse ENTER para continuar\n";
-                Ficheros.GuardarNominaTemporal(ref Nomina);
                 Interfaz.Continuar(cadena);
             }
         }
