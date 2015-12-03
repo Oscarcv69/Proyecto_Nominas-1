@@ -37,6 +37,7 @@ namespace Nominas {
         private Regex regexfloat = new Regex(@"\d*\.?\d+?"); // regex float.
         Regex regex = new Regex("^[0-9]*$"); // regex only numbers
 
+        //TODO: Revisar toString()'s
 
         public int ID_pre {
             get { return ID; }
@@ -46,7 +47,6 @@ namespace Nominas {
                 }
 
                 else if(!regex.IsMatch(ID.ToString())) {
-
                     throw new Exception("Introduce sólo valores numéricos");
                 }
 
@@ -84,7 +84,6 @@ namespace Nominas {
                 else {
                     horas = value;
                 }
-
             }
         }
 
@@ -97,9 +96,8 @@ namespace Nominas {
 
                 else if(!regexfloat.IsMatch(hextras.ToString())) {
                     throw new Exception("Introduce sólo valores numéricos");
-
                 }
-               
+
                 else if(String.IsNullOrEmpty(hextras.ToString())) {
                     throw new Exception("La cadena está vacía o es Null.");
                 }
@@ -108,20 +106,19 @@ namespace Nominas {
                 }
             }
         }
-        
+
         public float SalExtra_pre {
             get { return salarioExtra; }
             set {
-                if(value <= 0) {                  
+                if(value <= 0) {
                     throw new Exception("El salario extra no puede ser menor que 0");
                 }
 
-               else if(!regexfloat.IsMatch(salarioExtra.ToString())) {
+                else if(!regexfloat.IsMatch(salarioExtra.ToString())) {
                     throw new Exception("Introduce sólo valores numéricos");
-
                 }
-                
-               else if(String.IsNullOrEmpty(salarioExtra.ToString())) {
+
+                else if(String.IsNullOrEmpty(salarioExtra.ToString())) {
                     throw new Exception("La cadena está vacía o es Null.");
                 }
 
@@ -135,14 +132,13 @@ namespace Nominas {
             get { return salarioBruto; }
             set {
                 if(value <= 0) {
-
                     throw new Exception("El salario bruto no puede ser menor que 0");
                 }
 
-               else if(!regexfloat.IsMatch(salarioBruto.ToString())) {
+                else if(!regexfloat.IsMatch(salarioBruto.ToString())) {
                     throw new Exception("Introduce sólo valores numéricos");
                 }
-               
+
                 else if(String.IsNullOrEmpty(salarioBruto.ToString())) {
                     throw new Exception("La cadena está vacía o es Null.");
                 }
@@ -156,14 +152,14 @@ namespace Nominas {
         public float SalRetencion_pre {
             get { return impuestos; }
             set {
-                if(value <= 0) {                
+                if(value <= 0) {
                     throw new Exception("La retención no puede ser menor que 0");
                 }
 
                 else if(!regexfloat.IsMatch(impuestos.ToString())) {
                     throw new Exception("Introduce sólo valores numéricos");
                 }
-                               
+
                 else if(String.IsNullOrEmpty(impuestos.ToString())) {
                     throw new Exception("La cadena está vacía o es Null.");
                 }
@@ -171,21 +167,21 @@ namespace Nominas {
                 else {
                     impuestos = Single.Parse(value.ToString());
                 }
-                            }
+            }
         }
 
         public float SalNeto_pre {
             get { return salarioNeto; }
             set {
-                if(value <= 0) {                   
+                if(value <= 0) {
                     throw new Exception("El salario neto no puede ser menor que 0");
                 }
 
                 else if(!regexfloat.IsMatch(salarioNeto.ToString())) {
                     throw new Exception("Introduce sólo valores numéricos");
                 }
-               
-               else if(String.IsNullOrEmpty(salarioNeto.ToString())) {
+
+                else if(String.IsNullOrEmpty(salarioNeto.ToString())) {
                     throw new Exception("La cadena está vacía o es Null.");
                 }
 
@@ -202,11 +198,11 @@ namespace Nominas {
                     throw new Exception("La jornada predeterminada no puede ser menor que 0 ni mayor que 40 horas.");
                 }
 
-               else if(!regex.IsMatch(jornada_pre.ToString())) {
+                else if(!regex.IsMatch(jornada_pre.ToString())) {
                     throw new Exception("Introduce sólo valores numéricos");
                 }
-               
-               else if(String.IsNullOrEmpty(jornada_pre.ToString())) {
+
+                else if(String.IsNullOrEmpty(jornada_pre.ToString())) {
                     throw new Exception("La cadena está vacía o es Null.");
                 }
 
@@ -219,7 +215,7 @@ namespace Nominas {
         public float HextrasPre {
             get { return hextras_pre; }
             set {
-                if(value <= 0) {                
+                if(value <= 0) {
                     throw new Exception("El valor de horas extras no puede ser menor que 0");
                 }
 
@@ -240,7 +236,7 @@ namespace Nominas {
         public float PrecioPre {
             get { return precio; }
             set {
-                if(value <= 0) {                
+                if(value <= 0) {
                     throw new Exception("El precio no puede ser menor que 0");
                 }
 
@@ -261,7 +257,7 @@ namespace Nominas {
         public float RetencionPre {
             get { return retencion_pre; }
             set {
-                if(value <= 0) {               
+                if(value <= 0) {
                     throw new Exception("El valor de la retención no puede ser menor que 0");
                 }
 
