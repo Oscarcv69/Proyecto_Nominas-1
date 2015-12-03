@@ -71,26 +71,26 @@ namespace Nominas
                     Gestion_Nomina.CambiaSemana(ref Nomina);
                     break;
 
-                //Eliminar Nómina 
+                //MOD CONF Nómina 
                 case 3:
                     string name = null, valor = null;
                     Interfaz.PedirDatosArchivoConf(ref name, ref valor);
                     Ficheros.ModConfig(name, valor);
                    // Gestion_Nomina.eliminarNomina(ref Nomina, semana);
                     break;
-                //Mostrar Nómina Temporal
+                //Borrar Nómina Temporal
                 case 4:
+                    
+                    break;
+                //Mostrar Nómina del Mes
+                case 5:
                     Gestion_Nomina.CalculaParcial(ref Nomina);
                     Console.WriteLine(Interfaz.MostrarNomina(Nomina));
                     Console.ReadLine();
                     break;
-                //Cerrar Nómina del Mes
-                case 5:
+                case 6: // Cerrar Nomina
                     Gestion_Nomina.CierraNomina(ref Nomina);
                     Interfaz.MostrarNomina(Nomina);
-                    break;
-                case 6: // SALIR
-                    flag = true;
                     break;
                 case 7: // SALIR
                     flag = true;
