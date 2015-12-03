@@ -96,6 +96,41 @@ namespace Nominas
             } while (!flag);
         }
 
+        internal static int EliminarSemana()
+        {
+            int semana = 0;
+            Console.WriteLine("\n\tPor favor, introduzca el número de semana que desea eliminar de la nómina:\n");
+            Console.WriteLine("\n\t\tSemana: ");
+            if (!Int32.TryParse(Console.ReadLine(), out semana))
+            {
+                throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca un valor numérico");
+            }
+            if (semana < 1 || semana > 6)
+            {
+                throw new Exception("El número no es válido, por favor, introduzca una semana que exista");
+            }
+            return semana;
+
+        }
+
+        internal static int EliminarSemanaOpcion()
+        {
+            int opcion = 0;
+            Console.WriteLine("\n\tPor favor, introduzca:\n");
+            Console.WriteLine("\n\t\t0 si desea volver atrás");
+            Console.WriteLine("\n\t\t1 si desea eliminar una semana");
+            Console.WriteLine("\n\t\t2 si desea eliminar toda la nómina");
+            if (!Int32.TryParse(Console.ReadLine(), out opcion))
+            {
+                throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca una opción de 0 a 3");
+            }
+            if (opcion < 0 || opcion > 2)
+            {
+                throw new Exception("El número no es válido, por favor, introduzca una opción de 0 a 3");
+            }
+            return opcion;
+        }
+
 
         #endregion
 
@@ -436,7 +471,7 @@ namespace Nominas
         {
             bool salir = false;
             byte seleccion = 0;
-            string cambio = null,mensaje = null,mensaje2 = null;
+            string cambio = null, mensaje = null, mensaje2 = null;
             bool existe = false;
             Trabajador trabajador = new Trabajador();
             do
@@ -667,14 +702,16 @@ namespace Nominas
             string nombre = null, value = null;
             int eleccion;
             Boolean salir = false;
-            do {
+            do
+            {
                 Console.WriteLine("\t\t¿Qué aspecto quieres modificar?");
                 Console.WriteLine("\t\t1 - Jornada Laboral Semanal");
                 Console.WriteLine("\t\t2 - Valor de las horas extras");
                 Console.WriteLine("\t\t3 - Valor de las retenciones");
                 Console.Write("\t\tEleccion: ");
-                if (int.TryParse(Console.ReadLine(), out eleccion) && (eleccion >= 1) && (eleccion <= 3)) {
-                    switch(eleccion)
+                if (int.TryParse(Console.ReadLine(), out eleccion) && (eleccion >= 1) && (eleccion <= 3))
+                {
+                    switch (eleccion)
                     {
                         case 1:
                             Console.Write("\t\tNuevo valor de la jornada: ");
@@ -687,7 +724,7 @@ namespace Nominas
                             break;
                     }
                 }
-            }while(!salir);
+            } while (!salir);
         }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
@@ -754,20 +791,7 @@ namespace Nominas
             return cadena;
         }
 
-        internal static void SolicitarHoras(ref Nomina nomina)//TODO: DESARROLLAR
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void SolicitarPrecio(ref Nomina nomina)//TODO: DESARROLLAR
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void SolicitarRetencion(ref Nomina nomina)//TODO:DESARROLLAR
-        {
-            throw new NotImplementedException();
-        }
+ 
         #endregion
 
     }

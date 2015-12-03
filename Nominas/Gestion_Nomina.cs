@@ -294,7 +294,7 @@ namespace Nominas
         }
 
         //Método de eliminación de nómina
-        public static void eliminarNomina(ref Nomina[] Nomina, int semana, ref int opcion)
+        public static void eliminarNomina(ref Nomina[] Nomina, int semana, int opcion)
         {
             opcion = 0;
             int i = 0;

@@ -86,7 +86,7 @@ namespace Nominas
                         ordinal = Interfaz.EliminarSemana();
                     }
                 
-                   Gestion_Nomina.eliminarNomina(ref Nomina, ordinal, opcion);
+                   Gestion_Nomina.eliminarNomina(ref Nomina, ordinal, opcion); //Quitar en el metodo el ref
                     break;
                 //Mostrar Nómina Temporal
                 case 4:
