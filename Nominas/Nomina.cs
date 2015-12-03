@@ -65,10 +65,8 @@ namespace Nominas {
             set {
                 //TODO: Revisar cambio de signo
                 if(value <= 0) {
-
                     throw new Exception("Las horas no pueden ser menores que 0");
                 }
-
                 // TODO: Revisar
                 else if(value <= 168) {
                     throw new Exception("No puede haber más de 168 horas.");
