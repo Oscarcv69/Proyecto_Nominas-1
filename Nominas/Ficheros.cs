@@ -355,7 +355,7 @@ namespace Nominas
 
                 XmlElement Hextras = doc.CreateElement("Horas_Extras");
                 Hextras.AppendChild(doc.CreateTextNode("1.5"));
-                
+
                 element1.AppendChild(Hextras);
 
                 XmlElement retencion = doc.CreateElement("Retencion");
@@ -396,6 +396,32 @@ namespace Nominas
                 throw new Exception("No se ha podido abrir el archivo, revise el contenido.");
             }
 
+        }
+
+        public static void ModConfig(string name, string valor)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(rutaConf);
+            XmlNode nodo;
+            nodo = doc.DocumentElement;
+
+            foreach (XmlNode node1 in nodo.ChildNodes)
+                switch(name)
+                {
+                    case "Jornada":
+                        int newJor = Int32.Parse(valor);
+                        node1.InnerText = newJor.ToString();
+                        break;
+                    case "Horas_Extras":
+                        float newHoras = float.Parse(valor, CultureInfo.InvariantCulture);
+                        node1.InnerText = newHoras.ToString();
+                        break;
+                    case "Retenciones":
+                        float newRet = float.Parse(valor, CultureInfo.InvariantCulture);
+                        node1.InnerText = newRet.ToString();
+                        break;
+                }
+            doc.Save(rutaConf);
         }
         #endregion FIN ARCHIVO CONFIGURACIÓN
 

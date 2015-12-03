@@ -528,22 +528,23 @@ namespace Nominas
                     }
                     Console.WriteLine("\n\t\t\t1 -> Introducir nueva nómina");
                     Console.WriteLine("\t\t\t2 -> Modificar nómina ");
-                    Console.WriteLine("\t\t\t3 -> Eliminar nómina ");
-                    Console.WriteLine("\t\t\t4 -> Mostrar nómina");
-                    Console.WriteLine("\t\t\t5 -> Cerrar nómina");
-                    Console.WriteLine("\t\t\t6 -> Salir\n");
+                    Console.WriteLine("\t\t\t3 -> Modificar Datos Archivo de Configuracion");
+                    Console.WriteLine("\t\t\t4 -> Eliminar nómina ");
+                    Console.WriteLine("\t\t\t5 -> Mostrar nómina");
+                    Console.WriteLine("\t\t\t6 -> Cerrar nómina");
+                    Console.WriteLine("\t\t\t7 -> Salir\n");
                     Console.Write("\t\t\tEleccion: ");
                     eleccion = Console.ReadLine();
                     eleccion = eleccion.Trim();
 
-                    if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 1) && (seleccion <= 6))
+                    if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 1) && (seleccion <= 7))
                     {
                         GestionNegocio.GestionNominas(seleccion, ref flag, dni);
                     }
                     else
                     {
                         fail = true;
-                        msg = "Opción Incorrecta (seleccione una opción del menú: 1 - 6)";
+                        msg = "Opción Incorrecta (seleccione una opción del menú: 1 - 7)";
                     }
 
                 }
@@ -660,7 +661,34 @@ namespace Nominas
             throw new NotImplementedException();
         }
 
-
+        // PEDIR DATOS PARA MODIFICAR EL ARCHIVO DE CONFIGURACIÓN
+        public static void PedirDatosArchivoConf(ref string name, ref string valor)
+        {
+            string nombre = null, value = null;
+            int eleccion;
+            Boolean salir = false;
+            do {
+                Console.WriteLine("\t\t¿Qué aspecto quieres modificar?");
+                Console.WriteLine("\t\t1 - Jornada Laboral Semanal");
+                Console.WriteLine("\t\t2 - Valor de las horas extras");
+                Console.WriteLine("\t\t3 - Valor de las retenciones");
+                Console.Write("\t\tEleccion: ");
+                if (int.TryParse(Console.ReadLine(), out eleccion) && (eleccion >= 1) && (eleccion <= 3)) {
+                    switch(eleccion)
+                    {
+                        case 1:
+                            Console.Write("\t\tNuevo valor de la jornada: ");
+                            break;
+                        case 2:
+                            Console.Write("\t\tNuevo valor de la jornada: ");
+                            break;
+                        case 3:
+                            Console.Write("\t\tNuevo valor de la jornada: ");
+                            break;
+                    }
+                }
+            }while(!salir);
+        }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
         public static string MostrarNomina(Nomina[] nomina)

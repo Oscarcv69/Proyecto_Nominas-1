@@ -294,7 +294,7 @@ namespace Nominas
         }
 
         //Método de eliminación de nómina
-        public static void eliminarNomina(ref Nomina[] Nomina, byte semana)
+        public static void eliminarNomina(ref Nomina[] Nomina, int semana)
         {
             int opcion = 0;
             int i = 0;
@@ -338,7 +338,7 @@ namespace Nominas
                             //Ponemos el array de copia en Null para ahorrar memoria
                             copiaNomina = null;
                             cadena = "\n\t Semana eliminada con éxito\n";
-                        }                        break;
+                        }   break;
                     case 2:
                         //Borrar toda la nómina
                         for (i = 0; i < Nomina.Length; i++)
@@ -357,7 +357,7 @@ namespace Nominas
         {
             //Calcula nominas semanales
             CalculaParcial(ref Nomina);
-            Interfaz.MostrarNomina(Nomina);
+            
             //Confirmacion
             //Almacena en el fichero - LLamar metodos de Fran
             //Eliminar fichero - Llamar metodos de Fran
