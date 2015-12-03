@@ -347,7 +347,7 @@ namespace Nominas
                     existe = Gestion_Empleado.ComprobarDni(dni);
                     if(existe == true)
                     {
-                salir = true;
+                        salir = true;
                     }
                     else
                     {
@@ -364,7 +364,7 @@ namespace Nominas
                 {
                   
                     salir = false;
-                    mensaje = "DNI Válido, pero no está en la base de datos";
+                    mensaje = "DNI No válido";
                     mensaje2 = "Pulse Enter para Continuar";
                     Error(mensaje);
                     Continuar(mensaje2);
@@ -383,8 +383,8 @@ namespace Nominas
                 eleccion = Console.ReadLine();
                 if (eleccion.Equals("s"))
                 {
-                    salir = false;
-                    salida = true;
+                    salir = true;
+                    salida = false;
                 }
                 else if (eleccion.Equals("n"))
                 {
@@ -434,7 +434,9 @@ namespace Nominas
         {
             bool salir = false;
             byte seleccion = 0;
-            string cambio = null;
+            string cambio = null,mensaje = null,mensaje2 = null;
+            bool existe = false;
+            Trabajador trabajador = new Trabajador();
             do
             {
                 Header();
@@ -444,6 +446,19 @@ namespace Nominas
                     case "1":
                         Console.Write("\n\t\tIntroduce el DNI nuevo: ");
                         cambio = Console.ReadLine();
+                        trabajador.dni_pre = cambio;
+                        trabajador = null;
+                        existe = Gestion_Empleado.ComprobarDni(cambio);
+                        if (existe == true)
+                        {
+                            salir = true;
+                        }
+                        else
+                        {
+                            salir = false;
+                            mensaje2 = "Pulse Enter para Continuar";
+                            Continuar(mensaje2);
+                        }
                         break;
                     case "2":
                         Console.Write("\n\t\tIntroduce el Nombre nuevo: ");

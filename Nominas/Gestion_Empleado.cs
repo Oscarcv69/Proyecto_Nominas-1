@@ -102,14 +102,15 @@ namespace Nominas
             string pregunta = null;
             string mensaje = null;
 
-            do
-            {
+            
                 try
                 {
                     if(error == false) { 
                     dni = Interfaz.PlantillaPedirDni();
                     existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
                     }
+                do
+                {
                     if (existe)
                     {
                         eleccion = Interfaz.PlantillaEleccionModificar();
@@ -128,7 +129,7 @@ namespace Nominas
                         }
                         error = false;
                         mensaje = "Operación realizada con éxito.";
-                        pregunta = "¿Quieres modificar otro usuario? s/n >> ";
+                        pregunta = "¿Quieres modificar otro aspecto? s/n >> ";
                         Interfaz.Continuar(mensaje);
                         Interfaz.Pregunta(ref pregunta, ref salir);
                     }
@@ -139,7 +140,8 @@ namespace Nominas
                         salir = false;
                         error = true;
                     }
-                }
+                } while (!salir);
+            }
                 catch (Exception ex)
                 {
                     Interfaz.Error(ex.Message);
@@ -147,7 +149,7 @@ namespace Nominas
                     salir = false;
                     error = true;
                 }
-            } while (!salir);
+      
         }
 
         //Método para borrar un trabajador
