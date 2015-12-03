@@ -294,9 +294,9 @@ namespace Nominas
         }
 
         //Método de eliminación de nómina
-        public static void eliminarNomina(ref Nomina[] Nomina, int semana)
+        public static void eliminarNomina(ref Nomina[] Nomina, int semana, ref int opcion)
         {
-            int opcion = 0;
+            opcion = 0;
             int i = 0;
             int j = 0;
             Nomina[] copiaNomina;
@@ -306,7 +306,7 @@ namespace Nominas
             existesemana = ExisteNomina(ref Nomina, semana);
             if (!existesemana)
             {
-                cadena = "La semana no existe";
+                cadena = "\n\t La semana no existe";
             }
             else
             {
@@ -315,12 +315,12 @@ namespace Nominas
                 switch (opcion)
                 {
                     case 0:
-                        cadena = "Operación abortada";
+                        cadena = "\n\t Operación abortada";
                         break;
                     case 1:
                         if (semana > Nomina.Length)
                         {
-                            cadena = "Esta semana no se ha cargado en el archivo.";
+                            cadena = "\n\t Esta semana no se ha cargado en el archivo.";
                         }
                         else
                         {
@@ -337,7 +337,7 @@ namespace Nominas
                             copiaNomina.CopyTo(Nomina, 0);
                             //Ponemos el array de copia en Null para ahorrar memoria
                             copiaNomina = null;
-                            cadena = "\n\t Semana eliminada con éxito\n";
+                            cadena = "\n\t Semana eliminada con éxito";
                         }   break;
                     case 2:
                         //Borrar toda la nómina
@@ -347,7 +347,7 @@ namespace Nominas
                         }
                         break;
                 }
-                cadena = "Pulse ENTER para continuar";
+                cadena += "\n\tPulse ENTER para continuar\n";
                 Interfaz.Continuar(cadena);
             }
         }
