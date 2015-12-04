@@ -736,7 +736,7 @@ namespace Nominas
         }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
-        public static void MostrarNomina(Nomina[] nomina, string dni)
+        public static string MostrarNomina(Nomina[] nomina, string dni)
         {
             Header();
             String cadena = null;
@@ -775,6 +775,7 @@ namespace Nominas
                 cadena += "\n"+LineaSeparador("=");
 
                 Console.WriteLine(cadena);
+            return cadena;
         }
 
         public static string MostrarNominaTemporal(Nomina[] nomina, string dni)
