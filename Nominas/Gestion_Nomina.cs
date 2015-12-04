@@ -184,37 +184,56 @@ namespace Nominas
                 case 1:
                     for (int i = 0; i < Nomina.Length; i++)
                     {
-                        cadena += Nomina[i].Horas_pre;
+                        if (Nomina[i] != null)
+                        {
+                            cadena += Nomina[i].Horas_pre;
+                        }
                     }
                     break;
                 case 2:
                     for (int i = 0; i < Nomina.Length; i++)
                     {
-                        cadena += Nomina[i].HExtra_pre;
+                        if (Nomina[i] != null)
+                        {
+                            cadena += Nomina[i].HExtra_pre;
+                        }
                     }
                     break;
                 case 3:
                     for (int i = 0; i < Nomina.Length; i++)
                     {
-                        cadena += Nomina[i].SalExtra_pre;
+                        if (Nomina[i] != null)
+                        {
+                            cadena += Nomina[i].SalExtra_pre;
+                        }
                     }
                     break;
                 case 4:
+
                     for (int i = 0; i < Nomina.Length; i++)
                     {
-                        cadena += Nomina[i].SalBruto_pre;
+                        if (Nomina[i] != null)
+                        {
+                            cadena += Nomina[i].SalBruto_pre;
+                        }
                     }
                     break;
                 case 5:
                     for (int i = 0; i < Nomina.Length; i++)
                     {
-                        cadena += Nomina[i].SalRetencion_pre;
+                        if (Nomina[i] != null)
+                        {
+                            cadena += Nomina[i].SalRetencion_pre;
+                        }
                     }
                     break;
                 case 6:
                     for (int i = 0; i < Nomina.Length; i++)
                     {
-                        cadena += Nomina[i].SalNeto_pre;
+                        if (Nomina[i] != null)
+                        {
+                            cadena += Nomina[i].SalNeto_pre;
+                        }
                     }
                     break;
             }
@@ -299,8 +318,8 @@ namespace Nominas
 
             //Entrada de Datos
             semana = Interfaz.QueSemana(Nomina);
-
-            opcion = Interfaz.NominaModificar(Nomina[semana]);
+            int id = BuscaSemana(Nomina, semana);
+            opcion = Interfaz.NominaModificar(Nomina[id]);
             //PROCESO
             switch (opcion)
             {
@@ -309,16 +328,30 @@ namespace Nominas
                     break;
                 //Modificación de los datos
                 case 1:
-                    Nomina[semana].Horas_pre = Interfaz.SolicitarHoras();
+                    Nomina[id].Horas_pre = Interfaz.SolicitarHoras();
                     cadena = "Horas modificadas con éxito";
 
                     break;
                 case 2:
-                    Nomina[semana].PrecioPre = Interfaz.SolicitarPrecio();
+                    Nomina[id].PrecioPre = Interfaz.SolicitarPrecio();
                     cadena = "Precio de la hora de trabajo modificado con éxito";
                     break;
             }
             Interfaz.Continuar(cadena);
+        }
+
+        private static int BuscaSemana(Nomina[] nomina, int semana)
+        {
+            int id = 0;
+            for (int i = 0; i < nomina.Length; i++)
+            {
+                if (semana == nomina[i].ID_pre)
+                {
+                    id = i;
+                }
+
+            }
+            return id;
         }
 
         // Método de eliminacion de nomina

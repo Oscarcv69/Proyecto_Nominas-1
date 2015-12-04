@@ -736,7 +736,7 @@ namespace Nominas
         }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
-        public static string MostrarNomina(Nomina[] nomina, string dni)
+        public static void MostrarNomina(Nomina[] nomina, string dni)
         {
             Header();
             String cadena = null;
@@ -765,6 +765,7 @@ namespace Nominas
                         precioMedio += nomina[i].PrecioPre;
                     }
                 }
+                cadena += "\r";
             }
             else
             {
@@ -772,7 +773,7 @@ namespace Nominas
             }
             cadena += LineaSeparador("=");
 
-            return cadena;
+            Console.WriteLine(cadena);
         }
 
         public static string MostrarNominaTemporal(Nomina[] nomina, string dni)
@@ -780,7 +781,6 @@ namespace Nominas
             Header();
             String cadena = null;
             cadena += "\n";
-            float precioMedio = 0.0F;
             int i = 0;
             Trabajador trabajador = new Trabajador();
             trabajador = Ficheros.GetDatosTrabajador(dni);
@@ -799,7 +799,7 @@ namespace Nominas
                         cadena += "\t  " + nomina[i].PrecioPre;
                         cadena += "\t\t  " + nomina[i].JornadaPre;
                         cadena += "\t\t" + nomina[i].RetencionPre;
-                        cadena += "\t\t" + nomina[i].HextrasPre + "\n";
+                        cadena += "\t\t" + nomina[i].HextrasPre ;
                     }
                 }
             }
@@ -808,12 +808,12 @@ namespace Nominas
                 cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
             }
             
-            cadena += LineaSeparador("=");
+            cadena += "\r"+"\n"+LineaSeparador("=");
 
             return cadena;
         }
 
-        public static String CierreMes(Nomina[] nomina)
+        public static void CierreMes(Nomina[] nomina)
         {
             String cadena = null;
             float precioMedio = 0.0F;
@@ -827,7 +827,7 @@ namespace Nominas
             cadena += Gestion_Nomina.CalculaTotal(nomina, 5) + "\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
 
-            return cadena;
+            Console.WriteLine(cadena);
         }
 
         internal static bool Confirmar()
@@ -909,7 +909,7 @@ namespace Nominas
             bool salir = false;
             do
             {
-                Console.WriteLine("\n\tPor favor, introduzca el número de semana que desea eliminar de la nómina:\n");
+                Console.WriteLine("\n\tPor favor, introduzca el número de semana:\n");
                 Console.WriteLine("\n\t\tSemana: ");
                 if (!Int32.TryParse(Console.ReadLine(), out semana))
                 {

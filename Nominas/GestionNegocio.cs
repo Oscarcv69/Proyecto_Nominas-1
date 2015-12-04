@@ -79,6 +79,7 @@ namespace Nominas
                     //Modificar Nóminas
                     case 2:
                         Gestion_Nomina.CambiaSemana(ref Nomina);
+                        Ficheros.GuardarNominaTemporal(ref Nomina);
                         break;
 
                     //Modificar archivo de configuracion
@@ -111,6 +112,7 @@ namespace Nominas
                     case 6:
                         Gestion_Nomina.CalculaParcial(ref Nomina);
                         Interfaz.MostrarNomina(Nomina, dni);
+                        Interfaz.CierreMes(Nomina);
                         Gestion_Nomina.CierraNomina(ref Nomina);
                         Ficheros.BorrarTemporal(dni);
                         break;
