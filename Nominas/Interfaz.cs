@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
 
 namespace Nominas
 {
@@ -377,6 +379,9 @@ namespace Nominas
             } while (!salir);
             return dni;
         }
+
+       
+
         public static void Pregunta(ref string pregunta, ref bool salida)
         {
             bool salir = false;
@@ -654,6 +659,7 @@ namespace Nominas
                     correcto = false;
                 }
             } while (!correcto);
+
             return nomtemp;
         }
 
@@ -674,13 +680,14 @@ namespace Nominas
                 {
                     salir = false;
                     throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca una opción de 1 a 3");
-                    
+
                 }
                 else if (opcion < 1 || opcion > 3)
                 {
                     salir = false;
                     throw new Exception("El número no es válido, por favor, introduzca una opción de 1 a 3");
-                } else
+                }
+                else
                 {
                     // HACER SWITCH
                     salir = true;
@@ -718,7 +725,8 @@ namespace Nominas
                             break;
                     }
                     salir = true;
-                } else
+                }
+                else
                 {
                     throw new Exception("La elección no es correcta, inserte un número del 1-3");
                     salir = false;
@@ -734,8 +742,9 @@ namespace Nominas
             cadena += "\n";
             float precioMedio = 0.0F;
             int i = 0;
-
-            /* cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;*/
+            Trabajador trabajador = new Trabajador();
+            trabajador = Ficheros.GetDatosTrabajador(dni_trb);
+            cadena += HeaderNominaTrabajador(trabajador);//COMO PASO EL TRABAJADOR AL METODO?
             cadena += LineaSeparador("-");
             cadena += "\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
             cadena += LineaSeparador("-");
@@ -752,15 +761,26 @@ namespace Nominas
                         cadena += "\t" + nomina[i].SalBruto_pre;
                         cadena += "\t" + nomina[i].SalRetencion_pre;
                         cadena += "\t" + nomina[i].SalNeto_pre;
-                        cadena += LineaSeparador("-");
+                        cadena += "\r" + LineaSeparador("-");
                         precioMedio += nomina[i].PrecioPre;
                     }
                 }
-            } else {
+            }
+            else
+            {
                 cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
             }
             cadena += LineaSeparador("=");
-            /*cadena += "TOTAL MES:\t\t";
+
+            return cadena;
+        }
+
+        public static String CierreMes(Nomina[] nomina)
+        {
+            String cadena = null;
+            float precioMedio = 0.0F;
+            int i = nomina.Length;
+            cadena += "TOTAL MES:\t\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 1) + "\t";
             cadena += precioMedio / i + "\t";//Hacemos el cálculo del precio de la hora media
             cadena += Gestion_Nomina.CalculaTotal(nomina, 2) + "\t";
@@ -768,8 +788,18 @@ namespace Nominas
             cadena += Gestion_Nomina.CalculaTotal(nomina, 4) + "\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 5) + "\t";
             cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
-            */
+
             return cadena;
+        }
+
+        internal static bool Confirmar()
+        {
+            String cad = null;
+            bool confirma = false;          
+                cad= "\t¿Desea usted guardar los cambios?(s/n)";
+                Pregunta(ref cad,ref confirma);
+            
+            return confirma;
         }
 
         internal static int EliminarSemana()
@@ -793,7 +823,8 @@ namespace Nominas
                     salir = false;
                     Error("El número no es válido, por favor, introduzca una semana que exista");
                     Continuar("Pulsa una tecla para continuar...");
-                } else
+                }
+                else
                 {
                     salir = true;
                 }
@@ -825,7 +856,8 @@ namespace Nominas
                     salir = false;
                     Error("El número no es válido, por favor, introduzca una opción de 1 a 3");
                     Continuar("Pulsa una tecla para continuar...");
-                } else
+                }
+                else
                 {
                     salir = true;
                 }
@@ -852,7 +884,8 @@ namespace Nominas
                     salir = false;
                     Error("El número no es válido, por favor, introduzca una semana que exista");
                     Continuar("Pulsa una tecla para continuar...");
-                } else
+                }
+                else
                 {
                     salir = true;
                 }
