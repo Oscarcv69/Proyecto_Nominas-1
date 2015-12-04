@@ -119,7 +119,7 @@ namespace Nominas
                         {
                             //Almacena en el fichero
                             fecha = Interfaz.Pidefecha();
-                            Ficheros.CerrarNomina(cadena);
+                            Ficheros.CerrarNomina(cadena, fecha);
                             //Eliminar fichero
                             Ficheros.BorrarTemporal(dni);
                         }

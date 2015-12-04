@@ -539,19 +539,19 @@ namespace Nominas
                     Console.WriteLine("\t\t\t4 -> Eliminar nómina ");
                     Console.WriteLine("\t\t\t5 -> Mostrar nómina");
                     Console.WriteLine("\t\t\t6 -> Cerrar nómina");
-                    Console.WriteLine("\t\t\t7 -> Salir\n");
+                    Console.WriteLine("\t\t\t0 -> Salir\n");
                     Console.Write("\t\t\tEleccion: ");
                     eleccion = Console.ReadLine();
                     eleccion = eleccion.Trim();
 
-                    if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 1) && (seleccion <= 7))
+                    if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 6))
                     {
                         GestionNegocio.GestionNominas(seleccion, ref flag, dni);
                     }
                     else
                     {
                         fail = true;
-                        msg = "Opción Incorrecta (seleccione una opción del menú: 1 - 7)";
+                        msg = "Opción Incorrecta (seleccione una opción del menú: 0 - 6)";
                     }
 
                 }
@@ -987,16 +987,18 @@ namespace Nominas
         internal static string Pidefecha()
         {
             DateTime anho = new DateTime();
+
             string fecha=null;
             bool ctrl = false;
             int num = 0;
+            string aux = null;
             anho = DateTime.Now;
             do
             {
                 Console.WriteLine("Por favor, introduzca el año de la nómina:");
                 Console.Write("Año: ");
-                fecha = Console.ReadLine();
-                if (!Int32.TryParse(fecha, out num){
+                aux = Console.ReadLine();
+                if (!Int32.TryParse(aux, out num)){
                     ctrl = false;
                     Error("Ha introducido un valor no válido, debe introducir un valor numérico");
                 }
@@ -1008,6 +1010,7 @@ namespace Nominas
                     }
                     else
                     {
+                        fecha = aux;
                         ctrl = true;
                     }
                 }
@@ -1016,8 +1019,8 @@ namespace Nominas
             {
                 Console.WriteLine("Por favor, introduzca el mes de la nómina:");
                 Console.Write("Mes: ");
-                fecha = Console.ReadLine();
-                if (!Int32.TryParse(fecha, out num){
+                aux = Console.ReadLine();
+                if (!Int32.TryParse(aux, out num)){
                     ctrl = false;
                     Error("Ha introducido un valor no válido, debe introducir un valor numérico");
                 }
@@ -1031,6 +1034,7 @@ namespace Nominas
                     }
                     else
                     {
+                        fecha += aux;
                         ctrl = true;
                     }
                 }

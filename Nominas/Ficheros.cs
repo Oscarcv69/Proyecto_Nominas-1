@@ -461,10 +461,10 @@ namespace Nominas
 
         #region FICHEROS TXT - Francisco Romero
         // CREAR TXT
-        public static void CerrarNomina(string cadena)
+        public static void CerrarNomina(string cadena, string fecha)
         {
             bool salir = false;
-            string fic = @"..\\..\\..\\Nominas\\B.D_Nominas\\" + dni_glo + ".txt";
+            string fic = @"..\\..\\..\\Nominas\\B.D_Nominas\\" +fecha + dni_glo + ".txt";
             try
             {
                 do
