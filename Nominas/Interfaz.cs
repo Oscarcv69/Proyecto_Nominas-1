@@ -443,7 +443,7 @@ namespace Nominas
         {
             bool salir = false;
             byte seleccion = 0;
-            string cambio = null, mensaje = null, mensaje2 = null;
+            string cambio = null, mensaje = null;
             bool existe = false;
             Trabajador trabajador = new Trabajador();
             do
@@ -465,8 +465,8 @@ namespace Nominas
                         else
                         {
                             salir = false;
-                            mensaje2 = "Pulse Enter para Continuar";
-                            Continuar(mensaje2);
+                            mensaje = "Pulse Enter para Continuar";
+                            Continuar(mensaje);
                         }
                         break;
                     case "2":
@@ -728,8 +728,9 @@ namespace Nominas
                 }
                 else
                 {
-                    throw new Exception("La elección no es correcta, inserte un número del 1-3");
                     salir = false;
+                    throw new Exception("La elección no es correcta, inserte un número del 1-3");
+                    
                 }
             } while (!salir);
         }

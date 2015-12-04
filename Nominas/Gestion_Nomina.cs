@@ -9,28 +9,30 @@ namespace Nominas
     class Gestion_Nomina
     {
 
-        //TODO: Cargar ajustes por defecto
-        private static int horas = 0; //Total de horas trabajadas en la semana (se almacena en el temporal)
-        private static int extra = 0; //Horas extra trabajadas en la semana (se almacena en el temporal)
-        private static float precio = 0; //Precio de la hora trabajada (se almacena en el temporal)
-        private static int jornada = 0; //Horas a partir de las cuales se consideran extras (se almacena en el temporal)
-        private static float horasExtra = 0.0F;//Multplicador de precio para horas extra (se almacena en el temporal)
+        //Datos de nómina a almacenar en el fichero temporal
+        private static int horas = 0; //Total de horas trabajadas en la semana
+        private static int extra = 0; //Horas extra trabajadas en la semana
+        private static float precio = 0; //Precio de la hora trabajada
+        private static int jornada = 0; //Horas a partir de las cuales se consideran extras
+        private static float horasExtra = 0.0F;//Multplicador de precio para horas extra
 
-        private static float salarioExtra = 0.0F; //Calculo de las hora extra (se calculan por método)
-        private static float bruto = 0.0F; //Calculo del salario bruto total (se calculan por método)
-        private static float neto = 0.0F; //Calculo del salario neto total (Bruto-renteciones) (se calculan por método)
-        private static float retenciones = 0.0F; //Calculo de retenciones salariales (se calculan por método)
+        //Datos de Nómina a calcular sólo en el momento de cerrar la nómina
+        private static float salarioExtra = 0.0F; //Calculo de las hora extra
+        private static float bruto = 0.0F; //Calculo del salario bruto total
+        private static float neto = 0.0F; //Calculo del salario neto total (Bruto-renteciones)
+        private static float retenciones = 0.0F; //Calculo de retenciones salariales
 
 
         #region GESTION NOMINAS - ANTONIO
 
 
-        //Métodos para el cálculo de la nómina
-
         //Inicialización de nóminas
         public static void InicializaNomina(ref Nomina nomina)
         {
+            //Cargamos los datos por defecto de app.config
             Ficheros.getConfig(ref jornada, ref horasExtra, ref retenciones);
+            
+            //Cargamos los datos en el objeto nomina desde la referencia
             horas = nomina.Horas_pre;
             extra = nomina.HExtra_pre;
             precio = nomina.PrecioPre;
@@ -38,32 +40,39 @@ namespace Nominas
             bruto = nomina.SalBruto_pre;
             neto = nomina.SalNeto_pre;
         }
-        //Fichero temporal lleva las horas por semana
 
-        public static void CargaNomina(ref Nomina[] Nomina)
+
+        /*CargaNomina: El método coge un array de semanas y lo ordena, 
+        * creando huecos allí donde sea necesario para insertar después 
+        * las semanas y completarlo.*/
+        public static void CargaNomina(ref Nomina[] nomina)
         {
             Nomina[] nominatemp = null;
             int max = 0;
-            for (int i = 0; i < Nomina.Length; i++)
+
+            //Recorremos el array de nóminas para ver la semana más alta que hemos guardado
+            for (int i = 0; i < nomina.Length; i++)
             {
-                if (Nomina[i] != null && max < Nomina[i].ID_pre)
+                if (nomina[i] != null && max < nomina[i].ID_pre)
                 {
-                    max = Nomina[i].ID_pre;
+                    max = nomina[i].ID_pre;
                 }
 
             }
+
+            //Redimensionamos el array para hacer sitio (usando la semana más alta)
             nominatemp = new Nomina[max];
-            for (int i = 0; i < Nomina.Length; i++)
+            for (int i = 0; i < nomina.Length; i++)
             {
-                nominatemp[(Nomina[i].ID_pre) - 1] = Nomina[i];
+                nominatemp[(nomina[i].ID_pre) - 1] = nomina[i];
             }
-            Nomina = null;
-            Nomina = new Nomina[nominatemp.Length];
-            Nomina = nominatemp;
+            nomina = null;
+            nomina = new Nomina[nominatemp.Length];
+            nomina = nominatemp;
             nominatemp = null;
-            Console.WriteLine(Nomina.Length);
         }
 
+        #region Cálculo de las variables - Antonio Baena
         //Cálculo de las horas extra
         private static int CalculoExtra(int hora, int jornada)
         {
@@ -71,7 +80,11 @@ namespace Nominas
             return extra;
 
         }
-
+        //Calculo del salario Extra
+        private static float CalculoSalarioExtra(int extra, float precio)
+        {
+            return (extra * precio * horasExtra);
+        }
         //Cálculo del salario bruto
         private static float CalculoSalarioBruto(int horas, int jornada, float precio)
         {
@@ -87,13 +100,12 @@ namespace Nominas
             }
             return bruto;
         }
-
-        //Calculo del salario Extra
-        private static float CalculoSalarioExtra(int extra, float precio)
+        //Cálculo de las retenciones
+        private static float CalculoRetenciones(float bruto, float retenciones)
         {
-            return (extra * precio * horasExtra);
+            retenciones = bruto * retenciones;
+            return retenciones;
         }
-
         //Cálculo del salario Neto
         private static float CalculoSalarioNeto(float bruto, float retenciones)
         {
@@ -101,17 +113,11 @@ namespace Nominas
             neto = bruto - retenciones;
             return neto;
         }
+        #endregion
 
-        //Cálculo de las retenciones
-        private static float CalculoRetenciones(float bruto, float retenciones)
-        {
-            retenciones = bruto * retenciones;
-            return retenciones;
-        }
+        #region Gestión de las Nóminas - Antonio Baena
 
-        //Métodos para la gestión de las nóminas
-
-        //Cálculo de las semanas del mes
+        #region Cálculo de las semanas - Veremos si  no lo borramos
         public static short CalculoSemanas(short anho, short mes)
         {
             //Control de errores
@@ -151,6 +157,7 @@ namespace Nominas
             return semanas;
 
         }
+        #endregion
 
         //Calculo de los parciales de nomina
         internal static void CalculaParcial(ref Nomina[] Nomina)
@@ -355,7 +362,7 @@ namespace Nominas
         }
 
         //Cerrar nómina
-        public static void CierraNomina(ref Nomina[] Nomina)//TODO: Terminar Desarrollo Confirmación, Guardar y borrar temporal
+        public static void CierraNomina(ref Nomina[] Nomina)
         {
             String cadena = null;
             //Calcula nominas semanales
@@ -365,7 +372,7 @@ namespace Nominas
             //Confirmacion
             if (Interfaz.Confirmar())
             {
-                //Almacena en el fichero - LLamar metodos de Fran
+                //Almacena en el fichero
                 Ficheros.CerrarNomina(cadena);
                 //Eliminar fichero
                 Ficheros.BorrarTemporal();//Pasar el dni del trabajador);
@@ -374,9 +381,7 @@ namespace Nominas
                 Interfaz.Continuar();
             }
             
-        }//TERMINAR
-
-
+        }//TERMINA
         #endregion
     }
 }
