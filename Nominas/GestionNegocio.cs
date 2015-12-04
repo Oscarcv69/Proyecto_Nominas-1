@@ -104,7 +104,7 @@ namespace Nominas
                         break;
                     //Mostrar Nómina Temporal
                     case 5:
-                        Console.WriteLine(Interfaz.MostrarNomina(Nomina, dni));
+                        Console.WriteLine(Interfaz.MostrarNominaTemporal(Nomina, dni));
                         Console.ReadLine();
                         break;
                     //Cerrar Nómina del Mes

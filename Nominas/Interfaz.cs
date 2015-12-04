@@ -380,7 +380,7 @@ namespace Nominas
             return dni;
         }
 
-       
+
 
         public static void Pregunta(ref string pregunta, ref bool salida)
         {
@@ -728,8 +728,9 @@ namespace Nominas
                 }
                 else
                 {
-                    throw new Exception("La elección no es correcta, inserte un número del 1-3");
                     salir = false;
+                    throw new Exception("La elección no es correcta, inserte un número del 1-3");
+
                 }
             } while (!salir);
         }
@@ -794,10 +795,10 @@ namespace Nominas
         internal static bool Confirmar()
         {
             String cad = null;
-            bool confirma = false;          
-                cad= "\t¿Desea usted guardar los cambios?(s/n)";
-                Pregunta(ref cad,ref confirma);
-            
+            bool confirma = false;
+            cad = "\t¿Desea usted guardar los cambios?(s/n)";
+            Pregunta(ref cad, ref confirma);
+
             return confirma;
         }
 
@@ -970,7 +971,42 @@ namespace Nominas
             return cadena;
         }
 
+        public static string MostrarNominaTemporal(Nomina[] nomina, string dni)
+        {
+            Header();
+            String cadena = null;
+            cadena += "\n";
+            float precioMedio = 0.0F;
+            int i = 0;
+            Trabajador trabajador = new Trabajador();
+            trabajador = Ficheros.GetDatosTrabajador(dni);
+            cadena += HeaderNominaTrabajador(trabajador);
+            cadena += LineaSeparador("-");
+            cadena += "\tHoras\tEuros/Hora\tjornada\tretenciones\tValor Horas Extrar";
+            cadena += LineaSeparador("-");
+            if (nomina.Length != 0)
+            {
+                for (i = 0; i < nomina.Length; i++)
+                {
+                    if (nomina[i] != null)
+                    {
+                        cadena += "\n\tSemana " + (nomina[i].ID_pre);
+                        cadena += "\t" + nomina[i].Horas_pre;
+                        cadena += "\t" + nomina[i].PrecioPre;
+                        cadena += "\t" + nomina[i].JornadaPre;
+                        cadena += "\t" + nomina[i].RetencionPre;
+                        cadena += "\t" + nomina[i].HextrasPre;
+                    }
+                }
+            }
+            else
+            {
+                cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
+            }
+            cadena += LineaSeparador("=");
 
+            return cadena;
+        }
         #endregion
 
     }
