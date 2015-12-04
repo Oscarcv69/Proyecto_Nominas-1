@@ -52,6 +52,46 @@ namespace Nominas
         }
         // FIN CREAR TRABAJADORES
 
+        public static Trabajador GetDatosTrabajador(string dni_trb)
+        {
+            XmlDocument doc = new XmlDocument();
+            Trabajador trb = new Trabajador();
+            string dni = null, nombre = null, apellidos = null;
+            try
+            {
+                doc.Load(rutaEMP);
+                XmlNodeList listaEmpleados = doc.SelectNodes("Plantilla/Trabajador");
+                XmlNode empleado = null;
+                trb = new Trabajador();
+                for (int i = 0; i < listaEmpleados.Count; i++)
+                {
+                    empleado = listaEmpleados.Item(i);
+                    dni = Encriptacion.DesEncriptar(empleado.Attributes.GetNamedItem("DNI").InnerText);
+                    trb.dni_pre = dni.ToString();
+                    if (trb.dni_pre.Equals(dni_trb))
+                    {
+                        nombre = Encriptacion.DesEncriptar(empleado.SelectSingleNode("Nombre").InnerText);
+                        trb.nombre_pre = nombre;
+                        apellidos = Encriptacion.DesEncriptar(empleado.SelectSingleNode("Apellidos").InnerText);
+                        trb.apellidos_pre = apellidos;
+                    }
+                }
+                return trb;
+            }
+            catch (FileNotFoundException)
+            {
+                throw new Exception("Archivo no encontrado");
+            }
+            catch (ArgumentException)
+            {
+                throw new Exception("El archivo al que trata de acceder esta vacio. Por favor inserte minimo un trabajador.");
+            }
+            catch (XmlException)
+            {
+                throw new Exception("No se ha podido abrir el archivo, revise el contenido.");
+            }
+        }
+
         // LEER TRABAJADORES
         public static Trabajador[] getTrabajadores()
         {
@@ -62,7 +102,6 @@ namespace Nominas
             try
             {
                 doc.Load(rutaEMP);
-
                 XmlNodeList listaEmpleados = doc.SelectNodes("Plantilla/Trabajador");
                 XmlNode unEmpleado;
 
@@ -147,26 +186,6 @@ namespace Nominas
                         XmlElement horas = doc.CreateElement("Horas_Totales");
                         horas.AppendChild(doc.CreateTextNode(nomina[i].Horas_pre.ToString()));
                         SEMANA.AppendChild(horas);
-
-                        XmlElement hextras = doc.CreateElement("Horas_Extras");
-                        hextras.AppendChild(doc.CreateTextNode(nomina[i].HExtra_pre.ToString()));
-                        SEMANA.AppendChild(hextras);
-
-                        XmlElement SalExtra = doc.CreateElement("Salario_Extra");
-                        SalExtra.AppendChild(doc.CreateTextNode(nomina[i].SalExtra_pre.ToString()));
-                        SEMANA.AppendChild(SalExtra);
-
-                        XmlElement SalBruto = doc.CreateElement("Salario_Bruto");
-                        SalBruto.AppendChild(doc.CreateTextNode(nomina[i].SalBruto_pre.ToString()));
-                        SEMANA.AppendChild(SalBruto);
-
-                        XmlElement Salneto = doc.CreateElement("Salario_Neto");
-                        Salneto.AppendChild(doc.CreateTextNode(nomina[i].SalNeto_pre.ToString()));
-                        SEMANA.AppendChild(Salneto);
-
-                        XmlElement impuestos = doc.CreateElement("Impuestos");
-                        impuestos.AppendChild(doc.CreateTextNode(nomina[i].SalRetencion_pre.ToString()));
-                        SEMANA.AppendChild(impuestos);
 
                         XmlElement Jorpre = doc.CreateElement("Jornada_Pre");
                         Jorpre.AppendChild(doc.CreateTextNode(nomina[i].JornadaPre.ToString()));
@@ -258,17 +277,6 @@ namespace Nominas
                     Nom.ID_pre = id;
                     horas = Int32.Parse(UnaSemana.SelectSingleNode("Horas_Totales").InnerText);
                     Nom.Horas_pre = horas;
-                    hextras = Int32.Parse(UnaSemana.SelectSingleNode("Horas_Extras").InnerText);
-                    Nom.HExtra_pre = hextras;
-                    salarioExtra = Single.Parse(UnaSemana.SelectSingleNode("Salario_Extra").InnerText);
-                    Nom.SalExtra_pre = salarioExtra;
-                    salarioBruto = Single.Parse(UnaSemana.SelectSingleNode("Salario_Bruto").InnerText);
-                    Nom.SalBruto_pre = salarioBruto;
-                    salarioNeto = Int32.Parse(UnaSemana.SelectSingleNode("Salario_Neto").InnerText);
-                    Nom.SalNeto_pre = salarioNeto;
-                    impuestos = Int32.Parse(UnaSemana.SelectSingleNode("Impuestos").InnerText); // RESULTADO DE LA OPERACION (SALARIO BRUTO * RETENCION)
-                    Nom.SalRetencion_pre = impuestos;
-
                     // Valores predeterminados CONF
                     jornadapre = Int32.Parse(UnaSemana.SelectSingleNode("Jornada_Pre").InnerText);
                     Nom.JornadaPre = jornadapre;
@@ -294,7 +302,8 @@ namespace Nominas
             catch (XmlException)
             {
                 throw new Exception("No se ha podido abrir el archivo, revise el contenido.");
-            } catch(NullReferenceException)
+            }
+            catch (NullReferenceException)
             {
                 throw new Exception("Falta un elemento en el archivo, revíse el contenido.");
             }
@@ -409,7 +418,7 @@ namespace Nominas
             nodo = doc.DocumentElement;
 
             foreach (XmlNode node1 in nodo.ChildNodes)
-                switch(name)
+                switch (name)
                 {
                     case "Jornada":
                         int newJor = Int32.Parse(valor);

@@ -739,7 +739,7 @@ namespace Nominas
             cadena += LineaSeparador("-");
             cadena += "\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
             cadena += LineaSeparador("-");
-            if (nomina == null)
+            if (nomina.Length != 0)
             {
                 for (i = 0; i < nomina.Length; i++)
                 {
