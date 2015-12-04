@@ -775,6 +775,44 @@ namespace Nominas
             return cadena;
         }
 
+        public static string MostrarNominaTemporal(Nomina[] nomina, string dni)
+        {
+            Header();
+            String cadena = null;
+            cadena += "\n";
+            float precioMedio = 0.0F;
+            int i = 0;
+            Trabajador trabajador = new Trabajador();
+            trabajador = Ficheros.GetDatosTrabajador(dni);
+            cadena += HeaderNominaTrabajador(trabajador);
+            cadena += LineaSeparador("-");
+            cadena += "ID\t Horas\t  Euros/Hora\t  Jornada\tRetenciones\tV.Horas Extras\n";
+            cadena += LineaSeparador("-");
+            if (nomina.Length != 0)
+            {
+                for (i = 0; i < nomina.Length; i++)
+                {
+                    if (nomina[i] != null)
+                    {
+                        cadena += "\nSemana " + (nomina[i].ID_pre);
+                        cadena += "   " +  nomina[i].Horas_pre;
+                        cadena += "\t  " + nomina[i].PrecioPre;
+                        cadena += "\t\t  " + nomina[i].JornadaPre;
+                        cadena += "\t\t" + nomina[i].RetencionPre;
+                        cadena += "\t\t" + nomina[i].HextrasPre + "\n";
+                    }
+                }
+            }
+            else
+            {
+                cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
+            }
+            
+            cadena += LineaSeparador("=");
+
+            return cadena;
+        }
+
         public static String CierreMes(Nomina[] nomina)
         {
             String cadena = null;
@@ -951,10 +989,10 @@ namespace Nominas
         {
             string cadena = null;
             cadena += LineaSeparador("-");
-            cadena += "Trabajador";
-            cadena += "DNI: \t" + trabajador.dni_pre + "\t";
-            cadena += "Nombre: \t" + trabajador.nombre_pre + "\t";
-            cadena += "Apellido: \t" + trabajador.apellidos_pre + "\t";
+            cadena += "Trabajador\n";
+            cadena += "DNI: " + trabajador.dni_pre + "\t";
+            cadena += "Nombre: " + trabajador.nombre_pre + "\t";
+            cadena += "Apellido: " + trabajador.apellidos_pre + "\n";
             cadena += LineaSeparador("-");
             return cadena;
 
@@ -971,42 +1009,7 @@ namespace Nominas
             return cadena;
         }
 
-        public static string MostrarNominaTemporal(Nomina[] nomina, string dni)
-        {
-            Header();
-            String cadena = null;
-            cadena += "\n";
-            float precioMedio = 0.0F;
-            int i = 0;
-            Trabajador trabajador = new Trabajador();
-            trabajador = Ficheros.GetDatosTrabajador(dni);
-            cadena += HeaderNominaTrabajador(trabajador);
-            cadena += LineaSeparador("-");
-            cadena += "\tHoras\tEuros/Hora\tjornada\tretenciones\tValor Horas Extrar";
-            cadena += LineaSeparador("-");
-            if (nomina.Length != 0)
-            {
-                for (i = 0; i < nomina.Length; i++)
-                {
-                    if (nomina[i] != null)
-                    {
-                        cadena += "\n\tSemana " + (nomina[i].ID_pre);
-                        cadena += "\t" + nomina[i].Horas_pre;
-                        cadena += "\t" + nomina[i].PrecioPre;
-                        cadena += "\t" + nomina[i].JornadaPre;
-                        cadena += "\t" + nomina[i].RetencionPre;
-                        cadena += "\t" + nomina[i].HextrasPre;
-                    }
-                }
-            }
-            else
-            {
-                cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
-            }
-            cadena += LineaSeparador("=");
-
-            return cadena;
-        }
+        
         #endregion
 
     }

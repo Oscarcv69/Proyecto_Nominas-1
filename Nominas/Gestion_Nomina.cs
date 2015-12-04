@@ -343,6 +343,7 @@ namespace Nominas
                         copiaNomina[j] = Nomina[i];
                     }
                 }
+
                 //Array dinámico
                 Nomina = new Nomina[copiaNomina.Length];
                 copiaNomina.CopyTo(Nomina, 0);

@@ -187,6 +187,10 @@ namespace Nominas
                         horas.AppendChild(doc.CreateTextNode(nomina[i].Horas_pre.ToString()));
                         SEMANA.AppendChild(horas);
 
+                        XmlElement ValPHora = doc.CreateElement("ValPrecio_Hora_Pre");
+                        ValPHora.AppendChild(doc.CreateTextNode(nomina[i].PrecioPre.ToString()));
+                        SEMANA.AppendChild(ValPHora);
+
                         XmlElement Jorpre = doc.CreateElement("Jornada_Pre");
                         Jorpre.AppendChild(doc.CreateTextNode(nomina[i].JornadaPre.ToString()));
                         SEMANA.AppendChild(Jorpre);
@@ -194,10 +198,6 @@ namespace Nominas
                         XmlElement ValHExtrasPre = doc.CreateElement("ValHExtras_Pre");
                         ValHExtrasPre.AppendChild(doc.CreateTextNode(nomina[i].HextrasPre.ToString()));
                         SEMANA.AppendChild(ValHExtrasPre);
-
-                        XmlElement ValPHora = doc.CreateElement("ValPrecio_Hora_Pre");
-                        ValPHora.AppendChild(doc.CreateTextNode(nomina[i].PrecioPre.ToString()));
-                        SEMANA.AppendChild(ValPHora);
 
                         XmlElement ValRet = doc.CreateElement("ValRetencion_Pre");
                         ValRet.AppendChild(doc.CreateTextNode(nomina[i].RetencionPre.ToString()));
@@ -392,7 +392,6 @@ namespace Nominas
 
                 XmlElement Hextras = doc.CreateElement("Horas_Extras");
                 Hextras.AppendChild(doc.CreateTextNode("1.5"));
-
                 element1.AppendChild(Hextras);
 
                 XmlElement retencion = doc.CreateElement("Retencion");
@@ -449,12 +448,9 @@ namespace Nominas
                         int newJor = Int32.Parse(valor);
                         node1.InnerText = newJor.ToString();
                         break;
-                    case "Horas_Extras":
-                        float newHoras = float.Parse(valor, CultureInfo.InvariantCulture);
-                        node1.InnerText = newHoras.ToString();
-                        break;
                     case "Retenciones":
                         float newRet = float.Parse(valor, CultureInfo.InvariantCulture);
+                        newRet = newRet / 100;
                         node1.InnerText = newRet.ToString();
                         break;
                 }

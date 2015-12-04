@@ -255,8 +255,8 @@ namespace Nominas {
         public float RetencionPre {
             get { return retencion_pre; }
             set {
-                if(value < 0) {
-                    throw new Exception("El valor de la retención no puede ser menor que 0");
+                if(value < 0 || value > 1) {
+                    throw new Exception("El valor de la retención no puede ser menor que 0% ni mayor que 100%");
                 }
 
                 else if(!regexfloat.IsMatch(retencion_pre.ToString())) {
