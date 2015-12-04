@@ -401,9 +401,8 @@ namespace Nominas
         }
 
         //Cerrar nómina
-        public static void CierraNomina(ref Nomina[] Nomina)
+        public static void CierraNomina(ref Nomina[] Nomina, ref string cadena)
         {
-            String cadena = null;
             //Calcula nominas semanales
             CalculaParcial(ref Nomina);
 
