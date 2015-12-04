@@ -251,8 +251,7 @@ namespace Nominas
         public static Nomina[] GetNomina(string dni)
         {
             string ruta = null;
-            int id = 0, horas = 0, hextras = 0;
-            float salarioExtra = 0.0F, salarioBruto = 0.0F, salarioNeto = 0.0F, impuestos = 0.0F;
+            int id = 0, horas = 0;
             int jornadapre = 0;
             float hextraspre = 0.0F, retencionespre = 0.0F, preciopre = 0.0F;
             dni_glo = dni;
@@ -311,6 +310,32 @@ namespace Nominas
 
         }
 
+        public static void BorrarTemporal(string dni)
+        {
+            FileInfo[] archivos = null;
+            string name = null;
+
+            DirectoryInfo d = new DirectoryInfo(rutaNOM);
+            archivos = d.GetFiles("*.xml");
+            if (archivos != null)
+            {
+                foreach (FileInfo file in archivos)
+                {
+                    name = Path.GetFileNameWithoutExtension(file.Name);
+                    if (dni.Equals(name))
+                    {
+                        try {
+                            File.Delete(rutaNOM + "\\" + name + ".xml");
+                        }
+                        catch(Exception)
+                        {
+                            throw new Exception("No se ha podido borrar el archivo");
+                        }
+                        break;
+                    }
+                }
+            }
+        }
         public static void ExistOrEmptyNOM(string dni) // COMPRUEBA SI 
         {
             FileInfo[] archivos = null;

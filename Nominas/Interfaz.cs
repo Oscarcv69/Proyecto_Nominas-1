@@ -735,7 +735,7 @@ namespace Nominas
         }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
-        public static string MostrarNomina(Nomina[] nomina)
+        public static string MostrarNomina(Nomina[] nomina, string dni)
         {
             Header();
             String cadena = null;
@@ -743,7 +743,7 @@ namespace Nominas
             float precioMedio = 0.0F;
             int i = 0;
             Trabajador trabajador = new Trabajador();
-            trabajador = Ficheros.GetDatosTrabajador(dni_trb);
+            trabajador = Ficheros.GetDatosTrabajador(dni);
             cadena += HeaderNominaTrabajador(trabajador);//COMO PASO EL TRABAJADOR AL METODO?
             cadena += LineaSeparador("-");
             cadena += "\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
@@ -754,14 +754,13 @@ namespace Nominas
                 {
                     if (nomina[i] != null)
                     {
-                        cadena += "\tSemana " + (nomina[i].ID_pre);
+                        cadena += "\n\tSemana " + (nomina[i].ID_pre);
                         cadena += "\t" + nomina[i].Horas_pre;
                         cadena += "\t" + nomina[i].PrecioPre;
                         cadena += "\t" + nomina[i].SalExtra_pre;
                         cadena += "\t" + nomina[i].SalBruto_pre;
                         cadena += "\t" + nomina[i].SalRetencion_pre;
                         cadena += "\t" + nomina[i].SalNeto_pre;
-                        cadena += "\r" + LineaSeparador("-");
                         precioMedio += nomina[i].PrecioPre;
                     }
                 }
