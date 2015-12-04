@@ -380,7 +380,7 @@ namespace Nominas
             return dni;
         }
 
-       
+
 
         public static void Pregunta(ref string pregunta, ref bool salida)
         {
@@ -443,7 +443,7 @@ namespace Nominas
         {
             bool salir = false;
             byte seleccion = 0;
-            string cambio = null, mensaje = null;
+            string cambio = null, mensaje = null, mensaje2 = null;
             bool existe = false;
             Trabajador trabajador = new Trabajador();
             do
@@ -465,8 +465,8 @@ namespace Nominas
                         else
                         {
                             salir = false;
-                            mensaje = "Pulse Enter para Continuar";
-                            Continuar(mensaje);
+                            mensaje2 = "Pulse Enter para Continuar";
+                            Continuar(mensaje2);
                         }
                         break;
                     case "2":
@@ -730,13 +730,13 @@ namespace Nominas
                 {
                     salir = false;
                     throw new Exception("La elección no es correcta, inserte un número del 1-3");
-                    
+
                 }
             } while (!salir);
         }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
-        public static string MostrarNomina(Nomina[] nomina)
+        public static string MostrarNomina(Nomina[] nomina, string dni)
         {
             Header();
             String cadena = null;
@@ -744,25 +744,24 @@ namespace Nominas
             float precioMedio = 0.0F;
             int i = 0;
             Trabajador trabajador = new Trabajador();
-            trabajador = Ficheros.GetDatosTrabajador(dni_trb);
+            trabajador = Ficheros.GetDatosTrabajador(dni);
             cadena += HeaderNominaTrabajador(trabajador);//COMO PASO EL TRABAJADOR AL METODO?
             cadena += LineaSeparador("-");
             cadena += "\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
             cadena += LineaSeparador("-");
-            if (nomina == null)
+            if (nomina.Length != 0)
             {
                 for (i = 0; i < nomina.Length; i++)
                 {
                     if (nomina[i] != null)
                     {
-                        cadena += "\tSemana " + (nomina[i].ID_pre);
+                        cadena += "\n\tSemana " + (nomina[i].ID_pre);
                         cadena += "\t" + nomina[i].Horas_pre;
                         cadena += "\t" + nomina[i].PrecioPre;
                         cadena += "\t" + nomina[i].SalExtra_pre;
                         cadena += "\t" + nomina[i].SalBruto_pre;
                         cadena += "\t" + nomina[i].SalRetencion_pre;
                         cadena += "\t" + nomina[i].SalNeto_pre;
-                        cadena += "\r" + LineaSeparador("-");
                         precioMedio += nomina[i].PrecioPre;
                     }
                 }
@@ -771,6 +770,44 @@ namespace Nominas
             {
                 cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
             }
+            cadena += LineaSeparador("=");
+
+            return cadena;
+        }
+
+        public static string MostrarNominaTemporal(Nomina[] nomina, string dni)
+        {
+            Header();
+            String cadena = null;
+            cadena += "\n";
+            float precioMedio = 0.0F;
+            int i = 0;
+            Trabajador trabajador = new Trabajador();
+            trabajador = Ficheros.GetDatosTrabajador(dni);
+            cadena += HeaderNominaTrabajador(trabajador);
+            cadena += LineaSeparador("-");
+            cadena += "ID\t Horas\t  Euros/Hora\t  Jornada\tRetenciones\tV.Horas Extras\n";
+            cadena += LineaSeparador("-");
+            if (nomina.Length != 0)
+            {
+                for (i = 0; i < nomina.Length; i++)
+                {
+                    if (nomina[i] != null)
+                    {
+                        cadena += "\nSemana " + (nomina[i].ID_pre);
+                        cadena += "   " +  nomina[i].Horas_pre;
+                        cadena += "\t  " + nomina[i].PrecioPre;
+                        cadena += "\t\t  " + nomina[i].JornadaPre;
+                        cadena += "\t\t" + nomina[i].RetencionPre;
+                        cadena += "\t\t" + nomina[i].HextrasPre + "\n";
+                    }
+                }
+            }
+            else
+            {
+                cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
+            }
+            
             cadena += LineaSeparador("=");
 
             return cadena;
@@ -796,10 +833,10 @@ namespace Nominas
         internal static bool Confirmar()
         {
             String cad = null;
-            bool confirma = false;          
-                cad= "\t¿Desea usted guardar los cambios?(s/n)";
-                Pregunta(ref cad,ref confirma);
-            
+            bool confirma = false;
+            cad = "\t¿Desea usted guardar los cambios?(s/n)";
+            Pregunta(ref cad, ref confirma);
+
             return confirma;
         }
 
@@ -952,10 +989,10 @@ namespace Nominas
         {
             string cadena = null;
             cadena += LineaSeparador("-");
-            cadena += "Trabajador";
-            cadena += "DNI: \t" + trabajador.dni_pre + "\t";
-            cadena += "Nombre: \t" + trabajador.nombre_pre + "\t";
-            cadena += "Apellido: \t" + trabajador.apellidos_pre + "\t";
+            cadena += "Trabajador\n";
+            cadena += "DNI: " + trabajador.dni_pre + "\t";
+            cadena += "Nombre: " + trabajador.nombre_pre + "\t";
+            cadena += "Apellido: " + trabajador.apellidos_pre + "\n";
             cadena += LineaSeparador("-");
             return cadena;
 
@@ -972,7 +1009,7 @@ namespace Nominas
             return cadena;
         }
 
-
+        
         #endregion
 
     }
