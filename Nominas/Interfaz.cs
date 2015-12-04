@@ -661,19 +661,31 @@ namespace Nominas
         public static int NominaModificar(Nomina nomina)
         {
             int opcion = 0;
-            Console.WriteLine("\n\tPor favor, introduzca:\n");
-            Console.WriteLine("\n\t\t0 si desea volver atrás");
-            Console.WriteLine("\n\t\t1 si desea modificar las horas de la semana");
-            Console.WriteLine("\n\t\t2 si desea modificar el precio por hora de la semana");
+            bool salir = false;
+            do
+            {
+                Header();
+                Console.WriteLine("\n\tPor favor, introduzca:\n");
+                Console.WriteLine("\n\t\t1 - Modificar las horas de la semana");
+                Console.WriteLine("\n\t\t2 - Modificar el precio por hora de la semana");
+                Console.WriteLine("\n\t\t3 - Volver atrás");
 
-            if (!Int32.TryParse(Console.ReadLine(), out opcion))
-            {
-                throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca una opción de 0 a 2");
-            }
-            if (opcion < 0 || opcion > 2)
-            {
-                throw new Exception("El número no es válido, por favor, introduzca una opción de 0 a 2");
-            }
+                if (!Int32.TryParse(Console.ReadLine(), out opcion))
+                {
+                    salir = false;
+                    throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca una opción de 1 a 3");
+                    
+                }
+                else if (opcion < 1 || opcion > 3)
+                {
+                    salir = false;
+                    throw new Exception("El número no es válido, por favor, introduzca una opción de 1 a 3");
+                } else
+                {
+                    // HACER SWITCH
+                    salir = true;
+                }
+            } while (!salir);
             return opcion;
 
         }
@@ -705,6 +717,11 @@ namespace Nominas
                             Console.Write("\t\tNuevo valor de la jornada: ");
                             break;
                     }
+                    salir = true;
+                } else
+                {
+                    throw new Exception("La elección no es correcta, inserte un número del 1-3");
+                    salir = false;
                 }
             } while (!salir);
         }
@@ -720,22 +737,27 @@ namespace Nominas
 
             /* cadena += HeaderNominaTrabajador();//TODO: CARGAR TRABAJADOR EN EL METODO;*/
             cadena += LineaSeparador("-");
-            cadena += "\t\t\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
+            cadena += "\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
             cadena += LineaSeparador("-");
-            for (i = 0; i < nomina.Length; i++)
+            if (nomina == null)
             {
-                if (nomina[i] != null)
+                for (i = 0; i < nomina.Length; i++)
                 {
-                    cadena += "\tSemana " + (nomina[i].ID_pre);
-                    cadena += "\t" + nomina[i].Horas_pre;
-                    cadena += "\t" + nomina[i].PrecioPre;
-                    cadena += "\t" + nomina[i].SalExtra_pre;
-                    cadena += "\t" + nomina[i].SalBruto_pre;
-                    cadena += "\t" + nomina[i].SalRetencion_pre;
-                    cadena += "\t" + nomina[i].SalNeto_pre;
-                    cadena += LineaSeparador("-");
-                    precioMedio += nomina[i].PrecioPre;
+                    if (nomina[i] != null)
+                    {
+                        cadena += "\tSemana " + (nomina[i].ID_pre);
+                        cadena += "\t" + nomina[i].Horas_pre;
+                        cadena += "\t" + nomina[i].PrecioPre;
+                        cadena += "\t" + nomina[i].SalExtra_pre;
+                        cadena += "\t" + nomina[i].SalBruto_pre;
+                        cadena += "\t" + nomina[i].SalRetencion_pre;
+                        cadena += "\t" + nomina[i].SalNeto_pre;
+                        cadena += LineaSeparador("-");
+                        precioMedio += nomina[i].PrecioPre;
+                    }
                 }
+            } else {
+                cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
             }
             cadena += LineaSeparador("=");
             /*cadena += "TOTAL MES:\t\t";
@@ -754,55 +776,87 @@ namespace Nominas
         {
             Header();
             int semana = 0;
-            Console.WriteLine("\n\tPor favor, introduzca el número de semana que desea eliminar de la nómina:\n");
-            Console.WriteLine("\n\t\tSemana: ");
-            if (!Int32.TryParse(Console.ReadLine(), out semana))
+            bool salir = false;
+            do
             {
-                throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca un valor numérico");
-            }
-            if (semana < 1 || semana > 6)
-            {
-                throw new Exception("El número no es válido, por favor, introduzca una semana que exista");
-            }
+                Header();
+                Console.WriteLine("\n\tIntroduzca el número de semana que desea eliminar de la nómina:\n");
+                Console.Write("\n\t\tSemana: ");
+                if (!Int32.TryParse(Console.ReadLine(), out semana))
+                {
+                    salir = false;
+                    Error("Se ha introducido un caracter no válido, por favor, introduzca un valor numérico");
+                    Continuar("Pulsa una tecla para continuar...");
+                }
+                else if (semana < 1 || semana > 6)
+                {
+                    salir = false;
+                    Error("El número no es válido, por favor, introduzca una semana que exista");
+                    Continuar("Pulsa una tecla para continuar...");
+                } else
+                {
+                    salir = true;
+                }
+            } while (!salir);
             return semana;
 
         }
 
         internal static int EliminarSemanaOpcion()
         {
-            Header();
             int opcion = 0;
-            Console.WriteLine("\n\tPor favor, introduzca:\n");
-            Console.WriteLine("\n\t\t0 - si desea volver atrás");
-            Console.WriteLine("\n\t\t1 - si desea eliminar una semana");
-            Console.WriteLine("\n\t\t2 - si desea eliminar toda la nómina");
-            if (!Int32.TryParse(Console.ReadLine(), out opcion))
+            bool salir = false;
+            do
             {
-                throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca una opción de 0 a 3");
-            }
-            if (opcion < 0 || opcion > 2)
-            {
-                throw new Exception("El número no es válido, por favor, introduzca una opción de 0 a 3");
-            }
+                Header();
+                Console.WriteLine("\n\t\t\tPor favor, introduzca:\n");
+                Console.WriteLine("\t\t\t 1 - Eliminar una semana");
+                Console.WriteLine("\t\t\t 2 - Eliminar la nómina completa");
+                Console.WriteLine("\t\t\t 3 - Volver atrás");
+                Console.Write("\n\t\t\t Eleccion: ");
+                if (!Int32.TryParse(Console.ReadLine(), out opcion))
+                {
+                    salir = false;
+                    Error("Se ha introducido un caracter no válido, por favor, introduzca una opción de 1 a 3");
+                    Continuar("Pulsa una tecla para continuar...");
+                }
+                else if (opcion < 1 || opcion > 3)
+                {
+                    salir = false;
+                    Error("El número no es válido, por favor, introduzca una opción de 1 a 3");
+                    Continuar("Pulsa una tecla para continuar...");
+                } else
+                {
+                    salir = true;
+                }
+            } while (!salir);
             return opcion;
         }
 
         internal static int QueSemana(Nomina[] Nomina)
         {
             int semana = 0;
+            bool salir = false;
             do
             {
                 Console.WriteLine("\n\tPor favor, introduzca el número de semana que desea eliminar de la nómina:\n");
                 Console.WriteLine("\n\t\tSemana: ");
                 if (!Int32.TryParse(Console.ReadLine(), out semana))
                 {
-                    throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca un valor numérico");
+                    salir = false;
+                    Error("Se ha introducido un caracter no válido, por favor, introduzca un valor numérico");
+                    Continuar("Pulsa una tecla para continuar...");
                 }
-                if (semana < 1 || semana > 6)
+                else if (semana < 1 || semana > 6)
                 {
-                    throw new Exception("El número no es válido, por favor, introduzca una semana que exista");
+                    salir = false;
+                    Error("El número no es válido, por favor, introduzca una semana que exista");
+                    Continuar("Pulsa una tecla para continuar...");
+                } else
+                {
+                    salir = true;
                 }
-            } while (!Gestion_Nomina.ExisteNomina(ref Nomina, semana));
+            } while (!Gestion_Nomina.ExisteNomina(ref Nomina, semana) && !salir);
             return semana;
         }
 

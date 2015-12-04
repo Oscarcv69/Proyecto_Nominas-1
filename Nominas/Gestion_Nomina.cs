@@ -109,8 +109,8 @@ namespace Nominas
             return retenciones;
         }
 
-       //Métodos para la gestión de las nóminas
-        
+        //Métodos para la gestión de las nóminas
+
         //Cálculo de las semanas del mes
         public static short CalculoSemanas(short anho, short mes)
         {
@@ -151,7 +151,7 @@ namespace Nominas
             return semanas;
 
         }
-        
+
         //Calculo de los parciales de nomina
         internal static void CalculaParcial(ref Nomina[] Nomina)
         {
@@ -167,7 +167,7 @@ namespace Nominas
                 }
             }
         }
-        
+
         //Calculo de los totales de nomina
         internal static float CalculaTotal(Nomina[] Nomina, int v)
         {
@@ -305,15 +305,20 @@ namespace Nominas
                     cadena = "Precio de la hora de trabajo modificado con éxito";
                     break;
             }
-            Ficheros.GuardarNominaTemporal(ref Nomina);
             Interfaz.Continuar(cadena);
-
-
         }
 
+        // Método de eliminacion de nomina
+        public static void ProcesoEliminarNomina(ref Nomina[] Nomina)
+        {
+            for (int i = 0; i < Nomina.Length; i++)
+            {
+                Nomina[i] = null;
+            }
+        }
 
-        //Método de eliminación de nómina
-        public static void eliminarNomina(ref Nomina[] Nomina, int semana, int opcion)
+        //Método de eliminación de semana
+        public static void ProcesoEliminarSemana(ref Nomina[] Nomina, int semana)
         {
             int i = 0;
             int j = 0;
@@ -324,50 +329,29 @@ namespace Nominas
             existesemana = ExisteNomina(ref Nomina, semana);
             if (!existesemana)
             {
-                cadena = "\n\t La semana no existe";
+                cadena = "\n\t\t La semana no existe";
             }
             else
             {
                 copiaNomina = new Nomina[Nomina.Length];
 
-                switch (opcion)
+
+                for (i = 0; i <= copiaNomina.Length - 1; i++, j++)
                 {
-                    case 0:
-                        cadena = "\n\t Operación abortada";
-                        break;
-                    case 1:
-                        if (semana > Nomina.Length)
-                        {
-                            cadena = "\n\t Esta semana no se ha cargado en el archivo.";
-                        }
-                        else
-                        {
-                            for (i = 0; i <= copiaNomina.Length-1; i++, j++)
-                            {
-                                if (i != (semana-1))
-                                {
-                                    copiaNomina[j] = Nomina[i];
-                                }
-                            }
-                            //Array dinámico
-                            Nomina = new Nomina[copiaNomina.Length];
-                            copiaNomina.CopyTo(Nomina, 0);
-                            //Ponemos el array de copia en Null para ahorrar memoria
-                            copiaNomina = null;
-                            cadena = "\n\t Semana eliminada con éxito";
-                        }
-                        break;
-                    case 2:
-                        //Borrar toda la nómina
-                        for (i = 0; i < Nomina.Length; i++)
-                        {
-                            Nomina[i] = null;
-                        }
-                        break;
+                    if (i != (semana - 1))
+                    {
+                        copiaNomina[j] = Nomina[i];
+                    }
                 }
-                cadena += "\n\tPulse ENTER para continuar\n";
-                Interfaz.Continuar(cadena);
+                //Array dinámico
+                Nomina = new Nomina[copiaNomina.Length];
+                copiaNomina.CopyTo(Nomina, 0);
+                //Ponemos el array de copia en Null para ahorrar memoria
+                copiaNomina = null;
+                cadena = "\n\t\t Semana eliminada con éxito";
             }
+            cadena += "\n\t\tPulse ENTER para continuar\n";
+            Interfaz.Continuar(cadena);
         }
 
         //Cerrar nómina
@@ -383,6 +367,5 @@ namespace Nominas
 
 
         #endregion
-
     }
 }

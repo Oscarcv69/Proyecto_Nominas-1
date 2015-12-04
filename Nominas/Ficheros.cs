@@ -294,6 +294,9 @@ namespace Nominas
             catch (XmlException)
             {
                 throw new Exception("No se ha podido abrir el archivo, revise el contenido.");
+            } catch(NullReferenceException)
+            {
+                throw new Exception("Falta un elemento en el archivo, revíse el contenido.");
             }
             return ArraySemanas;
 
@@ -327,7 +330,7 @@ namespace Nominas
                     XmlElement root = doc.DocumentElement;
                     doc.InsertBefore(xmlDeclaration, root);
 
-                    XmlElement element1 = doc.CreateElement(string.Empty, "NOMINA", string.Empty);
+                    XmlElement element1 = doc.CreateElement(string.Empty, "Nomina", string.Empty);
                     doc.AppendChild(element1);
                     doc.Save(rutaNOM + dni + ".xml");
                 }

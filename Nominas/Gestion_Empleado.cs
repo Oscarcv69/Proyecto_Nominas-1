@@ -21,6 +21,7 @@ namespace Nominas
 
             return existe;
         }
+
         private static bool ExisteTrabajador(Trabajador[] listaTrabajadores, string dni, ref int posicion)
         {
             bool existe = false;    // Control de existencia
@@ -40,6 +41,7 @@ namespace Nominas
 
             return existe;
         }
+
         public static void NuevoTrabajador(ref Trabajador[] listaTrabajadores)
         {
             Trabajador trabtemp;
@@ -216,11 +218,13 @@ namespace Nominas
             }
             Interfaz.Continuar("Pulsa una tecla para continuar");
         }
+        
         // Método para mostrar a todos los trabajadores que hay en la nómina
         public static void ComprobarListaTrabajadores()
         {
 
         }
+
         public static bool ComprobarDni(string dni)
         {
             Trabajador[] temp = null;

@@ -52,58 +52,66 @@ namespace Nominas
         public static void GestionNominas(int numb, ref bool flag, string dni)
         {
             Nomina[] Nomina = null;
-            Nomina = Ficheros.GetNomina(dni);
             Nomina semana = null;
-            Gestion_Nomina.CargaNomina(ref Nomina);
-
-
-            switch (numb)
+            try
             {
-                case 0:
-                    flag = true;
-                    break;
-                //Introducir nóminas
-                case 1:
-                    semana = Interfaz.PedirSemana(Nomina);
-                    Gestion_Nomina.Grabar(ref Nomina, ref semana);
-                    Ficheros.GuardarNominaTemporal(ref Nomina);
-                    break;
-                //Modificar Nóminas
-                case 2:
-                    Gestion_Nomina.CambiaSemana(ref Nomina);
-                    break;
+                Nomina = Ficheros.GetNomina(dni);
+                Gestion_Nomina.CargaNomina(ref Nomina);
 
-                //Modificar archivo de configuracion
-                case 3:
-                    string name = null, valor = null;
-                    Interfaz.PedirDatosArchivoConf(ref name, ref valor);
-                    Ficheros.ModConfig(name, valor);
-                    break;
+                switch (numb)
+                {
+                    case 0:
+                        flag = true;
+                        break;
+                    //Introducir nóminas
+                    case 1:
+                        semana = Interfaz.PedirSemana(Nomina);
+                        Gestion_Nomina.Grabar(ref Nomina, ref semana);
+                        Ficheros.GuardarNominaTemporal(ref Nomina);
+                        break;
+                    //Modificar Nóminas
+                    case 2:
+                        Gestion_Nomina.CambiaSemana(ref Nomina);
+                        break;
+
+                    //Modificar archivo de configuracion
+                    case 3:
+                        string name = null, valor = null;
+                        Interfaz.PedirDatosArchivoConf(ref name, ref valor);
+                        Ficheros.ModConfig(name, valor);
+                        break;
                     //Eliminar nominas
-                case 4:
-                    int ordinal = 0, opcion = 0;
-                    opcion = Interfaz.EliminarSemanaOpcion();
-                    if (opcion ==1)
-                    {
-                        ordinal = Interfaz.EliminarSemana();
-                    }
-                
-                    Gestion_Nomina.eliminarNomina(ref Nomina, ordinal, opcion);
-                    Ficheros.GuardarNominaTemporal(ref Nomina);
-                    break;
-                //Mostrar Nómina Temporal
-                case 5:
-                    Console.WriteLine(Interfaz.MostrarNomina(Nomina));
-                    Console.ReadLine();
-                    break;
-                //Cerrar Nómina del Mes
-                case 6:
-                    Gestion_Nomina.CierraNomina(ref Nomina);
-                    Interfaz.MostrarNomina(Nomina);
-                    break;
-            
+                    case 4:
+                        int ordinal = 0, opcion = 0;
+                        opcion = Interfaz.EliminarSemanaOpcion();
+                        if (opcion == 1)
+                        {
+                            ordinal = Interfaz.EliminarSemana(); // ELIMINA UNA SEMANA DE LA NOMINA
+                            Gestion_Nomina.ProcesoEliminarSemana(ref Nomina, ordinal);
+                        }
+                        else
+                        {
+                            Gestion_Nomina.ProcesoEliminarNomina(ref Nomina);
+                        }
+                        Ficheros.GuardarNominaTemporal(ref Nomina);
+                        break;
+                    //Mostrar Nómina Temporal
+                    case 5:
+                        Console.WriteLine(Interfaz.MostrarNomina(Nomina));
+                        Console.ReadLine();
+                        break;
+                    //Cerrar Nómina del Mes
+                    case 6:
+                        Gestion_Nomina.CierraNomina(ref Nomina);
+                        Interfaz.MostrarNomina(Nomina);
+                        break;
+                }
             }
-            /* Ficheros.GuardarNominas(Nomina);*/
+            catch (Exception e)
+            {
+                Interfaz.Error(e.Message);
+                Interfaz.Continuar("Pulsa una tecla para continuar...");
+            }
         }
         #endregion
 
