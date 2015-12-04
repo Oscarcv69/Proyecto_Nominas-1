@@ -745,7 +745,7 @@ namespace Nominas
             int i = 0;
             Trabajador trabajador = new Trabajador();
             trabajador = Ficheros.GetDatosTrabajador(dni);
-            cadena += HeaderNominaTrabajador(trabajador);//COMO PASO EL TRABAJADOR AL METODO?
+            cadena += HeaderNominaTrabajador(trabajador);
             cadena += LineaSeparador("-");
             cadena += "\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
             cadena += LineaSeparador("-");

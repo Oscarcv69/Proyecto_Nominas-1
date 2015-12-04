@@ -367,15 +367,14 @@ namespace Nominas
             String cadena = null;
             //Calcula nominas semanales
             CalculaParcial(ref Nomina);
-            cadena = Interfaz.MostrarNomina(Nomina);
-            cadena += Interfaz.CierreMes(Nomina);
-            //Confirmacion
+            
+                        //Confirmacion
             if (Interfaz.Confirmar())
             {
                 //Almacena en el fichero
                 Ficheros.CerrarNomina(cadena);
                 //Eliminar fichero
-                Ficheros.BorrarTemporal();//Pasar el dni del trabajador);
+                
             }
             else {
                 Interfaz.Continuar();
@@ -385,3 +384,4 @@ namespace Nominas
         #endregion
     }
 }
+#endregion
