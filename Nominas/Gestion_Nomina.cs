@@ -318,8 +318,13 @@ namespace Nominas
 
             //Entrada de Datos
             semana = Interfaz.QueSemana(Nomina);
-            int id = BuscaSemana(Nomina, semana);
-            opcion = Interfaz.NominaModificar(Nomina[id]);
+            if (BuscaSemana(Nomina, ref semana))
+            {
+                opcion = Interfaz.NominaModificar(Nomina[semana]);
+            }
+            else { opcion = 3; }
+
+
             //PROCESO
             switch (opcion)
             {
@@ -328,30 +333,41 @@ namespace Nominas
                     break;
                 //Modificación de los datos
                 case 1:
-                    Nomina[id].Horas_pre = Interfaz.SolicitarHoras();
+                    Nomina[semana].Horas_pre = Interfaz.SolicitarHoras();
                     cadena = "Horas modificadas con éxito";
 
                     break;
                 case 2:
-                    Nomina[id].PrecioPre = Interfaz.SolicitarPrecio();
+                    Nomina[semana].PrecioPre = Interfaz.SolicitarPrecio();
                     cadena = "Precio de la hora de trabajo modificado con éxito";
                     break;
             }
             Interfaz.Continuar(cadena);
         }
 
-        private static int BuscaSemana(Nomina[] nomina, int semana)
+        private static bool BuscaSemana(Nomina[] nomina, ref int semana)
         {
-            int id = 0;
+            bool ctrl = false;
             for (int i = 0; i < nomina.Length; i++)
             {
-                if (semana == nomina[i].ID_pre)
+                if (nomina[i] != null && semana == nomina[i].ID_pre)
                 {
-                    id = i;
+
+                    semana = i;
+                    ctrl = true;
                 }
+                else if (!ctrl)
+                {
+                    ctrl = false;
+                }
+            }
+            if (!ctrl)
+            {
+                Interfaz.Error("Lo siento, no existe la semana");
 
             }
-            return id;
+
+            return ctrl;
         }
 
         // Método de eliminacion de nomina
