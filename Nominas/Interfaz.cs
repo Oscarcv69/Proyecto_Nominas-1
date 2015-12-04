@@ -443,7 +443,7 @@ namespace Nominas
         {
             bool salir = false;
             byte seleccion = 0;
-            string cambio = null, mensaje = null, mensaje2 = null;
+            string cambio = null, mensaje2 = null;
             bool existe = false;
             Trabajador trabajador = new Trabajador();
             do
@@ -736,7 +736,7 @@ namespace Nominas
         }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
-        public static void MostrarNomina(Nomina[] nomina, string dni)
+        public static string MostrarNomina(Nomina[] nomina, string dni)
         {
             Header();
             String cadena = null;
@@ -774,6 +774,7 @@ namespace Nominas
             cadena += LineaSeparador("=");
 
             Console.WriteLine(cadena);
+            return cadena;
         }
 
         public static string MostrarNominaTemporal(Nomina[] nomina, string dni)

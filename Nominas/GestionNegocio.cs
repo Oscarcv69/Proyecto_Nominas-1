@@ -110,10 +110,11 @@ namespace Nominas
                         break;
                     //Cerrar Nómina del Mes
                     case 6:
+                        string cadena = null;
                         Gestion_Nomina.CalculaParcial(ref Nomina);
-                        Interfaz.MostrarNomina(Nomina, dni);
+                        cadena = Interfaz.MostrarNomina(Nomina, dni);
                         Interfaz.CierreMes(Nomina);
-                        Gestion_Nomina.CierraNomina(ref Nomina);
+                        Gestion_Nomina.CierraNomina(ref Nomina, ref cadena);
                         Ficheros.BorrarTemporal(dni);
                         break;
                 }
