@@ -51,6 +51,7 @@ namespace Nominas
 
         public static void GestionNominas(int numb, ref bool flag, string dni)
         {
+            string fecha;
             Nomina[] Nomina = null;
             Nomina semana = null;
             try
@@ -117,6 +118,7 @@ namespace Nominas
                         if (!Interfaz.Confirmar())
                         {
                             //Almacena en el fichero
+                            fecha = Interfaz.Pidefecha();
                             Ficheros.CerrarNomina(cadena);
                             //Eliminar fichero
                             Ficheros.BorrarTemporal(dni);

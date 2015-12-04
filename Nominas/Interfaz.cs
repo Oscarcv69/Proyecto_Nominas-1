@@ -983,6 +983,64 @@ namespace Nominas
             return precio;
         }
 
+
+        internal static string Pidefecha()
+        {
+            DateTime anho = new DateTime();
+            string fecha=null;
+            bool ctrl = false;
+            int num = 0;
+            anho = DateTime.Now;
+            do
+            {
+                Console.WriteLine("Por favor, introduzca el año de la nómina:");
+                Console.Write("Año: ");
+                fecha = Console.ReadLine();
+                if (!Int32.TryParse(fecha, out num){
+                    ctrl = false;
+                    Error("Ha introducido un valor no válido, debe introducir un valor numérico");
+                }
+                else {
+                    if (num < 1 || num>anho.Year)
+                    {
+                        ctrl = false;
+                        Error("Ha introducido un año no válido.");
+                    }
+                    else
+                    {
+                        ctrl = true;
+                    }
+                }
+            } while (!ctrl);
+            do
+            {
+                Console.WriteLine("Por favor, introduzca el mes de la nómina:");
+                Console.Write("Mes: ");
+                fecha = Console.ReadLine();
+                if (!Int32.TryParse(fecha, out num){
+                    ctrl = false;
+                    Error("Ha introducido un valor no válido, debe introducir un valor numérico");
+                }
+                else
+                {
+                    if (num < 1 || num > anho.Year)
+                    {
+                        ctrl = false;
+                        Error("\n\tHa introducido un valor no válido.\r\n\tPor favor, introduzca un mes entre Enero (1) y Diciembre (12)\r");
+                        
+                    }
+                    else
+                    {
+                        ctrl = true;
+                    }
+                }
+            } while (!ctrl);
+
+            return fecha;
+
+
+        }
+
         //Cabecera de la Nomina con los datos del trabajador
 
         private static string HeaderNominaTrabajador(Trabajador trabajador)
