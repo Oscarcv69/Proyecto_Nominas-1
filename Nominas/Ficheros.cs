@@ -67,9 +67,9 @@ namespace Nominas
                 {
                     empleado = listaEmpleados.Item(i);
                     dni = Encriptacion.DesEncriptar(empleado.Attributes.GetNamedItem("DNI").InnerText);
-                    trb.dni_pre = dni.ToString();
-                    if (trb.dni_pre.Equals(dni_trb))
+                    if (dni.Equals(dni_trb))
                     {
+                        trb.dni_pre = dni_trb;
                         nombre = Encriptacion.DesEncriptar(empleado.SelectSingleNode("Nombre").InnerText);
                         trb.nombre_pre = nombre;
                         apellidos = Encriptacion.DesEncriptar(empleado.SelectSingleNode("Apellidos").InnerText);
@@ -324,10 +324,11 @@ namespace Nominas
                     name = Path.GetFileNameWithoutExtension(file.Name);
                     if (dni.Equals(name))
                     {
-                        try {
-                            File.Delete(rutaNOM + "\\" + name + ".xml");
+                        try
+                        {
+                            File.Delete(rutaNOM + "\\" + dni + ".xml");
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
                             throw new Exception("No se ha podido borrar el archivo");
                         }
@@ -463,24 +464,15 @@ namespace Nominas
         public static void CerrarNomina(string cadena)
         {
             bool salir = false;
-            string fic = @"..\\..\\..\\Nominas\\Nominas_empleados\\nomina_empleado.txt";
+            string fic = @"..\\..\\..\\Nominas\\B.D_Nominas\\" + dni_glo + ".txt";
             try
             {
                 do
                 {
-                    if (!File.Exists(fic)) // ARCHIVO EXISTE -> COMPROBADO
-                    {
-                        StreamWriter writer = File.CreateText(fic);
-                        salir = false;
-                        writer.Close();
-                    }
-                    else
-                    {
-                        StreamWriter sw = new StreamWriter(fic, true);
-                        sw.WriteLine(cadena);
-                        sw.Close();
-                        salir = true;
-                    }
+                    StreamWriter sw = File.CreateText(fic);
+                    sw.WriteLine(cadena);
+                    sw.Close();
+                    salir = true;
                 } while (!salir);
             }
             catch (FileNotFoundException)
