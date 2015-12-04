@@ -357,12 +357,23 @@ namespace Nominas
         //Cerrar nómina
         public static void CierraNomina(ref Nomina[] Nomina)//TODO: Terminar Desarrollo Confirmación, Guardar y borrar temporal
         {
+            String cadena = null;
             //Calcula nominas semanales
             CalculaParcial(ref Nomina);
-
+            cadena = Interfaz.MostrarNomina(Nomina);
+            cadena += Interfaz.CierreMes(Nomina);
             //Confirmacion
-            //Almacena en el fichero - LLamar metodos de Fran
-            //Eliminar fichero - Llamar metodos de Fran
+            if (Interfaz.Confirmar())
+            {
+                //Almacena en el fichero - LLamar metodos de Fran
+                Ficheros.CerrarNomina(cadena);
+                //Eliminar fichero
+                Ficheros.BorrarTemporal();//Pasar el dni del trabajador);
+            }
+            else {
+                Interfaz.Continuar();
+            }
+            
         }//TERMINAR
 
 

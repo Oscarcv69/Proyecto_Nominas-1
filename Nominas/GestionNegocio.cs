@@ -65,9 +65,16 @@ namespace Nominas
                         break;
                     //Introducir nóminas
                     case 1:
-                        semana = Interfaz.PedirSemana(Nomina);
-                        Gestion_Nomina.Grabar(ref Nomina, ref semana);
-                        Ficheros.GuardarNominaTemporal(ref Nomina);
+                        if (!Gestion_Nomina.LimiteSemanas(Nomina))
+                        {
+                            semana = Interfaz.PedirSemana(Nomina);
+                            Gestion_Nomina.Grabar(ref Nomina, ref semana);
+                            Ficheros.GuardarNominaTemporal(ref Nomina);
+                        }
+                        else
+                        {
+                            Interfaz.Error("No se pueden agregar más semanas, se ha alcanzado el máximo posible de semanas de un mes");
+                        }
                         break;
                     //Modificar Nóminas
                     case 2:
