@@ -31,7 +31,7 @@ namespace Nominas
         {
             //Cargamos los datos por defecto de app.config
             Ficheros.getConfig(ref jornada, ref horasExtra, ref retenciones);
-            
+
             //Cargamos los datos en el objeto nomina desde la referencia
             horas = nomina.Horas_pre;
             extra = nomina.HExtra_pre;
@@ -271,6 +271,7 @@ namespace Nominas
             bool limite = true;
             if (Nomina.Length == 6)
             {
+
                 for (int i = 0; i < Nomina.Length; i++)
                 {
                     if (Nomina[i] == null)
@@ -279,6 +280,11 @@ namespace Nominas
                         return limite;
                     }
                 }
+            }
+
+            else
+            {
+                limite = false;
             }
             return limite;
         }
@@ -367,19 +373,20 @@ namespace Nominas
             String cadena = null;
             //Calcula nominas semanales
             CalculaParcial(ref Nomina);
-            
-                        //Confirmacion
+
+            //Confirmacion
             if (Interfaz.Confirmar())
             {
                 //Almacena en el fichero
                 Ficheros.CerrarNomina(cadena);
                 //Eliminar fichero
-                
+
             }
-            else {
+            else
+            {
                 Interfaz.Continuar();
             }
-            
+
         }//TERMINA
         #endregion
     }
