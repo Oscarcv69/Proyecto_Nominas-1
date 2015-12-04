@@ -74,44 +74,45 @@ namespace Nominas
 
         #region Cálculo de las variables - Antonio Baena
         //Cálculo de las horas extra
-        private static int CalculoExtra(int hora, int jornada)
+        private static void CalculoExtra(ref Nomina nomina)
         {
-            extra = (short)(hora - jornada);
-            return extra;
+            if (nomina.Horas_pre > nomina.JornadaPre)
+            {
+                nomina.HExtra_pre = (short)(nomina.Horas_pre - nomina.JornadaPre);
+            }
+            else { nomina.HExtra_pre = 0; }
+
 
         }
         //Calculo del salario Extra
-        private static float CalculoSalarioExtra(int extra, float precio)
+        private static void CalculoSalarioExtra(ref Nomina nomina)
         {
-            return (extra * precio * horasExtra);
+            nomina.SalExtra_pre = nomina.HExtra_pre * nomina.PrecioPre * nomina.HextrasPre;
         }
         //Cálculo del salario bruto
-        private static float CalculoSalarioBruto(int horas, int jornada, float precio)
+        private static void CalculoSalarioBruto(ref Nomina nomina)
         {
-            if (horas > jornada)
+            if (nomina.HExtra_pre > 0)
             {
-                extra = CalculoExtra(horas, jornada);
-                salarioExtra = CalculoSalarioExtra(extra, precio);
-                bruto = jornada + salarioExtra * precio;
+                nomina.SalBruto_pre = (nomina.JornadaPre * nomina.PrecioPre) + nomina.SalExtra_pre;
+
             }
             else
             {
-                bruto = horas * precio;
+                nomina.SalBruto_pre = (nomina.Horas_pre * nomina.PrecioPre);
             }
-            return bruto;
+
         }
         //Cálculo de las retenciones
-        private static float CalculoRetenciones(float bruto, float retenciones)
+        private static void CalculoRetenciones(ref Nomina nomina)
         {
-            retenciones = bruto * retenciones;
-            return retenciones;
+            nomina.SalRetencion_pre = nomina.SalBruto_pre * nomina.RetencionPre;
+
         }
         //Cálculo del salario Neto
-        private static float CalculoSalarioNeto(float bruto, float retenciones)
+        private static void CalculoSalarioNeto(ref Nomina nomina)
         {
-            retenciones = CalculoRetenciones(bruto, retenciones);
-            neto = bruto - retenciones;
-            return neto;
+            nomina.SalNeto_pre = nomina.SalBruto_pre - nomina.SalRetencion_pre;
         }
         #endregion
 
@@ -166,11 +167,11 @@ namespace Nominas
             {
                 if (Nomina[i] != null)
                 {
-                    Nomina[i].HExtra_pre = CalculoExtra(horas, jornada);
-                    Nomina[i].SalBruto_pre = CalculoSalarioBruto(horas, jornada, precio);
-                    Nomina[i].SalExtra_pre = CalculoSalarioExtra(Nomina[i].Horas_pre, precio);
-                    Nomina[i].SalRetencion_pre = CalculoRetenciones(bruto, retenciones);
-                    Nomina[i].SalNeto_pre = CalculoSalarioNeto(bruto, retenciones);
+                    CalculoExtra(ref Nomina[i]);
+                    CalculoSalarioBruto(ref Nomina[i]);
+                    CalculoSalarioExtra(ref Nomina[i]);
+                    CalculoRetenciones(ref Nomina[i]);
+                    CalculoSalarioNeto(ref Nomina[i]);
                 }
             }
         }
@@ -195,11 +196,21 @@ namespace Nominas
                     {
                         if (Nomina[i] != null)
                         {
+                            cadena += Nomina[i].PrecioPre;
+                        }
+                    }
+
+                    break;
+                case 3:
+                    for (int i = 0; i < Nomina.Length; i++)
+                    {
+                        if (Nomina[i] != null)
+                        {
                             cadena += Nomina[i].HExtra_pre;
                         }
                     }
                     break;
-                case 3:
+                case 4:
                     for (int i = 0; i < Nomina.Length; i++)
                     {
                         if (Nomina[i] != null)
@@ -208,7 +219,7 @@ namespace Nominas
                         }
                     }
                     break;
-                case 4:
+                case 5:
 
                     for (int i = 0; i < Nomina.Length; i++)
                     {
@@ -218,7 +229,7 @@ namespace Nominas
                         }
                     }
                     break;
-                case 5:
+                case 6:
                     for (int i = 0; i < Nomina.Length; i++)
                     {
                         if (Nomina[i] != null)
@@ -227,7 +238,7 @@ namespace Nominas
                         }
                     }
                     break;
-                case 6:
+                case 7:
                     for (int i = 0; i < Nomina.Length; i++)
                     {
                         if (Nomina[i] != null)
@@ -415,27 +426,7 @@ namespace Nominas
             cadena += "\n\t\tPulse ENTER para continuar\n";
             Interfaz.Continuar(cadena);
         }
-
-        //Cerrar nómina
-        public static void CierraNomina(ref Nomina[] Nomina, ref string cadena)
-        {
-            //Calcula nominas semanales
-            CalculaParcial(ref Nomina);
-
-            //Confirmacion
-            if (Interfaz.Confirmar())
-            {
-                //Almacena en el fichero
-                Ficheros.CerrarNomina(cadena);
-                //Eliminar fichero
-
-            }
-            else
-            {
-                Interfaz.Continuar();
-            }
-
-        }//TERMINA
+        
         #endregion
     }
 }

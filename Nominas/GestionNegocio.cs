@@ -112,10 +112,20 @@ namespace Nominas
                     case 6:
                         string cadena = null;
                         Gestion_Nomina.CalculaParcial(ref Nomina);
-                        cadena = Interfaz.MostrarNomina(Nomina, dni);
+                        Interfaz.MostrarNomina(Nomina, dni);
                         Interfaz.CierreMes(Nomina);
-                        Gestion_Nomina.CierraNomina(ref Nomina, ref cadena);
-                        Ficheros.BorrarTemporal(dni);
+                        if (!Interfaz.Confirmar())
+                        {
+                            //Almacena en el fichero
+                            Ficheros.CerrarNomina(cadena);
+                            //Eliminar fichero
+                            Ficheros.BorrarTemporal(dni);
+                        }
+                        else
+                        {
+                            Interfaz.Continuar();
+                        }
+                        
                         break;
                 }
             }

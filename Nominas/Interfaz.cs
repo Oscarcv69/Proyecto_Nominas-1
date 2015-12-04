@@ -736,18 +736,17 @@ namespace Nominas
         }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
-        public static string MostrarNomina(Nomina[] nomina, string dni)
+        public static void MostrarNomina(Nomina[] nomina, string dni)
         {
             Header();
             String cadena = null;
             cadena += "\n";
-            float precioMedio = 0.0F;
             int i = 0;
             Trabajador trabajador = new Trabajador();
             trabajador = Ficheros.GetDatosTrabajador(dni);
             cadena += HeaderNominaTrabajador(trabajador);
             cadena += LineaSeparador("-");
-            cadena += "\tHoras\tEuros/Hora\tHoras extra\tSal. extra\tSal. Bruto\tImpuestos\tSal. Neto\r";
+            cadena += "\t\t\tHoras\tEur/H\tH Extra\tSal. extra\tSal. Bruto\tImp.\tSal. Neto\r";
             cadena += LineaSeparador("-");
             if (nomina.Length != 0)
             {
@@ -758,23 +757,24 @@ namespace Nominas
                         cadena += "\n\tSemana " + (nomina[i].ID_pre);
                         cadena += "\t" + nomina[i].Horas_pre;
                         cadena += "\t" + nomina[i].PrecioPre;
+                        cadena += "\t" + nomina[i].HExtra_pre;
                         cadena += "\t" + nomina[i].SalExtra_pre;
                         cadena += "\t" + nomina[i].SalBruto_pre;
                         cadena += "\t" + nomina[i].SalRetencion_pre;
-                        cadena += "\t" + nomina[i].SalNeto_pre;
-                        precioMedio += nomina[i].PrecioPre;
+                        cadena += "\t" + nomina[i].SalNeto_pre+"\r";
                     }
                 }
-                cadena += "\r";
             }
+
             else
             {
                 cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
             }
-            cadena += LineaSeparador("=");
 
-            Console.WriteLine(cadena);
-            return cadena;
+
+                cadena += "\n"+LineaSeparador("=");
+
+                Console.WriteLine(cadena);
         }
 
         public static string MostrarNominaTemporal(Nomina[] nomina, string dni)
@@ -796,11 +796,11 @@ namespace Nominas
                     if (nomina[i] != null)
                     {
                         cadena += "\nSemana " + (nomina[i].ID_pre);
-                        cadena += "   " +  nomina[i].Horas_pre;
+                        cadena += "   " + nomina[i].Horas_pre;
                         cadena += "\t  " + nomina[i].PrecioPre;
                         cadena += "\t\t  " + nomina[i].JornadaPre;
                         cadena += "\t\t" + nomina[i].RetencionPre;
-                        cadena += "\t\t" + nomina[i].HextrasPre ;
+                        cadena += "\t\t" + nomina[i].HextrasPre;
                     }
                 }
             }
@@ -808,8 +808,8 @@ namespace Nominas
             {
                 cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
             }
-            
-            cadena += "\r"+"\n"+LineaSeparador("=");
+
+            cadena += "\r" + "\n" + LineaSeparador("=");
 
             return cadena;
         }
@@ -817,16 +817,15 @@ namespace Nominas
         public static void CierreMes(Nomina[] nomina)
         {
             String cadena = null;
-            float precioMedio = 0.0F;
             int i = nomina.Length;
-            cadena += "TOTAL MES:\t\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 1) + "\t";
-            cadena += precioMedio / i + "\t";//Hacemos el cálculo del precio de la hora media
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 2) + "\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 3) + "\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 4) + "\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 5) + "\t";
-            cadena += Gestion_Nomina.CalculaTotal(nomina, 6) + "\t\r";
+            cadena += "\tTOTAL MES:\t";
+            cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 1)) + "\t";
+            cadena += Convert.ToString(Math.Round(Gestion_Nomina.CalculaTotal(nomina, 2)/ i,2)) + "\t";//Hacemos el cálculo del precio de la hora media
+            cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 3)) + "\t";
+            cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 4)) + "\t";
+            cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 5)) + "\t";
+            cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 6)) + "\t";
+            cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 7)) + "\t\r";
 
             Console.WriteLine(cadena);
         }
@@ -1010,7 +1009,7 @@ namespace Nominas
             return cadena;
         }
 
-        
+
         #endregion
 
     }
