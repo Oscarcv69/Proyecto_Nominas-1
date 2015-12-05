@@ -11,7 +11,8 @@ namespace Nominas
     class Interfaz
     {
         private static string dni_trb = null;
-        #region Header - Francisco Romero
+        
+        #region UTILIDADES - Francisco Romero
         public static void Header()
         {
             Console.Clear();
@@ -21,8 +22,75 @@ namespace Nominas
             Console.WriteLine("\t\t|                                           |");
             Console.WriteLine("\t\t|>-----------------------------------------<|");
         }
-        #endregion Header
-        #region Menus PRINCIPALES - Francisco Romero
+        public static void Error(string err) // MÉTODO QUE MUESTRA EL ERROR RECIBIDO POR PANTALLA
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\n\t\tERROR >> {0}", err);
+            Console.ResetColor();
+        }
+        public static void Continuar() // Método por defecto de continuar
+        {
+            Console.WriteLine("");
+            Console.Write("\t\t\tPulsa una tecla para continuar...");
+            Console.ReadLine();
+        }
+        public static bool Continuar(string mensaje)  //Método sobrescrito de continuar
+        {
+            bool seguir = false;    // Control de la confirmación
+            string aux = null;
+
+            // ENTRADA
+            Console.Write("\n\t\t" + mensaje);
+            aux = Console.ReadLine();
+            aux = aux.Trim().ToLower(); // Métodos en cadena: 1º limpia ; 2º minúsculas
+
+            // VALIDACION --> PENDIENTE
+
+            // PROCESAMIENTO
+            if ((aux != "") && (aux[0] == 's')) seguir = true;   // Sólo true si 's', false en resto de casos
+
+            // SALIDA
+            return seguir;
+        }
+        public static void Pregunta(ref string pregunta, ref bool salida) // Recibe por referencia la pregunta a realizar y el booleano.
+        {
+            bool salir = false;
+            do
+            {
+                string eleccion = null;
+                Console.Write("\n\t\t " + pregunta);
+                eleccion = Console.ReadLine();
+                eleccion = eleccion.ToLower();
+                if (eleccion.Substring(0, 1) == "s")
+                {
+                    salir = true;
+                    salida = false;
+                }
+                else if (eleccion.Substring(0, 1) == "n")
+                {
+                    salir = true;
+                    salida = true;
+                }
+                else
+                {
+                    Error("Introduce una S para borrar otro empleado o una N para salir.");
+                    Continuar();
+                }
+            } while (!salir);
+        }
+        private static string LineaSeparador(String car)
+        {
+            String cadena = null;
+            for (int i = 0; i < Console.WindowWidth; i++)
+            {
+                cadena += car;
+            }
+            cadena += "\r";
+            return cadena;
+        }
+        #endregion 
+
+        #region MENUS PRINCIPALES - Francisco Romero
         public static byte MenuPrincipal()
         {
             byte seleccion = 0;
@@ -59,7 +127,6 @@ namespace Nominas
 
             return seleccion;
         }
-
         public static void OperacionesEmpleado()
         {
             byte seleccion = 0;
@@ -97,22 +164,10 @@ namespace Nominas
 
             } while (!flag);
         }
-
-
-
-
         #endregion
 
-        #region Mostrar Error - Francisco Romero
-        public static void Error(string err)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\n\t\tERROR >> {0}", err);
-            Console.ResetColor();
-        }
-        #endregion Mostrar Error
-        #region Pedir Contraseña - Francisco Romero
-        public static string PedirContraseña()
+        #region CONTRASEÑA  - Francisco Romero
+        public static string PedirContraseña() // PIDE LA CONTRASEÑA PARA PODER MODIFICAR EL ARCHIVO DE CONFIGURACIÓN
         {
             bool salir = false;
             string password = null;
@@ -134,9 +189,7 @@ namespace Nominas
             } while (!salir);
             return password;
         }
-        #endregion
-        #region Pedir <Modificar Contraseña> - Francisco Romero
-        public static string PedirContraseñaModificar()
+        public static string PedirContraseñaModificar() // PIDE LA CONTRASEÑA ACTUAL PARA PODER MODIFICAR ESTA (POR DEFECTO ES 1234)
         {
             string passactual = null, passnueva = null;
             bool salir = false;
@@ -158,36 +211,9 @@ namespace Nominas
             return passnueva;
         }
         #endregion
-        #region Continuar
-        public static void Continuar()
-        {
-            Console.WriteLine("");
-            Console.Write("\t\t\tPulsa una tecla para continuar...");
-            Console.ReadLine();
-        }
-        //Método sobrescrito de continuar, solo para probar
-        public static bool Continuar(string message)
-        {
-            bool seguir = false;    // Control de la confirmación
-            string aux = null;
-
-            // ENTRADA
-            Console.Write("\n\t\t" + message);
-            aux = Console.ReadLine();
-            aux = aux.Trim().ToLower(); // Métodos en cadena: 1º limpia ; 2º minúsculas
-
-            // VALIDACION --> PENDIENTE
-
-            // PROCESAMIENTO
-            if ((aux != "") && (aux[0] == 's')) seguir = true;   // Sólo true si 's', false en resto de casos
-
-            // SALIDA
-            return seguir;
-        }
-
-        #endregion
-        #region Header Tabla Trabajadores - Francisco Romero
-        public static void HeaderVerTrabajadores()
+        
+        #region FORMATO SALIDA POR PANTALLA - Francisco Romero
+        public static void HeaderVerTrabajadores() // Cabecera del trabajador
         {
             Console.WriteLine("---------------------------------------------------".PadLeft(64));
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -196,9 +222,7 @@ namespace Nominas
             Console.WriteLine("---------------------------------------------------".PadLeft(64));
             Console.WriteLine("");
         }
-        #endregion Header Tabla Trabajadores
-        #region Formato de Salida VER TRABAJADORES - Francisco Romero
-        public static void FormatoLeerXML(string dni, string nombre, string apellidos)
+        public static void FormatoLeerXML(string dni, string nombre, string apellidos) // Muestra los datos del trabajador de la siguiente manera...
         {
             Console.WriteLine("╔══════════════════════════════════════════════════".PadLeft(64));
             Console.WriteLine(string.Format("\t     ║ {0,-9} | {1,15} | {2,10}", dni, nombre, apellidos).PadRight(70));
@@ -206,6 +230,7 @@ namespace Nominas
             Console.WriteLine("");
         }
         #endregion Formato de Salida VER TRABAJADORES
+        
         #region Interfaz Trabajadores - Óscar Calvente
         public static Trabajador PlantillaCrearTrabajador()
         {
@@ -331,9 +356,6 @@ namespace Nominas
 
             return trabajador;     // Datos del Cliente
         }
-
-
-
         public static string PlantillaPedirDni()
         {
             string dni = null, mensaje = null, mensaje2 = null;
@@ -379,35 +401,6 @@ namespace Nominas
             } while (!salir);
             return dni;
         }
-        public static void Pregunta(ref string pregunta, ref bool salida)
-        {
-            bool salir = false;
-            do
-            {
-                string eleccion = null;
-                Console.Write("\n\t\t " + pregunta);
-                eleccion = Console.ReadLine();
-                eleccion = eleccion.ToLower();
-                if (eleccion.Substring(0, 1) == "s")
-                {
-                    salir = true;
-                    salida = false;
-                }
-                else if (eleccion.Substring(0, 1) == "n")
-                {
-                    salir = true;
-                    salida = true;
-                }
-                else
-                {
-                    Error("Introduce una S para borrar otro empleado o una N para salir.");
-                    Continuar();
-                }
-            } while (!salir);
-        }
-
-        #endregion
-        #region Modificar Trabajador - Óscar Calvente
         public static String PlantillaEleccionModificar()
         {
             string eleccion = null;
@@ -436,7 +429,6 @@ namespace Nominas
             } while (!salir);
             return eleccion;
         }
-
         public static String ElementoModificar(string eleccion)
         {
             bool salir = false;
@@ -492,9 +484,6 @@ namespace Nominas
             } while (!salir);
             return cambio;
         }
-
-        #endregion
-        #region Metodo ListarTrabajadores - Óscar Calvente
         public static void MostrarLista(Trabajador[] listaTrabajadores)
         {
             int indice = 0;
@@ -510,7 +499,7 @@ namespace Nominas
         }
         #endregion
 
-        #region Menús Nómina - Antonio Baena
+        #region Interfaz Nómina - Antonio Baena
         //Menú general de opciones de nómina
         public static void OperacionesNomina()
         {
@@ -568,9 +557,7 @@ namespace Nominas
                 }
             } while (!flag);
         }
-        #endregion
-
-        #region Interfaz Nómina - Antonio Baena
+        
         //Recoge los datos de la nómina
         internal static Nomina DatosNomina()//TODO: Comprobacion de errores
         {
@@ -1092,7 +1079,6 @@ namespace Nominas
         }
 
         //Cabecera de la Nomina con los datos del trabajador
-
         private static string HeaderNominaTrabajador(Trabajador trabajador)
         {
             string cadena = null;
@@ -1105,18 +1091,6 @@ namespace Nominas
             return cadena;
 
         }
-
-        private static string LineaSeparador(String car)
-        {
-            String cadena = null;
-            for (int i = 0; i < Console.WindowWidth; i++)
-            {
-                cadena += car;
-            }
-            cadena += "\r";
-            return cadena;
-        }
-
 
         #endregion
 

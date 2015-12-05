@@ -190,8 +190,9 @@ namespace Nominas
 
         public static void InicializarComponentes()
         {
-            Ficheros.setConfig();
+            Ficheros.CheckConfig();
             Ficheros.ExistOrEmptyEMP();
+            Ficheros.CheckArchivoPass();
         }
     } // FIN CLASE
 } // FIN ESP. NOMBRES

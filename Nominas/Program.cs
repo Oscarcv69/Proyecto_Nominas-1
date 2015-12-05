@@ -9,7 +9,7 @@ namespace Nominas
             #region Ejecutar Menu Principal
             byte opcion = 0;
             bool salir = false;
-
+            
             GestionNegocio.InicializarComponentes();
             do
             {

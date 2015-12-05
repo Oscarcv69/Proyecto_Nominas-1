@@ -2,22 +2,22 @@
 using System.Globalization;
 using System.IO;
 using System.Xml;
-                    /// <summary> INFORME : 
-                    /// Esta clase crea, guarda, obtiene, borra los ficheros correspondientes para su tratamiento en Gestión de Nóminas y 
-                    /// Gestión de Empleados.
-                    /// Hay métodos que Guardan las BASES DE DATOS de empleados y nóminas, otros que crean estos ficheros en caso de que no existan
-                    /// al inicio de la aplicación.
-                    /// Al inicio de la aplicación se crea el archivo de configuración con los valroes predeterminados en caso de que este no exista.
-                    /// Si al inicio de la aplicación, el archivo que contiene los trabajadores de la empresa está corrupto o no existe, crea uno
-                    /// predeterminado.
-                    /// </summary>
+/// <summary> INFORME : 
+/// Esta clase crea, guarda, obtiene, borra los ficheros correspondientes para su tratamiento en Gestión de Nóminas y 
+/// Gestión de Empleados.
+/// Hay métodos que Guardan las BASES DE DATOS de empleados y nóminas, otros que crean estos ficheros en caso de que no existan
+/// al inicio de la aplicación.
+/// Al inicio de la aplicación se crea el archivo de configuración con los valroes predeterminados en caso de que este no exista.
+/// Si al inicio de la aplicación, el archivo que contiene los trabajadores de la empresa está corrupto o no existe, crea uno
+/// predeterminado.
+/// </summary>
 namespace Nominas
 {
     class Ficheros
     {
         private static string rutaEMP = @"..\\..\\..\\Nominas\\B.D_Empleados\\trabajador.xml"; // RUTA POR DEFECTO DE LA BASE DE DATOS DE EMPLEADO
         private static string rutaNOM = @"..\\..\\..\\Nominas\\B.D_Nominas\\"; // RUTA POR DEFECTO DE LAS NOMINAS DE LOS TRABAJADORES
-        private static string rutaConf = @"..\\..\\..\\Nominas\\Recursos\\Conf.xml"; // RUTA DEL ARCHIVO DE CONFIGURACIÓN
+        private static string rutaConf = @"..\\..\\..\\Nominas\\Recursos\\"; // RUTA DEL ARCHIVO DE CONFIGURACIÓN
         private static string nominascerradas = @"..\\..\\..\\Nominas\\B.D_Cerradas\\"; // RUTA DEL DIRECTORIO DE NÓMINAS CERRADAS
         private static string dni_glo = null; // DNI DEL TRABAJADOR
         private static XmlDocument doc = null;
@@ -77,7 +77,7 @@ namespace Nominas
                 for (int i = 0; i < listaEmpleados.Count; i++)
                 {
                     empleado = listaEmpleados.Item(i);
-                    dni = Encriptacion.DesEncriptar(empleado.Attributes.GetNamedItem("DNI").InnerText); 
+                    dni = Encriptacion.DesEncriptar(empleado.Attributes.GetNamedItem("DNI").InnerText);
                     if (dni.Equals(dni_trb))                                        // SI EL DNI DEL TRABAJADOR COINCIDE CON EL PASADO POR PARAMETRO, DEVUELVE LOS DATOS DE ESTE.
                     {
                         trb.dni_pre = dni_trb;
@@ -385,10 +385,10 @@ namespace Nominas
         #endregion
 
         #region ARCHIVO DE CONFIGURACIÓN
-        public static void setConfig() // ESTABLECER LA CONFIGURACIÓN DE INICIO PREDETERMINADA
+        public static void CheckConfig() // ESTABLECER LA CONFIGURACIÓN DE INICIO PREDETERMINADA
         {
             doc = new XmlDocument();
-            if (!File.Exists(rutaConf))
+            if (!File.Exists(rutaConf + "Conf.xml"))
             {
                 XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null); // CABECERA
                 XmlElement root = doc.DocumentElement;
@@ -408,7 +408,7 @@ namespace Nominas
                 XmlElement retencion = doc.CreateElement("Retencion"); // RETENCION PREDETERMINADA 16%
                 retencion.AppendChild(doc.CreateTextNode("0.16"));
                 element1.AppendChild(retencion);
-                doc.Save(rutaConf);
+                doc.Save(rutaConf + "Conf.xml");
             }
         }
 
@@ -419,7 +419,7 @@ namespace Nominas
             doc = new XmlDocument();
             try
             {
-                doc.Load(rutaConf);
+                doc.Load(rutaConf + "Conf.xml");
                 XmlNodeList raiz = doc.SelectNodes("Configuracion");
                 foreach (XmlNode conf in raiz)
                 {
@@ -448,39 +448,75 @@ namespace Nominas
         public static void ModConfig(int option, float valor) // SE LLAMA A ESTE MÉTODO PARA MODIFICAR LOS DISTINTOS MODULOS DEL ARCHIVO DE CONFIGURACIÓN, MENOS EL VALOR DE LAS HORAS EXTRAS
         {
             doc = new XmlDocument();
-            doc.Load(rutaConf);
+            doc.Load(rutaConf + "Conf.xml");
             XmlNode nodo;
             nodo = doc.DocumentElement;
 
             foreach (XmlNode node1 in nodo.ChildNodes)
-                if (node1.Name.Equals("Jornada") && option == 1) { // NODO JORNADA
+                if (node1.Name.Equals("Jornada") && option == 1)
+                { // NODO JORNADA
                     int newJor = Int32.Parse(valor.ToString());
                     node1.InnerText = newJor.ToString();
                     break;
-                }  else if (node1.Name.Equals("Retencion") && option == 2) { // LAS RETENCIONES SE GUARDAN DIVIDIDAS ENTRE 100 PARA SU POSTERIOR CALCULO
+                }
+                else if (node1.Name.Equals("Retencion") && option == 2)
+                { // LAS RETENCIONES SE GUARDAN DIVIDIDAS ENTRE 100 PARA SU POSTERIOR CALCULO
                     float newRet = float.Parse(valor.ToString(), CultureInfo.InvariantCulture);
                     newRet = newRet / 100;
-                        node1.InnerText = newRet.ToString();
-                        break;
+                    node1.InnerText = newRet.ToString();
+                    break;
                 }
-            doc.Save(rutaConf);
+            doc.Save(rutaConf + "Conf.xml");
         }
         #endregion FIN ARCHIVO CONFIGURACIÓN
 
         #region FICHEROS TXT - Francisco Romero
         // CREAR TXT
-        public static void CerrarNomina(string cadena, string fecha) // CREA EL ARCHIVO DE TEXTO CON LA NÓMINA FINAL EN EL DIRECTORIO "B.D_Cerradas"
+
+        public static void CheckArchivoPass() // SI NO EXISTE EL ARCHIVO DE PASSWORD LO CREA POR DEFECTO. LA CONTRASEÑA POR DEFECTO ES "1234"
         {
-            bool salir = false;
+            string filename = "Pass.txt";
             try
             {
-                do
+                if (!File.Exists(rutaConf + filename) || new FileInfo(rutaConf + filename).Length == 0) // COMPRUEBA SI EL ARCHIVO EXISTE O NO CONTIENE NADA
                 {
-                    StreamWriter sw = File.CreateText(nominascerradas + fecha + dni_glo + ".txt"); // "CREA EL FICHERO"
-                    sw.WriteLine(cadena); // ESCRIBE LA NÓMINA FINAL EN EL FICHERO TXT
+                    StreamWriter sw = File.CreateText(rutaConf + filename); // "CREA EL FICHERO"
+                    sw.WriteLine(Encriptacion.Encriptar("1234")); // ESCRIBE LA NÓMINA FINAL EN EL FICHERO TXT
                     sw.Close(); // CIERRA EL ARCHIVO
-                    salir = true;
-                } while (!salir);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                throw new Exception("Archivo no encontrado.");
+            }
+        }
+
+        public static void ModPass(string newpassword)
+        {
+            try { 
+            string path = "Pass.txt";
+            File.WriteAllText(rutaConf + path, String.Empty);
+            StreamWriter sw = File.CreateText(rutaConf + path); // "PREPARA AL FICHERO PARA LEER"
+            sw.WriteLine(Encriptacion.Encriptar(newpassword)); // ESCRIBE LA NÓMINA FINAL EN EL FICHERO TXT
+            sw.Close(); // CIERRA EL ARCHIVO
+            }
+            catch (FileNotFoundException)
+            {
+                throw new Exception("Archivo no encontrado.");
+            }
+            catch (FileLoadException)
+            {
+                throw new Exception("Fallo al cargar el archivo.");
+            }
+        }
+
+        public static void CerrarNomina(string cadena, string fecha) // CREA EL ARCHIVO DE TEXTO CON LA NÓMINA FINAL EN EL DIRECTORIO "B.D_Cerradas"
+        {
+            try
+            {
+                StreamWriter sw = File.CreateText(nominascerradas + fecha + dni_glo + ".txt"); // "CREA EL FICHERO"
+                sw.WriteLine(cadena); // ESCRIBE LA NÓMINA FINAL EN EL FICHERO TXT
+                sw.Close(); // CIERRA EL ARCHIVO
             }
             catch (FileNotFoundException)
             {

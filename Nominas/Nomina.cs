@@ -34,15 +34,15 @@ namespace Nominas {
             this.retencion_pre = 0.0F;
         }
 
-        private Regex regexfloat = new Regex(@"\d*\.?\d+?"); // regex float.
-        Regex regex = new Regex("^[0-9]*$"); // regex only numbers
+        private Regex regexfloat = new Regex(@"\d*\.?\d+?"); // regex para FLOAT.
+        Regex regex = new Regex("^[0-9]*$"); // regex para INT.
 
         //TODO: Revisar toString()'s
 
         public int ID_pre {
             get { return ID; }
             set {
-                if(value < 1 || value >= 7) {
+                if(value < 1 || value > 6) {
                     throw new Exception("El mes no puede tener menos de una semana o más de seis");
                 }
 
