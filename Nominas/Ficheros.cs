@@ -15,12 +15,14 @@ namespace Nominas
 {
     class Ficheros
     {
+        #region Variables privadas de la clase
         private static string rutaEMP = @"..\\..\\..\\Nominas\\B.D_Empleados\\trabajador.xml"; // RUTA POR DEFECTO DE LA BASE DE DATOS DE EMPLEADO
         private static string rutaNOM = @"..\\..\\..\\Nominas\\B.D_Nominas\\"; // RUTA POR DEFECTO DE LAS NOMINAS DE LOS TRABAJADORES
         private static string rutaConf = @"..\\..\\..\\Nominas\\Recursos\\"; // RUTA DEL ARCHIVO DE CONFIGURACIÓN
         private static string nominascerradas = @"..\\..\\..\\Nominas\\B.D_Cerradas\\"; // RUTA DEL DIRECTORIO DE NÓMINAS CERRADAS
         private static string dni_glo = null; // DNI DEL TRABAJADOR
         private static XmlDocument doc = null;
+        #endregion
 
         #region FICHEROS XML EMPLEADOS - Francisco Romero
         // CREAR TRABAJADORES
@@ -468,11 +470,11 @@ namespace Nominas
                 }
             doc.Save(rutaConf + "Conf.xml");
         }
-        #endregion FIN ARCHIVO CONFIGURACIÓN
+        #endregion
 
         #region FICHEROS TXT - Francisco Romero
-        // CREAR TXT
-
+        
+        #region CONTRASEÑA
         public static void CheckArchivoPass() // SI NO EXISTE EL ARCHIVO DE PASSWORD LO CREA POR DEFECTO. LA CONTRASEÑA POR DEFECTO ES "1234"
         {
             string filename = "Pass.txt";
@@ -490,12 +492,10 @@ namespace Nominas
                 throw new Exception("Archivo no encontrado.");
             }
         }
-
-        public static void ModPass(string newpassword)
+        public static void ModPass(string newpassword) // METODO PARA MODIFICAR LA CONTRASEÑA QUE SE NECESITA PARA MODIFICAR EL ARCHIVO DE CONFIGURACIÓN
         {
             try { 
             string path = "Pass.txt";
-            File.WriteAllText(rutaConf + path, String.Empty);
             StreamWriter sw = File.CreateText(rutaConf + path); // "PREPARA AL FICHERO PARA LEER"
             sw.WriteLine(Encriptacion.Encriptar(newpassword)); // ESCRIBE LA NÓMINA FINAL EN EL FICHERO TXT
             sw.Close(); // CIERRA EL ARCHIVO
@@ -509,6 +509,29 @@ namespace Nominas
                 throw new Exception("Fallo al cargar el archivo.");
             }
         }
+        public static void CheckPass(ref string pw) // COMPROBAR SI LA CONTRASEÑA INTRODUCIDA ES LA MISMA QUE LA ALMACENADA
+        {
+            string filename = "Pass.txt";
+            try {
+                StreamReader archivo = File.OpenText(rutaConf + filename);
+                int i = 0;
+                while (!archivo.EndOfStream) // RECORRE EL ARCHIVO
+                {
+                    pw = archivo.ReadLine();
+                    if (++i == 0) break; // SE PARA EN LA PRIMERA LINEA
+                }
+                archivo.Close(); // CIERRA EL ARCHIVO
+            }
+            catch (FileNotFoundException)
+            {
+                throw new Exception("Archivo no encontrado.");
+            }
+            catch (FileLoadException)
+            {
+                throw new Exception("Fallo al cargar el archivo.");
+            }
+        }
+        #endregion
 
         public static void CerrarNomina(string cadena, string fecha) // CREA EL ARCHIVO DE TEXTO CON LA NÓMINA FINAL EN EL DIRECTORIO "B.D_Cerradas"
         {
@@ -527,7 +550,7 @@ namespace Nominas
                 throw new Exception("Fallo al cargar el archivo.");
             }
         }
-        // FIN CREAR TXT
+        
         #endregion FIN TXT
     }
 }
