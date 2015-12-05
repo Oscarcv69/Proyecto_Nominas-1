@@ -858,7 +858,7 @@ namespace Nominas
                 cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
             }
 
-            cadena += "\r" + "\n" + LineaSeparador("=");
+            cadena += "\r\n" + LineaSeparador("=")+ "\r";
 
             return cadena;
         }
@@ -867,7 +867,7 @@ namespace Nominas
         {
             String cadena = null;
             int i = nomina.Length;
-            cadena += "TOTAL MES:\t";
+            cadena += "\nTOTAL MES:\t";
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 1)) + "\t";
             cadena += Convert.ToString(Math.Round(Gestion_Nomina.CalculaTotal(nomina, 2) / i, 2)) + "\t";//Hacemos el cálculo del precio de la hora media
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 3)) + "\t";
