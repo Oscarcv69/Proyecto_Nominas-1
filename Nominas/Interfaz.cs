@@ -1061,7 +1061,7 @@ namespace Nominas
                 }
                 else
                 {
-                    if (num < 1 || num > 12)
+                    if (num < 1 || num > anho.Year)
                     {
                         ctrl = false;
                         Error("Ha introducido un año no válido.");
@@ -1089,7 +1089,7 @@ namespace Nominas
                 }
                 else
                 {
-                    if (num < 1 || num > anho.Year)
+                    if (num < 1 || num > 12)
                     {
                         ctrl = false;
                         Error("\n\tHa introducido un valor no válido.\r\n\tPor favor, introduzca un mes entre Enero (1) y Diciembre (12)\r");
