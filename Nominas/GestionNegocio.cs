@@ -161,34 +161,25 @@ namespace Nominas
 
         public static bool ValidarContraseña(string password)
         {
-            string pass = ConfigurationManager.AppSettings["Password"];
-            if (password.Length > 3 && password.Length <= 6)
+            string originalpassword = null;
+            Ficheros.CheckPass(ref originalpassword);
+            if (Encriptacion.Encriptar(password).Equals(originalpassword)) {
+                return true;
+            } else
             {
-                if (password.Equals(pass))
-                {
-                    return true;
-                }
+                return false;
             }
-            return false;
         }
 
         public static void ModificarContraseña()
         {
-            string nuevapass = Interfaz.PedirContraseñaModificar();
-            if (ConfigurationManager.AppSettings["Password"] == null)
-            {
-                throw new ArgumentNullException("La contraseña ", "<" + "Password" + "> No existe en la configuración.");
-            }
-            else
-            {
-                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                config.AppSettings.Settings["Password"].Value = nuevapass;
-                config.Save(ConfigurationSaveMode.Modified);
-            }
+            string pass = null;
+            pass = Interfaz.PedirContraseñaModificar();
+            Ficheros.ModPass(pass);
         }
         #endregion
 
-        public static void InicializarComponentes()
+        public static void InicializarComponentes() // INICIALIZA ESTOS COMPONENTES AL PRINCIPIO DE LA EJECUCIÓN DEL PROGRAMA
         {
             Ficheros.CheckConfig();
             Ficheros.ExistOrEmptyEMP();
