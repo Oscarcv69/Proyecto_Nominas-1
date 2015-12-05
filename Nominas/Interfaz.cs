@@ -746,7 +746,7 @@ namespace Nominas
             trabajador = Ficheros.GetDatosTrabajador(dni);
             cadena += HeaderNominaTrabajador(trabajador);
             cadena += LineaSeparador("-");
-            cadena += "\t\t\tHoras\tEur/H\tH Extra\tSal. extra\tSal. Bruto\tImp.\tSal. Neto\r";
+            cadena += "ID\t Horas\t Euros/ Hora\t Jornada\tRetenciones\tV.Horas Extras\r\n";
             cadena += LineaSeparador("-");
             if (nomina.Length != 0)
             {
@@ -754,7 +754,7 @@ namespace Nominas
                 {
                     if (nomina[i] != null)
                     {
-                        cadena += "\n\tSemana " + (nomina[i].ID_pre);
+                        cadena += "\nSemana " + (nomina[i].ID_pre);
                         cadena += "\t" + nomina[i].Horas_pre;
                         cadena += "\t" + nomina[i].PrecioPre;
                         cadena += "\t" + nomina[i].HExtra_pre;
@@ -819,7 +819,7 @@ namespace Nominas
         {
             String cadena = null;
             int i = nomina.Length;
-            cadena += "\tTOTAL MES:\t";
+            cadena += "TOTAL MES:\t";
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 1)) + "\t";
             cadena += Convert.ToString(Math.Round(Gestion_Nomina.CalculaTotal(nomina, 2)/ i,2)) + "\t";//Hacemos el cálculo del precio de la hora media
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 3)) + "\t";
@@ -996,18 +996,21 @@ namespace Nominas
             anho = DateTime.Now;
             do
             {
-                Console.WriteLine("Por favor, introduzca el año de la nómina:");
-                Console.Write("Año: ");
+                Header();
+                Console.WriteLine("\t\tPor favor, introduzca el año de la nómina:");
+                Console.Write("\t\tAño: ");
                 aux = Console.ReadLine();
                 if (!Int32.TryParse(aux, out num)){
                     ctrl = false;
                     Error("Ha introducido un valor no válido, debe introducir un valor numérico");
+                    Continuar("Pulsa una tecla para continuar");
                 }
                 else {
                     if (num < 1 || num>anho.Year)
                     {
                         ctrl = false;
                         Error("Ha introducido un año no válido.");
+                        Continuar("Pulsa una tecla para continuar");
                     }
                     else
                     {
@@ -1018,12 +1021,14 @@ namespace Nominas
             } while (!ctrl);
             do
             {
-                Console.WriteLine("Por favor, introduzca el mes de la nómina:");
-                Console.Write("Mes: ");
+                Header();
+                Console.WriteLine("\t\tPor favor, introduzca el mes de la nómina:");
+                Console.Write("\t\tMes: ");
                 aux = Console.ReadLine();
                 if (!Int32.TryParse(aux, out num)){
                     ctrl = false;
                     Error("Ha introducido un valor no válido, debe introducir un valor numérico");
+                    Continuar("Pulsa una tecla para continuar");
                 }
                 else
                 {
@@ -1031,7 +1036,7 @@ namespace Nominas
                     {
                         ctrl = false;
                         Error("\n\tHa introducido un valor no válido.\r\n\tPor favor, introduzca un mes entre Enero (1) y Diciembre (12)\r");
-                        
+                        Continuar("Pulsa una tecla para continuar");
                     }
                     else
                     {
@@ -1040,7 +1045,7 @@ namespace Nominas
                     }
                 }
             } while (!ctrl);
-
+            
             return fecha;
 
 

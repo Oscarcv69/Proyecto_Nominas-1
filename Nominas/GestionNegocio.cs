@@ -122,6 +122,7 @@ namespace Nominas
                             Ficheros.CerrarNomina(cadena, fecha);
                             //Eliminar fichero
                             Ficheros.BorrarTemporal(dni);
+                            Interfaz.Continuar("Nómina Exportada Correctamente \n \t\tPulsa una tecla para continuar...");
                         }
                         else
                         {
