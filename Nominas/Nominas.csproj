@@ -104,6 +104,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="B.D_Cerradas\" />
     <Folder Include="B.D_Empleados\" />
     <Folder Include="B.D_Nominas\" />
     <Folder Include="Recursos\" />
