@@ -1061,7 +1061,7 @@ namespace Nominas
                 }
                 else
                 {
-                    if (num < 1 || num > anho.Year)
+                    if (num < 1 || num > 12)
                     {
                         ctrl = false;
                         Error("Ha introducido un año no válido.");
