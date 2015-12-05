@@ -79,7 +79,7 @@ namespace Nominas
                         mensaje2 = "Desea registrar otro Trabajador (s/n): ";
                         salida = Interfaz.Continuar(mensaje);
                         Interfaz.Pregunta(ref mensaje2, ref salida);
-                     
+
                     }
 
                     else
@@ -93,6 +93,7 @@ namespace Nominas
 
         }
 
+
         public static void ModificarTrabajador(ref Trabajador[] listaTrabajadores)
         {
             int posicion = 0;
@@ -104,14 +105,16 @@ namespace Nominas
             string pregunta = null;
             string mensaje = null;
 
-            
+
+
+            if (error == false)
+            {
+                dni = Interfaz.PlantillaPedirDni();
+                existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
+            }
+            do
+            {
                 try
-                {
-                    if(error == false) { 
-                    dni = Interfaz.PlantillaPedirDni();
-                    existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
-                    }
-                do
                 {
                     if (existe)
                     {
@@ -134,6 +137,8 @@ namespace Nominas
                         pregunta = "¿Quieres modificar otro aspecto? s/n >> ";
                         Interfaz.Continuar(mensaje);
                         Interfaz.Pregunta(ref pregunta, ref salir);
+                        Ficheros.GuardarTrabajadores(listaTrabajadores);
+
                     }
 
                     else
@@ -142,8 +147,8 @@ namespace Nominas
                         salir = false;
                         error = true;
                     }
-                } while (!salir);
-            }
+
+                }
                 catch (Exception ex)
                 {
                     Interfaz.Error(ex.Message);
@@ -151,9 +156,9 @@ namespace Nominas
                     salir = false;
                     error = true;
                 }
-      
-        }
+            } while (!salir);
 
+        }
         //Método para borrar un trabajador
         public static void BorrarTrabajador(ref Trabajador[] listaTrabajadores)
         {

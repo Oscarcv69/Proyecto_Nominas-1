@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Nominas
 {
     public class Trabajador
     {
         private string dni, nombre, apellidos;
-        public Trabajador() {
+        public Trabajador()
+        {
             this.dni = null;
             this.nombre = null;
             this.apellidos = null;
@@ -64,14 +61,15 @@ namespace Nominas
             set
             {
                 //COMPROBACIÓN DE QUE NOMBRE ESTE COMPUESTO SOLO POR LETRAS
-                if (Regex.IsMatch(value.ToString(), @"^[a-zA-ZñÑ\s]+$"))
+                if (Regex.IsMatch(value.ToString(), @"^[a-zA-ZñáéíóúÑÁÉÍÓÚ\s]+$") && !(value == " "))
                 {
-                    nombre = value;
+                    value = Regex.Replace(value, @"\s+", " ");
+                    nombre = value.Trim();
                 }
                 //EXEPCIÓN DE NOMBRE INTRODUCIDO INCORRECTO
                 else
                 {
-                    throw new Exception("El apellido introducido no tiene el formato correcto");
+                    throw new Exception("El nombre introducido no tiene el formato correcto");
                 }
             }
         }
@@ -84,9 +82,10 @@ namespace Nominas
             set
             {
                 //COMPROBACIÓN DE QUE NOMBRE ESTE COMPUESTO SOLO POR LETRAS
-                if (Regex.IsMatch(value.ToString(), @"^[a-zA-ZñÑ\s]+$"))
+                if (Regex.IsMatch(value.ToString(), @"^[a-zA-ZñáéíóúÑÁÉÍÓÚ\s]+$"))
                 {
-                    apellidos = value;
+                    value = Regex.Replace(value, @"\s+", " ");
+                    apellidos = value.Trim();
                 }
                 //EXCEPCIÓN EN EL APELLIDO
                 else

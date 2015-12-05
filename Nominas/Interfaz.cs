@@ -206,7 +206,7 @@ namespace Nominas
             Console.WriteLine("");
         }
         #endregion Formato de Salida VER TRABAJADORES
-        #region Operaciones Usuario
+        #region Interfaz Trabajadores - Óscar Calvente
         public static Trabajador PlantillaCrearTrabajador()
         {
             bool correcto = false;
@@ -348,11 +348,12 @@ namespace Nominas
                     Console.WriteLine("\t\tA continuacion, introduce el DNI del empleado.");
                     Console.Write("\n\t\t\tIntroduce el DNI: ");
                     dni = Console.ReadLine();
-                    trabajador.dni_pre = dni; //COMPROBAR DNI PARA VER SI ES REAL 
-                    trabajador = null; //VACIAR OBJETO TRABAJADOR PARA AHORRAR MEMORIA
-                    existe = Gestion_Empleado.ComprobarDni(dni);
+                    dni = dni.ToUpper();
+                    trabajador.dni_pre = dni; //COMPROBAR DNI PARA VER SI ES REAL
+                    existe = Gestion_Empleado.ComprobarDni(dni.ToUpper());
                     if (existe == true)
                     {
+                        trabajador = null; //VACIAR OBJETO TRABAJADOR PARA AHORRAR MEMORIA
                         salir = true;
                     }
                     else
@@ -366,22 +367,18 @@ namespace Nominas
 
                     }
                 }
-                catch
+                catch (Exception e)
                 {
 
                     salir = false;
-                    mensaje = "DNI No válido";
                     mensaje2 = "Pulse Enter para Continuar";
-                    Error(mensaje);
+                    Error(e.Message);
                     Continuar(mensaje2);
 
                 }
             } while (!salir);
             return dni;
         }
-
-
-
         public static void Pregunta(ref string pregunta, ref bool salida)
         {
             bool salir = false;
@@ -390,12 +387,13 @@ namespace Nominas
                 string eleccion = null;
                 Console.Write("\n\t\t " + pregunta);
                 eleccion = Console.ReadLine();
-                if (eleccion.Equals("s"))
+                eleccion = eleccion.ToLower();
+                if (eleccion.Substring(0, 1) == "s")
                 {
                     salir = true;
                     salida = false;
                 }
-                else if (eleccion.Equals("n"))
+                else if (eleccion.Substring(0, 1) == "n")
                 {
                     salir = true;
                     salida = true;
@@ -442,50 +440,54 @@ namespace Nominas
         public static String ElementoModificar(string eleccion)
         {
             bool salir = false;
-            byte seleccion = 0;
-            string cambio = null, mensaje2 = null;
+            string cambio = null, mensaje = null;
             bool existe = false;
             Trabajador trabajador = new Trabajador();
             do
             {
-                Header();
-                switch (eleccion)
+                try
                 {
+                    Header();
+                    switch (eleccion)
+                    {
 
-                    case "1":
-                        Console.Write("\n\t\tIntroduce el DNI nuevo: ");
-                        cambio = Console.ReadLine();
-                        trabajador.dni_pre = cambio;
-                        trabajador = null;
-                        existe = Gestion_Empleado.ComprobarDni(cambio);
-                        if (existe == true)
-                        {
+                        case "1":
+                            Console.Write("\n\t\tIntroduce el DNI nuevo: ");
+                            cambio = Console.ReadLine();
+                            cambio = cambio.ToUpper();
+                            trabajador.dni_pre = cambio;
+                            existe = Gestion_Empleado.ComprobarDni(cambio);
+                            if (existe == true)
+                            {
+                                salir = false;
+                                mensaje = "DNI ya se encuentra en la base de datos";
+                                Continuar(mensaje);
+                            }
+                            else
+                            {
+                                salir = true;
+                                mensaje = "DNI agregado con éxito";
+                                Continuar(mensaje);
+                            }
+                            break;
+                        case "2":
+                            Console.Write("\n\t\tIntroduce el Nombre nuevo: ");
+                            cambio = Console.ReadLine();
+                            trabajador.nombre_pre = cambio;
                             salir = true;
-                        }
-                        else
-                        {
-                            salir = false;
-                            mensaje2 = "Pulse Enter para Continuar";
-                            Continuar(mensaje2);
-                        }
-                        break;
-                    case "2":
-                        Console.Write("\n\t\tIntroduce el Nombre nuevo: ");
-                        cambio = Console.ReadLine();
-                        break;
-                    case "3":
-                        Console.Write("\n\t\tIntroduce el Apellido nuevo: ");
-                        cambio = Console.ReadLine();
-                        break;
+                            break;
+                        case "3":
+                            Console.Write("\n\t\tIntroduce el Apellido nuevo: ");
+                            cambio = Console.ReadLine();
+                            trabajador.apellidos_pre = cambio;
+                            salir = true;
+                            break;
+                    }
                 }
-                if (Byte.TryParse(eleccion, out seleccion) && (seleccion > 0) && (seleccion <= 3))
+                catch (Exception e)
                 {
-                    salir = true;
-                }
-                else
-                {
-                    Error("Introduce una elección del 1 al 3");
-                    Continuar();
+                    salir = false;
+                    Continuar(e.Message);
                 }
             } while (!salir);
             return cambio;
