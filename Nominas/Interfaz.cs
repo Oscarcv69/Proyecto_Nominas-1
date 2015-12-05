@@ -30,9 +30,11 @@ namespace Nominas
         }
         public static void Continuar() // Método por defecto de continuar
         {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("");
             Console.Write("\t\t\tPulsa una tecla para continuar...");
             Console.ReadLine();
+            Console.ResetColor();
         }
         public static bool Continuar(string mensaje)  //Método sobrescrito de continuar
         {
@@ -254,83 +256,75 @@ namespace Nominas
         {
             int eleccion, retencionTemp;
             Boolean salir = false, error = false;
-            string mensaje = null, ret = null, pass = null;
+            string mensaje = null, ret = null;
             Nomina nm = new Nomina();
 
-            pass = PedirContraseña();
-            if (GestionNegocio.ValidarContraseña(pass))
+
+            do
             {
-                do
+                Header();
+                Console.WriteLine("\t\t\t¿Qué aspecto quieres modificar?");
+                Console.WriteLine("\t\t\t1 - Jornada Laboral Semanal");
+                Console.WriteLine("\t\t\t2 - Valor de las retenciones");
+                Console.WriteLine("\t\t\t3 - Volver");
+                Console.Write("\t\t\tElección: ");
+                if (int.TryParse(Console.ReadLine(), out eleccion) && (eleccion >= 1) && (eleccion <= 3))
                 {
-                    Header();
-                    Console.WriteLine("\t\t\t¿Qué aspecto quieres modificar?");
-                    Console.WriteLine("\t\t\t1 - Jornada Laboral Semanal");
-                    Console.WriteLine("\t\t\t2 - Valor de las retenciones");
-                    Console.WriteLine("\t\t\t3 - Volver");
-                    Console.Write("\t\t\tElección: ");
-                    if (int.TryParse(Console.ReadLine(), out eleccion) && (eleccion >= 1) && (eleccion <= 3))
+                    do
                     {
-                        do
+                        if (error)
                         {
-                            if (error)
+                            Error(mensaje);
+                            Continuar("Pulsa una tecla para continuar...");
+                        }
+                        try
+                        {
+                            Header();
+                            switch (eleccion)
                             {
-                                Error(mensaje);
-                                Continuar("Pulsa una tecla para continuar...");
+                                case 1:
+                                    Console.Write("\n\t\t\tNuevo valor de la jornada: ");
+                                    nm.JornadaPre = Int32.Parse(Console.ReadLine());
+                                    valor = nm.JornadaPre;
+                                    option = 1;
+                                    break;
+                                case 2:
+                                    Console.Write("\n\t\t\tNuevo valor de la retenciones (Porcentaje): ");
+                                    ret = Console.ReadLine();
+                                    if (Int32.TryParse(ret, out retencionTemp))
+                                    {
+                                        nm.RetencionPre = float.Parse(retencionTemp.ToString());
+                                        valor = nm.RetencionPre;
+                                        option = 2;
+                                    }
+                                    else
+                                    {
+                                        mensaje = "El valor debe ser mayor que 0 y menor que 100";
+                                        error = true;
+                                    }
+                                    break;
+                                case 3:
+                                    salir = true;
+                                    break;
                             }
-                            try
-                            {
-                                Header();
-                                switch (eleccion)
-                                {
-                                    case 1:
-                                        Console.Write("\n\t\t\tNuevo valor de la jornada: ");
-                                        nm.JornadaPre = Int32.Parse(Console.ReadLine());
-                                        valor = nm.JornadaPre;
-                                        option = 1;
-                                        break;
-                                    case 2:
-                                        Console.Write("\n\t\t\tNuevo valor de la retenciones (Porcentaje): ");
-                                        ret = Console.ReadLine();
-                                        if (Int32.TryParse(ret, out retencionTemp))
-                                        {
-                                            nm.RetencionPre = float.Parse(retencionTemp.ToString());
-                                            valor = nm.RetencionPre;
-                                            option = 2;
-                                        }
-                                        else
-                                        {
-                                            mensaje = "El valor debe ser mayor que 0 y menor que 100";
-                                            error = true;
-                                        }
-                                        break;
-                                    case 3:
-                                        salir = true;
-                                        break;
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                mensaje = e.Message;
-                                Continuar("Pulsa una tecla para continuar...");
-                                salir = false;
-                                error = true;
-                            }
-                        } while (error); // SI FALLA ALGO VUELVE...
-                        salir = true;
-                    }
-                    else
-                    {
-                        salir = false;
-                        Error("La elección no es correcta, inserte un número del 1-3");
-                        Continuar("Pulsa una tecla para continuar...");
-                    }
-                } while (!salir);
-            }
-            else
-            {
-                mensaje = "La contraseña introducida es incorrecta, por favor, pruebe de nuevo.";
-                salir = false;
-            }
+                        }
+                        catch (Exception e)
+                        {
+                            mensaje = e.Message;
+                            Continuar("Pulsa una tecla para continuar...");
+                            salir = false;
+                            error = true;
+                        }
+                    } while (error); // SI FALLA ALGO VUELVE...
+                    salir = true;
+                }
+                else
+                {
+                    salir = false;
+                    Error("La elección no es correcta, inserte un número del 1-3");
+                    Continuar("Pulsa una tecla para continuar...");
+                }
+            } while (!salir);
         }
         #endregion
 

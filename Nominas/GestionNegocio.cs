@@ -87,8 +87,18 @@ namespace Nominas
                     case 3:
                         int option = 0;
                         float valor =  0;
-                        Interfaz.PedirDatosArchivoConf(ref option, ref valor);
-                        Ficheros.ModConfig(option, valor);
+                        string pass = null;
+                        pass = Interfaz.PedirContraseña();
+                        if (GestionNegocio.ValidarContraseña(pass))
+                        {
+                            Interfaz.PedirDatosArchivoConf(ref option, ref valor);
+                            Ficheros.ModConfig(option, valor);                
+                        } else
+                        {
+                            Interfaz.Error("La contraseña no coincide.");
+                            Interfaz.Continuar();
+                            break;
+                        }
                         Interfaz.Continuar("Valor modificado correctamente");
                         break;
                     //Eliminar nominas
