@@ -211,7 +211,6 @@ namespace Nominas
         #endregion
 
         #region Gestión de las Nóminas - Antonio Baena
-
         //Método que comprueba si una determinada semana ya existe en la nómina
         public static bool ExisteNomina(ref Nomina[] Nomina, int semana)
         {
