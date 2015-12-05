@@ -192,7 +192,7 @@ namespace Nominas {
         public int JornadaPre {
             get { return jornada_pre; }
             set {
-                if(value < 0 && value >= 40) {
+                if(value < 0 || value > 40) {
                     throw new Exception("La jornada predeterminada no puede ser menor que 0 ni mayor que 40 horas.");
                 }
 
@@ -255,7 +255,7 @@ namespace Nominas {
         public float RetencionPre {
             get { return retencion_pre; }
             set {
-                if(value < 0 || value > 1) {
+                if(value/100 < 0 || value/100 > 1) {
                     throw new Exception("El valor de la retención no puede ser menor que 0% ni mayor que 100%");
                 }
 

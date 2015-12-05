@@ -435,7 +435,7 @@ namespace Nominas
 
         }
 
-        public static void ModConfig(string name, string valor)
+        public static void ModConfig(int option, float valor)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(rutaConf);
@@ -443,15 +443,13 @@ namespace Nominas
             nodo = doc.DocumentElement;
 
             foreach (XmlNode node1 in nodo.ChildNodes)
-                switch (name)
-                {
-                    case "Jornada":
-                        int newJor = Int32.Parse(valor);
-                        node1.InnerText = newJor.ToString();
-                        break;
-                    case "Retenciones":
-                        float newRet = float.Parse(valor, CultureInfo.InvariantCulture);
-                        newRet = newRet / 100;
+                if (node1.Name.Equals("Jornada") && option == 1) {
+                    int newJor = Int32.Parse(valor.ToString());
+                    node1.InnerText = newJor.ToString();
+                    break;
+                }  else if (node1.Name.Equals("Retencion") && option == 2) { // LAS RETENCIONES SE GUARDAN DIVIDIDAS ENTRE 100 PARA SU POSTERIOR CALCULO
+                    float newRet = float.Parse(valor.ToString(), CultureInfo.InvariantCulture);
+                    newRet = newRet / 100;
                         node1.InnerText = newRet.ToString();
                         break;
                 }

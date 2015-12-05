@@ -85,9 +85,10 @@ namespace Nominas
 
                     //Modificar archivo de configuracion
                     case 3:
-                        string name = null, valor = null;
-                        Interfaz.PedirDatosArchivoConf(ref name, ref valor);
-                        Ficheros.ModConfig(name, valor);
+                        int option = 0;
+                        float valor =  0;
+                        Interfaz.PedirDatosArchivoConf(ref option, ref valor);
+                        Ficheros.ModConfig(option, valor);
                         break;
                     //Eliminar nominas
                     case 4:

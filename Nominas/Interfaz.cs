@@ -700,41 +700,79 @@ namespace Nominas
         }
 
         // PEDIR DATOS PARA MODIFICAR EL ARCHIVO DE CONFIGURACIÓN
-        public static void PedirDatosArchivoConf(ref string name, ref string valor)
+        public static void PedirDatosArchivoConf(ref int option, ref float valor)
         {
-            string nombre = null, value = null;
-            int eleccion;
-            Boolean salir = false;
+            int eleccion, retencionTemp;
+            Boolean salir = false, error = false;
+            string mensaje = null, ret;
+            Nomina nm = new Nomina();
             do
             {
-                Console.WriteLine("\t\t¿Qué aspecto quieres modificar?");
-                Console.WriteLine("\t\t1 - Jornada Laboral Semanal");
-                Console.WriteLine("\t\t2 - Valor de las horas extras");
-                Console.WriteLine("\t\t3 - Valor de las retenciones");
-                Console.Write("\t\tEleccion: ");
+                Header();
+                Console.WriteLine("\t\t\t¿Qué aspecto quieres modificar?");
+                Console.WriteLine("\t\t\t1 - Jornada Laboral Semanal");
+                Console.WriteLine("\t\t\t2 - Valor de las retenciones");
+                Console.WriteLine("\t\t\t3 - Volver");
+                Console.Write("\t\t\tElección: ");
                 if (int.TryParse(Console.ReadLine(), out eleccion) && (eleccion >= 1) && (eleccion <= 3))
                 {
-                    switch (eleccion)
+                    do
                     {
-                        case 1:
-                            Console.Write("\t\tNuevo valor de la jornada: ");
-                            break;
-                        case 2:
-                            Console.Write("\t\tNuevo valor de la jornada: ");
-                            break;
-                        case 3:
-                            Console.Write("\t\tNuevo valor de la jornada: ");
-                            break;
-                    }
+                        if (error)
+                        {
+                            Error(mensaje);
+                            Continuar("Pulsa una tecla para continuar...");
+                        }
+                        try
+                        {
+                            Header();
+                            switch (eleccion)
+                            {
+                                case 1:
+                                    Console.Write("\n\t\t\tNuevo valor de la jornada: ");
+                                    nm.JornadaPre = Int32.Parse(Console.ReadLine());
+                                    valor = nm.JornadaPre;
+                                    option = 1;
+                                    break;
+                                case 2:
+                                    Console.Write("\n\t\t\tNuevo valor de la retenciones (Porcentaje): ");
+                                    ret = Console.ReadLine();
+                                    if (Int32.TryParse(ret, out retencionTemp))
+                                    {
+                                        nm.RetencionPre = float.Parse(retencionTemp.ToString());
+                                        valor = nm.RetencionPre;
+                                        option = 2;
+                                    }
+                                    else
+                                    {
+                                        mensaje = "El valor debe ser mayor que 0 y menor que 100";
+                                        error = true;
+                                    }
+                                    break;
+                                case 3:
+                                    salir = true;
+                                    break;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            mensaje = e.Message;
+                            Continuar("Pulsa una tecla para continuar...");
+                            salir = false;
+                            error = true;
+                        }
+                    } while (error); // SI FALLA ALGO VUELVE...
                     salir = true;
                 }
                 else
                 {
                     salir = false;
-                    throw new Exception("La elección no es correcta, inserte un número del 1-3");
-
+                    Error("La elección no es correcta, inserte un número del 1-3");
+                    Continuar("Pulsa una tecla para continuar...");
                 }
             } while (!salir);
+            Continuar("\tValor modificado correctamente");
+            nm = null;
         }
 
         //Interfaz de volcado de pantalla de mostrar Nomina
