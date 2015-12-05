@@ -1041,7 +1041,8 @@ namespace Nominas
                     }
                     else
                     {
-                        fecha = aux;
+                        aux.Trim();
+                        fecha =Regex.Replace(aux," ","");
                         ctrl = true;
                     }
                 }
@@ -1067,7 +1068,8 @@ namespace Nominas
                     }
                     else
                     {
-                        fecha += aux;
+                        aux.Trim();
+                        fecha += Regex.Replace(aux, " ", "");
                         ctrl = true;
                     }
                 }

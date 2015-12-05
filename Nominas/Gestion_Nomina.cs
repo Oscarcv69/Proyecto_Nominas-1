@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+///<summary> Informe:
+/// Esta clase recoge todos los datos de la nómina procedentes de la clase Nomina
+/// y los procesa, calculando los diversos capos que van a conformar la nómina definitiva.
+/// Asimismo hay métodos que incializan la nómina desde los campos del archivo de configuración.
+/// </summary>
 namespace Nominas
 {
     class Gestion_Nomina
@@ -23,7 +27,7 @@ namespace Nominas
         private static float retenciones = 0.0F; //Calculo de retenciones salariales
 
 
-        #region GESTION NOMINAS - ANTONIO
+        #region GESTION NOMINAS - ANTONIO BAENA
 
 
         //Inicialización de nóminas
@@ -42,10 +46,10 @@ namespace Nominas
         }
 
 
-        /*CargaNomina: El método coge un array de semanas y lo ordena, 
+        /*OrdenaNomina: El método coge un array de semanas y lo ordena, 
         * creando huecos allí donde sea necesario para insertar después 
         * las semanas y completarlo.*/
-        public static void CargaNomina(ref Nomina[] nomina)
+        public static void OrdenaNomina(ref Nomina[] nomina)
         {
             Nomina[] nominatemp = null;
             int max = 0;
@@ -60,12 +64,13 @@ namespace Nominas
 
             }
 
-            //Redimensionamos el array para hacer sitio (usando la semana más alta)
-            nominatemp = new Nomina[max];
-            for (int i = 0; i < nomina.Length; i++)
+            
+            nominatemp = new Nomina[max];//Redimensionamos el array para hacer sitio (usando la semana más alta)
+            for (int i = 0; i < nomina.Length; i++)//Recorremos el array recolocando las semanas según el ID en el orden correspondiente
             {
                 nominatemp[(nomina[i].ID_pre) - 1] = nomina[i];
             }
+            //Dehacemos la copia de la nómina y dejamos la nominatemp a null para ahorrar memoria.
             nomina = null;
             nomina = new Nomina[nominatemp.Length];
             nomina = nominatemp;
@@ -114,57 +119,11 @@ namespace Nominas
         {
             nomina.SalNeto_pre = nomina.SalBruto_pre - nomina.SalRetencion_pre;
         }
-        #endregion
-
-        #region Gestión de las Nóminas - Antonio Baena
-
-        #region Cálculo de las semanas - Veremos si  no lo borramos
-        public static short CalculoSemanas(short anho, short mes)
-        {
-            //Control de errores
-            if (mes < 1 && mes > 12)
-            {
-                throw new Exception("Ha introducido un valor erróneo, por favor, introduzca un mes válido");
-            }
-
-            short semanas;
-            int dias = System.DateTime.DaysInMonth(anho, mes);
-            semanas = Convert.ToInt16(dias / 7);
-            DateTime fecha = new DateTime(anho, mes, 1);
-
-            //Rectificación del número de semanas según donde empieza el mes.
-            switch (dias)
-            {
-                case 28:
-                    if (fecha.DayOfWeek != DayOfWeek.Monday)
-                    {
-
-                        semanas++;
-                    }
-                    break;
-                case 30:
-                    if (fecha.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        semanas++;
-                    }
-                    break;
-                case 31:
-                    if (fecha.DayOfWeek == DayOfWeek.Sunday || fecha.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        semanas++;
-                    }
-                    break;
-            }
-            return semanas;
-
-        }
-        #endregion
-
-        //Calculo de los parciales de nomina
+        //CalculoParcial: Con este método almacenamos en el array Nomina los valores correspondientes a cada semana.
         internal static void CalculaParcial(ref Nomina[] Nomina)
         {
-            for (int i = 0; i < Nomina.Length; i++)
-            {
+            for (int i = 0; i < Nomina.Length; i++) //Recorremos el array y en aquellas posiciones en las que la 
+            {                                       //semana no es nula se almacenan los correspondientes valores.
                 if (Nomina[i] != null)
                 {
                     CalculoExtra(ref Nomina[i]);
@@ -175,12 +134,11 @@ namespace Nominas
                 }
             }
         }
-
-        //Calculo de los totales de nomina
+        //Calculo de los totales de nomina: En este método se calculan los correspondientes valores totales (o promedio) de la nómina mensual
         internal static float CalculaTotal(Nomina[] Nomina, int v)
         {
             float cadena = 0;
-            switch (v)
+            switch (v) //Para facilitar la ejecución realizamos el cálculo mediante 
             {
                 case 1:
                     for (int i = 0; i < Nomina.Length; i++)
@@ -250,53 +208,31 @@ namespace Nominas
             }
             return cadena;
         }
+        #endregion
 
-        //Método de creación de semanas
-        public static void Grabar(ref Nomina[] Nomina, ref Nomina semana)
-        {
-            String cadena = null;
+        #region Gestión de las Nóminas - Antonio Baena
 
-            Nomina[] nomcop = null;
-
-            if (semana.ID_pre < Nomina.Length)
-            {
-                Nomina[semana.ID_pre - 1] = semana;
-            }
-            else
-            {
-                nomcop = new Nomina[Nomina.Length];
-                Nomina.CopyTo(nomcop, 0);
-                Nomina = new Nomina[semana.ID_pre + 1];
-                nomcop.CopyTo(Nomina, 0);
-                nomcop = null;
-            }
-            Nomina[semana.ID_pre - 1] = semana;
-
-            // SALIDA
-            cadena += "\n\n\t Se ha añadido la semana " + semana.ID_pre;
-        }
-
-        //Comprobación existe la semana
+        //Método que comprueba si una determinada semana ya existe en la nómina
         public static bool ExisteNomina(ref Nomina[] Nomina, int semana)
         {
             bool existe = false;
-            if (Nomina.Length == 0)
+            if (Nomina.Length == 0) //Si el array con las nóminas está vacio se crea con tantos espacios como semana queremos comprobar
             {
                 Nomina = new Nomina[semana];
                 existe = false;
             }
-            else if (Nomina.Length < semana)
+            else if (Nomina.Length < semana) //Si la longitud del Array de Nóminas es menor que la semana que queremos introducir.
             {
-                existe = false;
+                existe = false;//Indica que la semana no existe
             }
-            else if (Nomina[semana - 1] != null)
+            else if (Nomina[semana - 1] != null)//Si el espacio correspondiente a la semana dentro del array no es nulo, entonces existe.
             {
                 existe = true;
             }
             return existe;
         }
-
-        public static bool LimiteSemanas(Nomina[] Nomina) // COMPRUEBA SI LAS 6 SEMANAS HAN SIDO RELLENADAS
+        //Método que comprueba si las seis semanas (máximo de semanas que tiene un mes) han sido rellenadas
+        public static bool LimiteSemanas(Nomina[] Nomina)
         {
             bool limite = true;
             if (Nomina.Length == 6)
@@ -318,59 +254,84 @@ namespace Nominas
             }
             return limite;
         }
-        //Método de modificacion de nómina semanal
-
-        public static void CambiaSemana(ref Nomina[] Nomina)
+        #region Cálculo de las semanas - Veremos si  no lo borramos
+        public static short CalculoSemanas(short anho, short mes)
         {
-            int semana = 0;
-            int opcion = 0;
+            //Control de errores
+            if (mes < 1 && mes > 12)
+            {
+                throw new Exception("Ha introducido un valor erróneo, por favor, introduzca un mes válido");
+            }
+
+            short semanas;
+            int dias = System.DateTime.DaysInMonth(anho, mes);
+            semanas = Convert.ToInt16(dias / 7);
+            DateTime fecha = new DateTime(anho, mes, 1);
+
+            //Rectificación del número de semanas según donde empieza el mes.
+            switch (dias)
+            {
+                case 28:
+                    if (fecha.DayOfWeek != DayOfWeek.Monday)
+                    {
+
+                        semanas++;
+                    }
+                    break;
+                case 30:
+                    if (fecha.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        semanas++;
+                    }
+                    break;
+                case 31:
+                    if (fecha.DayOfWeek == DayOfWeek.Sunday || fecha.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        semanas++;
+                    }
+                    break;
+            }
+            return semanas;
+
+        }
+        #endregion      
+        //Añadir semanas a la nómina. Pasamos tanto la nómina temporal como un la semana a añadir mediante referencias.
+        public static void CreaSemana(ref Nomina[] Nomina, ref Nomina semana)
+        {
             String cadena = null;
 
+            Nomina[] nomcop = null;
 
-            //Entrada de Datos
-            semana = Interfaz.QueSemana(Nomina);
-            if (BuscaSemana(Nomina, ref semana))
+            if (semana.ID_pre < Nomina.Length) //Si el número de semana es menor que la longitud de la semana, se inserta en su posición.
             {
-                opcion = Interfaz.NominaModificar(Nomina[semana]);
+                Nomina[semana.ID_pre - 1] = semana;
             }
-            else { opcion = 3; }
-
-
-            //PROCESO
-            switch (opcion)
+            else //En caso contrario redimensionamos la nómina para hacer sitio a la nueva semana y se inserta en su posición.
             {
-                case 0:
-                    cadena = "Modificación cancelada";
-                    break;
-                //Modificación de los datos
-                case 1:
-                    Nomina[semana].Horas_pre = Interfaz.SolicitarHoras();
-                    cadena = "Horas modificadas con éxito";
-
-                    break;
-                case 2:
-                    Nomina[semana].PrecioPre = Interfaz.SolicitarPrecio();
-                    cadena = "Precio de la hora de trabajo modificado con éxito";
-                    break;
+                nomcop = new Nomina[Nomina.Length];
+                Nomina.CopyTo(nomcop, 0);
+                Nomina = new Nomina[semana.ID_pre + 1];
+                nomcop.CopyTo(Nomina, 0);
+                nomcop = null;
             }
-            Interfaz.Continuar(cadena);
+            Nomina[semana.ID_pre - 1] = semana;
+
+            // SALIDA
+            cadena += "\n\n\t Se ha añadido la semana " + semana.ID_pre;
         }
-
+        //Método para buscar una semana determinada en el array
         private static bool BuscaSemana(Nomina[] nomina, ref int semana)
         {
             bool ctrl = false;
-            for (int i = 0; i < nomina.Length; i++)
-            {
+            for (int i = 0; i < nomina.Length; i++)//Recorre el array buscando una semana no nula y que coincida el ID con el valor 
+            {                                      //de la semana que se pasa como parámetro.
                 if (nomina[i] != null && semana == nomina[i].ID_pre)
                 {
 
-                    semana = i;
-                    ctrl = true;
+                    semana = i; //En este caso se iguala la semana al valor de la posición del array, 
+                    ctrl = true; //y se devuelve el true, es decir que la semana está en el array
                 }
-                else if (!ctrl)
-                {
-                    ctrl = false;
-                }
+                
             }
             if (!ctrl)
             {
@@ -380,16 +341,49 @@ namespace Nominas
 
             return ctrl;
         }
+        //Método de modificacion de nómina semanal
+        public static void CambiaSemana(ref Nomina[] Nomina)
+        {
+            int semana = 0;
+            int opcion = 0;
+            String cadena = null;
 
-        // Método de eliminacion de nomina
+
+            //Entrada de Datos
+            semana = Interfaz.QueSemana(Nomina); //Se pide la semana mediante el método de interfaz
+            if (BuscaSemana(Nomina, ref semana)) //A continuación se lanza el método Buscasemana 
+            {                                    //que nos devuelve la posición del array en la que está la semana y si existe.
+                opcion = Interfaz.NominaModificar(Nomina[semana]); //Si existe se lanza la interfaz para seleccionar la opción que vamos a modificar
+            }
+            else { opcion = 0; } //Si no se encuentra la semana se pasa la opción de abortar la modificación
+
+
+            //PROCESO
+            switch (opcion)
+            {
+                case 0:
+                    cadena = "Modificación cancelada";
+                    break;
+                //Modificación de los datos
+                case 1://Lanza la Interfaz para modificar las horas
+                    Nomina[semana].Horas_pre = Interfaz.SolicitarHoras();
+                    cadena = "Horas modificadas con éxito";
+                    break;
+                case 2://Lanza la Interfaz para modificar el precio de la hora.
+                    Nomina[semana].PrecioPre = Interfaz.SolicitarPrecio();
+                    cadena = "Precio de la hora de trabajo modificado con éxito";
+                    break;
+            }
+            Interfaz.Continuar(cadena);
+        }
+        // Método de eliminacion de toda la nomina
         public static void ProcesoEliminarNomina(ref Nomina[] Nomina)
         {
-            for (int i = 0; i < Nomina.Length; i++)
+            for (int i = 0; i < Nomina.Length; i++)//Se recorre el array haciendo nula cada entrada del mismo
             {
                 Nomina[i] = null;
             }
         }
-
         //Método de eliminación de semana
         public static void ProcesoEliminarSemana(ref Nomina[] Nomina, int semana)
         {
@@ -398,27 +392,28 @@ namespace Nominas
             Nomina[] copiaNomina;
             bool existesemana;
             String cadena = "";
+
             //Existe la semana?
             existesemana = ExisteNomina(ref Nomina, semana);
             if (!existesemana)
             {
                 cadena = "\n\t\t La semana no existe";
             }
-            else
+            else//Si la semana existe
             {
-                copiaNomina = new Nomina[Nomina.Length];
+                copiaNomina = new Nomina[Nomina.Length]; //Creamos un Array en el que copiamos la nómina
 
 
                 for (i = 0; i <= copiaNomina.Length - 1; i++, j++)
                 {
-                    if (i != (semana - 1))
+                    if (i != (semana - 1)) //En caso que el contador sea distinto a la posición de la seman en el array se copia en copianomina
                     {
                         copiaNomina[j] = Nomina[i];
                     }
                 }
-                //Array dinámico
+                //Array dinámico (Una vez copiado todo, redimensionamos el array eliminando una seman y vaciándolo
                 Nomina = new Nomina[copiaNomina.Length];
-                copiaNomina.CopyTo(Nomina, 0);
+                copiaNomina.CopyTo(Nomina, 0); //Copiamos el array copia en la nómina
                 //Ponemos el array de copia en Null para ahorrar memoria
                 copiaNomina = null;
                 cadena = "\n\t\t Semana eliminada con éxito";
@@ -426,7 +421,6 @@ namespace Nominas
             cadena += "\n\t\tPulse ENTER para continuar\n";
             Interfaz.Continuar(cadena);
         }
-        
         #endregion
     }
 }

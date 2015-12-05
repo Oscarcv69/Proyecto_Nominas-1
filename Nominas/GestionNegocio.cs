@@ -57,7 +57,7 @@ namespace Nominas
             try
             {
                 Nomina = Ficheros.GetNomina(dni);
-                Gestion_Nomina.CargaNomina(ref Nomina);
+                Gestion_Nomina.OrdenaNomina(ref Nomina);
 
                 switch (numb)
                 {
@@ -69,7 +69,7 @@ namespace Nominas
                         if (!Gestion_Nomina.LimiteSemanas(Nomina))
                         {
                             semana = Interfaz.PedirSemana(Nomina);
-                            Gestion_Nomina.Grabar(ref Nomina, ref semana);
+                            Gestion_Nomina.CreaSemana(ref Nomina, ref semana);
                             Ficheros.GuardarNominaTemporal(ref Nomina);
                         }
                         else
