@@ -21,7 +21,6 @@ namespace Nominas
 
             return existe;
         }
-
         private static bool ExisteTrabajador(Trabajador[] listaTrabajadores, string dni, ref int posicion)
         {
             bool existe = false;    // Control de existencia
@@ -41,8 +40,7 @@ namespace Nominas
 
             return existe;
         }
-
-        public static void NuevoTrabajador(ref Trabajador[] listaTrabajadores)
+        public static void NuevoTrabajador(ref Trabajador[] listaTrabajadores, int mode)
         {
             Trabajador trabtemp;
             Trabajador[] copia = null;
@@ -76,10 +74,15 @@ namespace Nominas
                         listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp;
 
                         mensaje = "Trabajador registrado correctamente";
-                        mensaje2 = "Desea registrar otro Trabajador (s/n): ";
-                        salida = Interfaz.Continuar(mensaje);
-                        Interfaz.Pregunta(ref mensaje2, ref salida);
-
+                        if (mode == 1)
+                        {
+                            mensaje2 = "Desea registrar otro Trabajador (s/n): ";
+                            salida = Interfaz.Continuar(mensaje);
+                            Interfaz.Pregunta(ref mensaje2, ref salida);
+                        } else
+                        {
+                            salida = true;
+                        }
                     }
 
                     else
@@ -92,8 +95,6 @@ namespace Nominas
             } while (!salida);
 
         }
-
-
         public static void ModificarTrabajador(ref Trabajador[] listaTrabajadores)
         {
             int posicion = 0;

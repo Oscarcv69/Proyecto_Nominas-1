@@ -7,7 +7,7 @@ namespace Nominas
     class GestionNegocio
     {
         #region GestionEmpleado - LLAMADA INTERFAZ
-        public static void GestionOperaciones(int numb, ref bool flag)
+        public static void GestionOperaciones(int numb, ref bool flag, int mode)
         {
             Trabajador[] listaTrabajador = null;
             listaTrabajador = Ficheros.getTrabajadores();
@@ -16,7 +16,7 @@ namespace Nominas
             {
                 //Agregar trabajadores
                 case 1: // *AGREGAR TRABAJADORES FUNCIONA CORRECTAMENTE*
-                    Gestion_Empleado.NuevoTrabajador(ref listaTrabajador);
+                    Gestion_Empleado.NuevoTrabajador(ref listaTrabajador, mode);
                     Ficheros.GuardarTrabajadores(listaTrabajador);
                     break;
                 //Modificar trabajadores
@@ -99,7 +99,6 @@ namespace Nominas
                             Interfaz.Continuar();
                             break;
                         }
-                        Interfaz.Continuar("Valor modificado correctamente");
                         break;
                     //Eliminar nominas
                     case 4:

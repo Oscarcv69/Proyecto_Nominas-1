@@ -76,6 +76,7 @@ namespace Nominas
                 else
                 {
                     Error("Introduce una S para borrar otro empleado o una N para salir.");
+                    salir = false;
                     Continuar();
                 }
             } while (!salir);
@@ -156,7 +157,7 @@ namespace Nominas
 
                 if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 1) && (seleccion <= 6))
                 {
-                    GestionNegocio.GestionOperaciones(Int32.Parse(eleccion), ref flag);
+                    GestionNegocio.GestionOperaciones(Int32.Parse(eleccion), ref flag, 1);
                 }
                 else
                 {
@@ -316,7 +317,6 @@ namespace Nominas
                             error = true;
                         }
                     } while (error); // SI FALLA ALGO VUELVE...
-                    salir = true;
                 }
                 else
                 {
@@ -474,26 +474,17 @@ namespace Nominas
                     {
                         trabajador = null; //VACIAR OBJETO TRABAJADOR PARA AHORRAR MEMORIA
                         salir = true;
-                    }
-                    else
+                    } else
                     {
-
-                        salir = false;
-                        mensaje = "DNI Válido, pero no está en la base de datos";
-                        mensaje2 = "Pulse Enter para Continuar";
-                        Error(mensaje);
-                        Continuar(mensaje2);
-
+                        salir = true;
                     }
                 }
                 catch (Exception e)
                 {
-
                     salir = false;
                     mensaje2 = "Pulse Enter para Continuar";
                     Error(e.Message);
                     Continuar(mensaje2);
-
                 }
             } while (!salir);
             return dni;
@@ -634,6 +625,7 @@ namespace Nominas
 
                     if (Byte.TryParse(eleccion, out seleccion) && (seleccion >= 0) && (seleccion <= 6))
                     {
+                        if (seleccion == 0) { dni_trb = null; }
                         GestionNegocio.GestionNominas(seleccion, ref flag, dni);
                     }
                     else
@@ -645,12 +637,14 @@ namespace Nominas
                 }
                 else
                 {
-                    Console.WriteLine("\t\tEl trabajador no se encuentra registrado");
+                    Console.WriteLine("\n\t\t\tEl trabajador no se encuentra registrado");
                     cadena = "¿Quieres registrar este trabajador?";
                     Interfaz.Pregunta(ref cadena, ref flag);
                     dni_trb = dni;
-                    GestionNegocio.GestionOperaciones(1, ref flag);
-
+                    if (flag == false)
+                    {
+                        GestionNegocio.GestionOperaciones(1, ref flag, 2);
+                    }
                 }
             } while (!flag);
         }
