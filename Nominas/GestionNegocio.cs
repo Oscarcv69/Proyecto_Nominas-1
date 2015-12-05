@@ -115,7 +115,7 @@ namespace Nominas
                         string cadena = null;
                         Gestion_Nomina.CalculaParcial(ref Nomina);
                         cadena = Interfaz.MostrarNomina(Nomina, dni);
-                        Interfaz.CierreMes(Nomina);
+                        cadena += Interfaz.CierreMes(Nomina);
                         if (!Interfaz.Confirmar())
                         {
                             //Almacena en el fichero
@@ -161,25 +161,34 @@ namespace Nominas
 
         public static bool ValidarContraseña(string password)
         {
-            string originalpassword = null;
-            Ficheros.CheckPass(ref originalpassword);
-            if (Encriptacion.Encriptar(password).Equals(originalpassword)) {
-                return true;
-            } else
+            string pass = ConfigurationManager.AppSettings["Password"];
+            if (password.Length > 3 && password.Length <= 6)
             {
-                return false;
+                if (password.Equals(pass))
+                {
+                    return true;
+                }
             }
+            return false;
         }
 
         public static void ModificarContraseña()
         {
-            string pass = null;
-            pass = Interfaz.PedirContraseñaModificar();
-            Ficheros.ModPass(pass);
+            string nuevapass = Interfaz.PedirContraseñaModificar();
+            if (ConfigurationManager.AppSettings["Password"] == null)
+            {
+                throw new ArgumentNullException("La contraseña ", "<" + "Password" + "> No existe en la configuración.");
+            }
+            else
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.Settings["Password"].Value = nuevapass;
+                config.Save(ConfigurationSaveMode.Modified);
+            }
         }
         #endregion
 
-        public static void InicializarComponentes() // INICIALIZA ESTOS COMPONENTES AL PRINCIPIO DE LA EJECUCIÓN DEL PROGRAMA
+        public static void InicializarComponentes()
         {
             Ficheros.CheckConfig();
             Ficheros.ExistOrEmptyEMP();
