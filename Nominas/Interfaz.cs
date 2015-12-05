@@ -191,32 +191,21 @@ namespace Nominas
         }
         public static string PedirContraseñaModificar() // PIDE LA CONTRASEÑA ACTUAL PARA PODER MODIFICAR ESTA (POR DEFECTO ES 1234)
         {
-            Regex rg = new Regex(@"^[a-zA-Z0-9]+$");
             string passactual = null, passnueva = null;
             bool salir = false;
             do
             {
                 Header();
-                Console.WriteLine("\t\t\tIntroduce la contraseña actual");
+                Console.WriteLine("Introduce la contraseña actual");
                 passactual = Console.ReadLine();
                 if (GestionNegocio.ValidarContraseña(passactual))
                 {
-                    Console.WriteLine("\t\t\tIntroduce la contraseña nueva");
+                    Console.WriteLine("Introduce la contraseña nueva");
                     passnueva = Console.ReadLine();
-                    if (!rg.IsMatch(passnueva))
-                    {
-                        Error("La cadena introducida no debe contener carácteres especiales, solo números o letras");
-                        Continuar();
-                        salir = false;
-                    } else
-                    {
-                        salir = true;
-                    }
                 }
                 else
                 {
                     Error("La contraseña actual no es correcta, por favor, intentelo de nuevo.");
-                    Continuar();
                 }
             } while (!salir);
             return passnueva;
@@ -1071,7 +1060,7 @@ namespace Nominas
                 }
                 else
                 {
-                    if (num < 1 || num > anho.Year)
+                    if (num < 1 || num > 12)
                     {
                         ctrl = false;
                         Error("\n\tHa introducido un valor no válido.\r\n\tPor favor, introduzca un mes entre Enero (1) y Diciembre (12)\r");
