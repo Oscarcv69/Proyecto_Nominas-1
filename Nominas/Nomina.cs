@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Nominas {
@@ -268,7 +269,7 @@ namespace Nominas {
                 }
 
                 else {
-                    retencion_pre = Single.Parse(value.ToString());
+                    retencion_pre = Single.Parse(value.ToString(), CultureInfo.CurrentUICulture);
                 }
             }
         }

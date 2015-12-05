@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-
-
+using System.Globalization;
 
 namespace Nominas
 {
@@ -289,15 +288,17 @@ namespace Nominas
                                     nm.JornadaPre = Int32.Parse(Console.ReadLine());
                                     valor = nm.JornadaPre;
                                     option = 1;
+                                    salir = true;
                                     break;
                                 case 2:
                                     Console.Write("\n\t\t\tNuevo valor de la retenciones (Porcentaje): ");
                                     ret = Console.ReadLine();
                                     if (Int32.TryParse(ret, out retencionTemp))
                                     {
-                                        nm.RetencionPre = float.Parse(retencionTemp.ToString());
+                                        nm.RetencionPre = float.Parse(retencionTemp.ToString(), CultureInfo.CurrentUICulture);
                                         valor = nm.RetencionPre;
                                         option = 2;
+                                        salir = true;
                                     }
                                     else
                                     {

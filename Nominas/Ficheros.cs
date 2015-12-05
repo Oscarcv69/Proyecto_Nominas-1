@@ -453,6 +453,7 @@ namespace Nominas
             doc = new XmlDocument();
             doc.Load(rutaConf + "Conf.xml");
             XmlNode nodo;
+            string retTemp = null;
             nodo = doc.DocumentElement;
 
             foreach (XmlNode node1 in nodo.ChildNodes)
@@ -466,7 +467,8 @@ namespace Nominas
                 { // LAS RETENCIONES SE GUARDAN DIVIDIDAS ENTRE 100 PARA SU POSTERIOR CALCULO
                     float newRet = float.Parse(valor.ToString(), CultureInfo.InvariantCulture);
                     newRet = newRet / 100;
-                    node1.InnerText = newRet.ToString();
+                    retTemp = newRet.ToString().Replace(",", ".");
+                    node1.InnerText = retTemp;
                     break;
                 }
             doc.Save(rutaConf + "Conf.xml");
