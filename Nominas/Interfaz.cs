@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
 
+
 namespace Nominas
 {
     class Interfaz
     {
         private static string dni_trb = null;
-
+        
         #region UTILIDADES - Francisco Romero
         public static void Header()
         {
@@ -215,9 +216,9 @@ namespace Nominas
                         Error("La cadena introducida solo puede contener números o letras y un mínimo de 3 caracteres.");
                         Continuar();
                         salir = false;
-                    }
-                    else
-                    {
+                }
+                else
+                {
                         salir = true;
                     }
                 }
@@ -231,7 +232,7 @@ namespace Nominas
             return passnueva;
         }
         #endregion
-
+        
         #region FORMATO SALIDA POR PANTALLA - Francisco Romero
         public static void HeaderVerTrabajadores() // Cabecera del trabajador
         {
@@ -250,7 +251,7 @@ namespace Nominas
             Console.WriteLine("");
         }
         #endregion Formato de Salida VER TRABAJADORES
-
+        
         #region Archivo Configuración - Francisco Romero
         // PEDIR DATOS PARA MODIFICAR EL ARCHIVO DE CONFIGURACIÓN
         public static void PedirDatosArchivoConf(ref int option, ref float valor)
@@ -648,7 +649,7 @@ namespace Nominas
                 }
             } while (!flag);
         }
-
+        
         //Recoge los datos de la nómina
         internal static Nomina DatosNomina()//TODO: Comprobacion de errores
         {
@@ -787,9 +788,8 @@ namespace Nominas
             Trabajador trabajador = new Trabajador();
             trabajador = Ficheros.GetDatosTrabajador(dni);
             cadena += HeaderNominaTrabajador(trabajador);
-            cadena += LineaSeparador("-");
-            cadena += "ID\t Horas\t Euros/ Hora\t Jornada\tRetenciones\tV.Horas Extras\r\n";
-            cadena += LineaSeparador("-");
+            cadena += "\n\t\tHoras\tEur/h\thExt.\tSExtra\tSBruto\tImp.\tSNeto\r\n";
+            cadena += "\n" + LineaSeparador("-") + "\r";
             if (nomina.Length != 0)
             {
                 for (i = 0; i < nomina.Length; i++)
@@ -814,9 +814,9 @@ namespace Nominas
             }
 
 
-            cadena += "\n" + LineaSeparador("=");
+            cadena += "\n" + LineaSeparador("=") + "\r";
 
-            Console.WriteLine(cadena);
+                Console.WriteLine(cadena);
             return cadena;
         }
 
@@ -852,16 +852,16 @@ namespace Nominas
                 cadena += "\t\t\t<¡ No hay semanas registradas !>\n";
             }
 
-            cadena += "\r" + "\n" + LineaSeparador("=");
+            cadena += "\r\n" + LineaSeparador("=")+ "\r";
 
             return cadena;
         }
 
-        public static void CierreMes(Nomina[] nomina)
+        public static string CierreMes(Nomina[] nomina)
         {
             String cadena = null;
             int i = nomina.Length;
-            cadena += "TOTAL MES:\t";
+            cadena += "\nTOTAL MES:\t";
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 1)) + "\t";
             cadena += Convert.ToString(Math.Round(Gestion_Nomina.CalculaTotal(nomina, 2) / i, 2)) + "\t";//Hacemos el cálculo del precio de la hora media
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 3)) + "\t";
@@ -871,6 +871,8 @@ namespace Nominas
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 7)) + "\t\r";
 
             Console.WriteLine(cadena);
+
+            return cadena;
         }
 
         internal static bool Confirmar()
@@ -1091,7 +1093,7 @@ namespace Nominas
                     }
                 }
             } while (!ctrl);
-
+            
             return fecha;
 
 
@@ -1101,12 +1103,12 @@ namespace Nominas
         private static string HeaderNominaTrabajador(Trabajador trabajador)
         {
             string cadena = null;
-            cadena += LineaSeparador("-");
-            cadena += "Trabajador\n";
-            cadena += "DNI: " + trabajador.dni_pre + "\t";
+            cadena += "\n" + LineaSeparador("-") + "\r";
+            cadena += "\nTrabajador\r";
+            cadena += "\nDNI: " + trabajador.dni_pre + "\t\t";
             cadena += "Nombre: " + trabajador.nombre_pre + "\t";
-            cadena += "Apellido: " + trabajador.apellidos_pre + "\n";
-            cadena += LineaSeparador("-");
+            cadena += "Apellidos: " + trabajador.apellidos_pre + "\r";
+            cadena += "\n"+LineaSeparador("-") + "\r";
             return cadena;
 
         }
