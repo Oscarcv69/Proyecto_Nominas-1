@@ -11,7 +11,7 @@ namespace Nominas
     class Interfaz
     {
         private static string dni_trb = null;
-        
+
         #region UTILIDADES - Francisco Romero
         public static void Header()
         {
@@ -78,7 +78,7 @@ namespace Nominas
                 }
             } while (!salir);
         }
-        private static string LineaSeparador(String car)
+        private static string LineaSeparador(String car) // Antonio Baena - Crea guiones utilizados en la salida por pantalla, acorde al ancho de la consola.
         {
             String cadena = null;
             for (int i = 0; i < Console.WindowWidth; i++)
@@ -169,21 +169,25 @@ namespace Nominas
         #region CONTRASEÑA  - Francisco Romero
         public static string PedirContraseña() // PIDE LA CONTRASEÑA PARA PODER MODIFICAR EL ARCHIVO DE CONFIGURACIÓN
         {
-            bool salir = false;
-            string password = null;
+            bool salir = false, error = false;
+            string password = null, mensaje = null;
             do
             {
+                if (error)
+                {
+                    Error(mensaje);
+                    Continuar();
+                }
                 Header();
-                Console.Write("\t\tIntroduzca la contraseña: ");
+                Console.Write("\t\t\tIntroduzca la contraseña: ");
                 password = Console.ReadLine();
-                if (GestionNegocio.ValidarContraseña(password))
+                if (password.Length >= 3 && password.Length <= 16)
                 {
                     salir = true;
                 }
                 else
                 {
-                    Error("La contraseña introducida es incorrecta, introduzca una contraseña de 3 - 6 carácteres.");
-                    Continuar();
+                    mensaje = "La contraseña introducida es incorrecta, introduzca una contraseña de 3 - 16 carácteres.";
                     salir = false;
                 }
             } while (!salir);
@@ -197,18 +201,19 @@ namespace Nominas
             do
             {
                 Header();
-                Console.WriteLine("\t\t\tIntroduce la contraseña actual");
+                Console.Write("\t\t\tIntroduce la contraseña actual");
                 passactual = Console.ReadLine();
                 if (GestionNegocio.ValidarContraseña(passactual))
                 {
-                    Console.WriteLine("\t\t\tIntroduce la contraseña nueva");
+                    Console.Write("\t\t\tIntroduce la contraseña nueva");
                     passnueva = Console.ReadLine();
-                    if (!rg.IsMatch(passnueva))
+                    if (!rg.IsMatch(passnueva) || passnueva.Length < 3)
                     {
-                        Error("La cadena introducida no debe contener carácteres especiales, solo números o letras");
+                        Error("La cadena introducida solo puede contener números o letras y un mínimo de 3 caracteres.");
                         Continuar();
                         salir = false;
-                    } else
+                    }
+                    else
                     {
                         salir = true;
                     }
@@ -217,12 +222,13 @@ namespace Nominas
                 {
                     Error("La contraseña actual no es correcta, por favor, intentelo de nuevo.");
                     Continuar();
+                    salir = false;
                 }
             } while (!salir);
             return passnueva;
         }
         #endregion
-        
+
         #region FORMATO SALIDA POR PANTALLA - Francisco Romero
         public static void HeaderVerTrabajadores() // Cabecera del trabajador
         {
@@ -241,7 +247,93 @@ namespace Nominas
             Console.WriteLine("");
         }
         #endregion Formato de Salida VER TRABAJADORES
-        
+
+        #region Archivo Configuración - Francisco Romero
+        // PEDIR DATOS PARA MODIFICAR EL ARCHIVO DE CONFIGURACIÓN
+        public static void PedirDatosArchivoConf(ref int option, ref float valor)
+        {
+            int eleccion, retencionTemp;
+            Boolean salir = false, error = false;
+            string mensaje = null, ret = null, pass = null;
+            Nomina nm = new Nomina();
+
+            pass = PedirContraseña();
+            if (GestionNegocio.ValidarContraseña(pass))
+            {
+                do
+                {
+                    Header();
+                    Console.WriteLine("\t\t\t¿Qué aspecto quieres modificar?");
+                    Console.WriteLine("\t\t\t1 - Jornada Laboral Semanal");
+                    Console.WriteLine("\t\t\t2 - Valor de las retenciones");
+                    Console.WriteLine("\t\t\t3 - Volver");
+                    Console.Write("\t\t\tElección: ");
+                    if (int.TryParse(Console.ReadLine(), out eleccion) && (eleccion >= 1) && (eleccion <= 3))
+                    {
+                        do
+                        {
+                            if (error)
+                            {
+                                Error(mensaje);
+                                Continuar("Pulsa una tecla para continuar...");
+                            }
+                            try
+                            {
+                                Header();
+                                switch (eleccion)
+                                {
+                                    case 1:
+                                        Console.Write("\n\t\t\tNuevo valor de la jornada: ");
+                                        nm.JornadaPre = Int32.Parse(Console.ReadLine());
+                                        valor = nm.JornadaPre;
+                                        option = 1;
+                                        break;
+                                    case 2:
+                                        Console.Write("\n\t\t\tNuevo valor de la retenciones (Porcentaje): ");
+                                        ret = Console.ReadLine();
+                                        if (Int32.TryParse(ret, out retencionTemp))
+                                        {
+                                            nm.RetencionPre = float.Parse(retencionTemp.ToString());
+                                            valor = nm.RetencionPre;
+                                            option = 2;
+                                        }
+                                        else
+                                        {
+                                            mensaje = "El valor debe ser mayor que 0 y menor que 100";
+                                            error = true;
+                                        }
+                                        break;
+                                    case 3:
+                                        salir = true;
+                                        break;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                mensaje = e.Message;
+                                Continuar("Pulsa una tecla para continuar...");
+                                salir = false;
+                                error = true;
+                            }
+                        } while (error); // SI FALLA ALGO VUELVE...
+                        salir = true;
+                    }
+                    else
+                    {
+                        salir = false;
+                        Error("La elección no es correcta, inserte un número del 1-3");
+                        Continuar("Pulsa una tecla para continuar...");
+                    }
+                } while (!salir);
+            }
+            else
+            {
+                mensaje = "La contraseña introducida es incorrecta, por favor, pruebe de nuevo.";
+                salir = false;
+            }
+        }
+        #endregion
+
         #region Interfaz Trabajadores - Óscar Calvente
         public static Trabajador PlantillaCrearTrabajador()
         {
@@ -568,7 +660,7 @@ namespace Nominas
                 }
             } while (!flag);
         }
-        
+
         //Recoge los datos de la nómina
         internal static Nomina DatosNomina()//TODO: Comprobacion de errores
         {
@@ -697,82 +789,6 @@ namespace Nominas
 
         }
 
-        // PEDIR DATOS PARA MODIFICAR EL ARCHIVO DE CONFIGURACIÓN
-        public static void PedirDatosArchivoConf(ref int option, ref float valor)
-        {
-            int eleccion, retencionTemp;
-            Boolean salir = false, error = false;
-            string mensaje = null, ret;
-            Nomina nm = new Nomina();
-            do
-            {
-                Header();
-                Console.WriteLine("\t\t\t¿Qué aspecto quieres modificar?");
-                Console.WriteLine("\t\t\t1 - Jornada Laboral Semanal");
-                Console.WriteLine("\t\t\t2 - Valor de las retenciones");
-                Console.WriteLine("\t\t\t3 - Volver");
-                Console.Write("\t\t\tElección: ");
-                if (int.TryParse(Console.ReadLine(), out eleccion) && (eleccion >= 1) && (eleccion <= 3))
-                {
-                    do
-                    {
-                        if (error)
-                        {
-                            Error(mensaje);
-                            Continuar("Pulsa una tecla para continuar...");
-                        }
-                        try
-                        {
-                            Header();
-                            switch (eleccion)
-                            {
-                                case 1:
-                                    Console.Write("\n\t\t\tNuevo valor de la jornada: ");
-                                    nm.JornadaPre = Int32.Parse(Console.ReadLine());
-                                    valor = nm.JornadaPre;
-                                    option = 1;
-                                    break;
-                                case 2:
-                                    Console.Write("\n\t\t\tNuevo valor de la retenciones (Porcentaje): ");
-                                    ret = Console.ReadLine();
-                                    if (Int32.TryParse(ret, out retencionTemp))
-                                    {
-                                        nm.RetencionPre = float.Parse(retencionTemp.ToString());
-                                        valor = nm.RetencionPre;
-                                        option = 2;
-                                    }
-                                    else
-                                    {
-                                        mensaje = "El valor debe ser mayor que 0 y menor que 100";
-                                        error = true;
-                                    }
-                                    break;
-                                case 3:
-                                    salir = true;
-                                    break;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            mensaje = e.Message;
-                            Continuar("Pulsa una tecla para continuar...");
-                            salir = false;
-                            error = true;
-                        }
-                    } while (error); // SI FALLA ALGO VUELVE...
-                    salir = true;
-                }
-                else
-                {
-                    salir = false;
-                    Error("La elección no es correcta, inserte un número del 1-3");
-                    Continuar("Pulsa una tecla para continuar...");
-                }
-            } while (!salir);
-            Continuar("\tValor modificado correctamente");
-            nm = null;
-        }
-
         //Interfaz de volcado de pantalla de mostrar Nomina
         public static string MostrarNomina(Nomina[] nomina, string dni)
         {
@@ -799,7 +815,7 @@ namespace Nominas
                         cadena += "\t" + nomina[i].SalExtra_pre;
                         cadena += "\t" + nomina[i].SalBruto_pre;
                         cadena += "\t" + nomina[i].SalRetencion_pre;
-                        cadena += "\t" + nomina[i].SalNeto_pre+"\r";
+                        cadena += "\t" + nomina[i].SalNeto_pre + "\r";
                     }
                 }
             }
@@ -810,9 +826,9 @@ namespace Nominas
             }
 
 
-                cadena += "\n"+LineaSeparador("=");
+            cadena += "\n" + LineaSeparador("=");
 
-                Console.WriteLine(cadena);
+            Console.WriteLine(cadena);
             return cadena;
         }
 
@@ -859,7 +875,7 @@ namespace Nominas
             int i = nomina.Length;
             cadena += "TOTAL MES:\t";
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 1)) + "\t";
-            cadena += Convert.ToString(Math.Round(Gestion_Nomina.CalculaTotal(nomina, 2)/ i,2)) + "\t";//Hacemos el cálculo del precio de la hora media
+            cadena += Convert.ToString(Math.Round(Gestion_Nomina.CalculaTotal(nomina, 2) / i, 2)) + "\t";//Hacemos el cálculo del precio de la hora media
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 3)) + "\t";
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 4)) + "\t";
             cadena += Convert.ToString(Gestion_Nomina.CalculaTotal(nomina, 5)) + "\t";
@@ -1022,12 +1038,11 @@ namespace Nominas
             return precio;
         }
 
-
         internal static string Pidefecha()
         {
             DateTime anho = new DateTime();
 
-            string fecha=null;
+            string fecha = null;
             bool ctrl = false;
             int num = 0;
             string aux = null;
@@ -1038,13 +1053,15 @@ namespace Nominas
                 Console.WriteLine("\t\tPor favor, introduzca el año de la nómina:");
                 Console.Write("\t\tAño: ");
                 aux = Console.ReadLine();
-                if (!Int32.TryParse(aux, out num)){
+                if (!Int32.TryParse(aux, out num))
+                {
                     ctrl = false;
                     Error("Ha introducido un valor no válido, debe introducir un valor numérico");
                     Continuar("Pulsa una tecla para continuar");
                 }
-                else {
-                    if (num < 1 || num>anho.Year)
+                else
+                {
+                    if (num < 1 || num > anho.Year)
                     {
                         ctrl = false;
                         Error("Ha introducido un año no válido.");
@@ -1053,7 +1070,7 @@ namespace Nominas
                     else
                     {
                         aux.Trim();
-                        fecha =Regex.Replace(aux," ","");
+                        fecha = Regex.Replace(aux, " ", "");
                         ctrl = true;
                     }
                 }
@@ -1064,7 +1081,8 @@ namespace Nominas
                 Console.WriteLine("\t\tPor favor, introduzca el mes de la nómina:");
                 Console.Write("\t\tMes: ");
                 aux = Console.ReadLine();
-                if (!Int32.TryParse(aux, out num)){
+                if (!Int32.TryParse(aux, out num))
+                {
                     ctrl = false;
                     Error("Ha introducido un valor no válido, debe introducir un valor numérico");
                     Continuar("Pulsa una tecla para continuar");
@@ -1085,7 +1103,7 @@ namespace Nominas
                     }
                 }
             } while (!ctrl);
-            
+
             return fecha;
 
 

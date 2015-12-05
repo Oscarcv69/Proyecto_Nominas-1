@@ -159,7 +159,8 @@ namespace Nominas
         public static void ExistOrEmptyEMP() // COMPRUEBA SI EXISTE LA BASE DE DATOS DE TRABAJADOR O SI NO TIENE NODOS HIJOS. SI ES ASÍ, CREA UNO POR DEFECTO.
         {
             doc = new XmlDocument();
-            if (!File.Exists(rutaEMP) || doc.ChildNodes.Count == 0) // SI ESTÁ EL ARCHIVO O SI NO TIENE NODOS HIJOS
+            doc.Load(rutaEMP);
+            if (!File.Exists(rutaEMP) || doc.ChildNodes.Count == 0 ) // SI ESTÁ EL ARCHIVO O SI NO TIENE NODOS HIJOS
             {
                 XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null); // CREA LA CABECERA
                 XmlElement root = doc.DocumentElement;

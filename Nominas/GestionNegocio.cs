@@ -89,6 +89,7 @@ namespace Nominas
                         float valor =  0;
                         Interfaz.PedirDatosArchivoConf(ref option, ref valor);
                         Ficheros.ModConfig(option, valor);
+                        Interfaz.Continuar("Valor modificado correctamente");
                         break;
                     //Eliminar nominas
                     case 4:
