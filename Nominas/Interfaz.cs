@@ -331,14 +331,16 @@ namespace Nominas
         #endregion
 
         #region Interfaz Trabajadores - Óscar Calvente
+
+        //Método con una plantilla para la creación de trabajadores
         public static Trabajador PlantillaCrearTrabajador()
         {
             bool correcto = false;
-            bool error = false;    // Control error inicializado
+            bool error = false;    // Inicializacion de variables
             string mensaje = null;
             bool existe = false;
 
-            Trabajador trabajador = new Trabajador();  // Cliente Temporal
+            Trabajador trabajador = new Trabajador();  // Creamos un objeto de trabajador
             string aux = null;
 
             do
@@ -350,12 +352,12 @@ namespace Nominas
                     {
                         Error(mensaje);  // Presentación de Errores
                         Continuar("Pulse una tecla para continuar...");
-                        error = false;          // Reinicio del Control de Errores
+                        error = false;   // Reinicio del Control de Errores
                     }
                     Header();
-                    Console.WriteLine("\n\t\t APERTURA CUENTA: DATOS DEL NUEVO TRABAJADOR\n");
+                    Console.WriteLine("\n\t\tDATOS DEL NUEVO TRABAJADOR\n");
 
-                    // ENTRADA: DNI del Cliente
+                    // ENTRADA: DNI del Trabajador
                     if (dni_trb != null) // SI NO ES NULL LO ASIGNA A DNI
                     {
                         trabajador.dni_pre = dni_trb;
@@ -366,10 +368,9 @@ namespace Nominas
                         try
                         {
                             Console.Write("\t\t Introduzca DNI (12345678A): ");
-                            // El DNI es válido
                             aux = Console.ReadLine();
-                            aux = aux.Trim().ToUpper();
-                            existe = Gestion_Empleado.ComprobarDni(aux);
+                            aux = aux.Trim().ToUpper(); //Pasamos a mayúsculas la letra del DNI
+                            existe = Gestion_Empleado.ComprobarDni(aux); //Comprobación si existe en la base de datos
                             if (existe)
                             {
                                 Error("El empleado ya se encuentra registrado");
@@ -378,35 +379,34 @@ namespace Nominas
                             }
                             else
                             {
-                                trabajador.dni_pre = aux;
+                                trabajador.dni_pre = aux; //Validación del DNI
                                 correcto = true;
                             }
                         }
                         catch (Exception e)
                         {
                             error = true;
-                            mensaje = e.Message;
+                            mensaje = e.Message; //Si no salta la excepción, mostramos porque ha saltado
                         }
                     }
                     else
                     {
                         Console.Write("\t\t Introduzca DNI (12345678A): ");
                         Console.WriteLine("{0}", trabajador.dni_pre);
-
                         correcto = true;
                     }
                 } while (!correcto);
-                // ENTRADA: Nombre y Apellidos
+                // ENTRADA: Nombre del Trabajador
                 if (!error)
                 {
                     Console.Write("\t\t Introduzca Nombre: ");
-                    if (trabajador.nombre_pre == null) // Dato introducido?
+                    if (trabajador.nombre_pre == null)
                     {
                         try
                         {
-                            // Validación Nombre --> NO TESTADO (PENDIENTE)
+                         
                             aux = Console.ReadLine();
-                            trabajador.nombre_pre = aux;
+                            trabajador.nombre_pre = aux;  // Validación Nombre
                             error = false;
                         }
                         catch (Exception e)
@@ -417,7 +417,7 @@ namespace Nominas
                         }
 
                     }
-                    else
+                    else  // SI NO ES NULL LO ASIGNA A NOMBRE
                     {
                         Console.WriteLine("{0}", trabajador.nombre_pre);   // Apellidos válidos
                     }
@@ -426,26 +426,25 @@ namespace Nominas
 
                 if (!error)
                 {
-                    Console.Write("\t\t Introduzca Apellidos: ");
-                    if (trabajador.apellidos_pre == null) // Dato introducido?
+                    if (trabajador.apellidos_pre == null) 
                     {
                         try
                         {
-                            aux = Console.ReadLine();  // Limpieza de entrada (espacios en blanco)
-                                                       // Validación Apellidos --> NO TESTADO (PENDIENTE)
-                            trabajador.apellidos_pre = aux;
+                            Console.Write("\t\t Introduzca Apellidos: ");
+                            aux = Console.ReadLine(); 
+                            trabajador.apellidos_pre = aux; // Validación Apellidos 
                             error = false;
                         }
 
                         catch (Exception e)
                         {
                             error = true;
-                            correcto = false;
+                            correcto = false; 
                             mensaje = e.Message;
                         }
                     }
                 }
-                else
+                else // SI NO ES NULL LO ASIGNA A APELLIDOS
                 {
                     Console.WriteLine("{0}", trabajador.apellidos_pre);    // Apellidos válidos
 
@@ -453,52 +452,53 @@ namespace Nominas
 
             } while (!correcto);
 
-            return trabajador;     // Datos del Cliente
+            return trabajador;     // Devolvemos los datos del trabajador
         }
+        //Método con una plantilla para pedir el DNI
         public static string PlantillaPedirDni()
         {
-            string dni = null, mensaje = null, mensaje2 = null;
-            bool salir = false;
+            string dni = null;
+            bool salir = false; //Inicialización de variables
             bool existe = false;
             Trabajador trabajador = new Trabajador();
             do
             {
                 try
                 {
-                    Interfaz.Header();
+                    Header(); //Mostramos el Header 
                     Console.WriteLine("\t\tA continuacion, introduce el DNI del empleado.");
                     Console.Write("\n\t\t\tIntroduce el DNI: ");
                     dni = Console.ReadLine();
-                    dni = dni.ToUpper();
+                    dni = dni.ToUpper(); //Convertimos el DNI a mayúsculas
                     trabajador.dni_pre = dni; //COMPROBAR DNI PARA VER SI ES REAL
-                    existe = Gestion_Empleado.ComprobarDni(dni.ToUpper());
+                    existe = Gestion_Empleado.ComprobarDni(dni.ToUpper()); //Comprobamos si ya está en la Base de datos
                     if (existe == true)
                     {
                         trabajador = null; //VACIAR OBJETO TRABAJADOR PARA AHORRAR MEMORIA
                         salir = true;
                     } else
                     {
-                        salir = true;
+                        salir = true; //Si no existe, sale del bucle
                     }
                 }
                 catch (Exception e)
                 {
                     salir = false;
-                    mensaje2 = "Pulse Enter para Continuar";
-                    Error(e.Message);
-                    Continuar(mensaje2);
+                    Error(e.Message); //Si nos salta la excepcion, nos indica el motivo
+                    Continuar();
                 }
             } while (!salir);
-            return dni;
+            return dni; //Retornamos el DNI validado y comprobado
         }
+        //Método que contiene una Plantilla para la modificación de los datos de los trabajadores
         public static String PlantillaEleccionModificar()
         {
             string eleccion = null;
-            byte seleccion = 0;
+            byte seleccion = 0; //Inicialización de las variables
             bool salir = false;
             do
             {
-                Console.Clear();
+                Console.Clear(); //Limpiamos la consola, para no mostrar lo anterior
                 Interfaz.Header();
                 Console.WriteLine("\n\t\t¿Que desea modificar?.");
                 Console.WriteLine("\n\t\t1.Modificar DNI.");
@@ -509,83 +509,73 @@ namespace Nominas
 
                 if (Byte.TryParse(eleccion, out seleccion) && (seleccion > 0) && (seleccion <= 4))
                 {
-                    salir = true;
+                    salir = true; //Si la eleccione está entre 1 y 3 la validamos
                 }
                 else
                 {
-                    Error("Introduce una elección del 1 al 3");
+                    Error("Introduce una elección del 1 al 3"); //Si no está entre ese rango, salta el error
                     Continuar();
                 }
             } while (!salir);
-            return eleccion;
+            return eleccion; //Retornamos la eleccion
         }
+        //Método en el que devolvemos el cambio que se va a realizar
         public static String ElementoModificar(string eleccion)
         {
             bool salir = false;
-            string cambio = null, mensaje = null;
+            string cambio = null, mensaje = null; //Inicialización de variables
             bool existe = false;
             Trabajador trabajador = new Trabajador();
             do
             {
                 try
                 {
-                    Header();
-                    switch (eleccion)
+                    Header(); //Mostramos el Header
+                    switch (eleccion) //Evaluamos diferentes condiciones según la eleccion especificada
                     {
-
+                        //Caso 1: Cambiamos el DNI por el nuevo introducido
                         case "1":
                             Console.Write("\n\t\tIntroduce el DNI nuevo: ");
                             cambio = Console.ReadLine();
-                            cambio = cambio.ToUpper();
-                            trabajador.dni_pre = cambio;
-                            existe = Gestion_Empleado.ComprobarDni(cambio);
+                            cambio = cambio.ToUpper(); //Ponemos el DNI en mayúsculas
+                            trabajador.dni_pre = cambio; //Validamos el DNI
+                            existe = Gestion_Empleado.ComprobarDni(cambio); //Comprobamos si ya está en la base de datos
                             if (existe == true)
                             {
                                 salir = false;
                                 mensaje = "DNI ya se encuentra en la base de datos";
-                                Continuar(mensaje);
+                                Error(mensaje); //Si ya se encuentra, salta el error
                             }
                             else
                             {
                                 salir = true;
                                 mensaje = "DNI agregado con éxito";
-                                Continuar(mensaje);
+                                Continuar(mensaje); //Si no lo encuentra, salimos del bucle.
                             }
                             break;
+                        //Caso 2: Modificación del Nombre del trabajador
                         case "2":
                             Console.Write("\n\t\tIntroduce el Nombre nuevo: ");
                             cambio = Console.ReadLine();
-                            trabajador.nombre_pre = cambio;
-                            salir = true;
+                            trabajador.nombre_pre = cambio; //Validación del Nombre introducido
+                            salir = true; //Si se valida, salimos del bucle
                             break;
+                        //Caso 3: Modificación del Apellido del trabajador
                         case "3":
                             Console.Write("\n\t\tIntroduce el Apellido nuevo: ");
                             cambio = Console.ReadLine();
-                            trabajador.apellidos_pre = cambio;
-                            salir = true;
+                            trabajador.apellidos_pre = cambio; //Validación del Apellido introducido
+                            salir = true; //Si se valida, salimos del bucle
                             break;
                     }
                 }
                 catch (Exception e)
                 {
                     salir = false;
-                    Continuar(e.Message);
+                    Continuar(e.Message);// Si algún cambio no es validado, salta la excepción y muestra el motivo
                 }
             } while (!salir);
-            return cambio;
-        }
-        public static void MostrarLista(Trabajador[] listaTrabajadores)
-        {
-            int indice = 0;
-
-            Header();
-            Console.WriteLine("\t LISTADO DE TRABAJADORES");
-            HeaderVerTrabajadores();
-
-            for (indice = 0; indice < listaTrabajadores.Length; indice++)
-            {
-                Console.WriteLine(listaTrabajadores[indice]);
-            }
+            return cambio;//Devolvemos el cambio que hayamos realizado
         }
         #endregion
 
