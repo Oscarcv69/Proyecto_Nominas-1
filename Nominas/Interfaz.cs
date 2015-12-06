@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Globalization;
 
+/// <summary> INFORME : 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// </summary>
+
 namespace Nominas
 {
     class Interfaz

@@ -1,8 +1,17 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+/// <summary> INFORME : 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// </summary>
 
 namespace Nominas
 {
+
     public class Trabajador
     {
         private string dni, nombre, apellidos;

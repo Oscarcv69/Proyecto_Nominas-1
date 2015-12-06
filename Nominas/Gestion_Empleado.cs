@@ -1,4 +1,12 @@
 ﻿using System;
+/// <summary> INFORME : 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// 
+/// </summary>
 
 namespace Nominas
 {
