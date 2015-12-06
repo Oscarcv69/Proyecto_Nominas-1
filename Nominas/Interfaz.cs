@@ -721,10 +721,10 @@ namespace Nominas
                         Console.Write("\t\tPor favor, introduzca el número de horas trabajadas" +
                                    "\n\t\tHoras:");
                         horas = Int32.Parse(Console.ReadLine());
+                        nomtemp.Horas_pre = horas;
                         Console.Write("\t\tPor favor, introduzca el precio por hora trabajada" +
                                    "\n\t\tPrecio:");
                         precio = Int32.Parse(Console.ReadLine());
-                        nomtemp.Horas_pre = horas;
                         nomtemp.PrecioPre = precio;
                         Ficheros.getConfig(ref jornada, ref valorHExtra, ref retencion);
                         nomtemp.JornadaPre = jornada;
@@ -753,18 +753,20 @@ namespace Nominas
             do
             {
                 Header();
-                Console.WriteLine("\n\tPor favor, introduzca:\n");
-                Console.WriteLine("\n\t\t1 - Modificar las horas de la semana");
-                Console.WriteLine("\n\t\t2 - Modificar el precio por hora de la semana");
-                Console.WriteLine("\n\t\t3 - Volver atrás");
-
+                Console.WriteLine("\n\t\tPor favor, introduzca:\n");
+                Console.WriteLine("\n\t\t1 - Modificar las Horas de la semana");
+                Console.WriteLine("\n\t\t2 - Modificar el Precio por hora de la semana");
+                Console.WriteLine("\n\t\t3 - Modificar la Jornada predeterminada de la semana");
+                Console.WriteLine("\n\t\t4 - Modificar la Retención de la semana");
+                Console.WriteLine("\n\t\t0 - Volver atrás");
+                Console.Write("\n\t\tElección: ");
                 if (!Int32.TryParse(Console.ReadLine(), out opcion))
                 {
                     salir = false;
-                    throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca una opción de 1 a 3");
+                    throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca una opción de 0 a 4");
 
                 }
-                else if (opcion < 1 || opcion > 3)
+                else if (opcion < 0 || opcion > 4)
                 {
                     salir = false;
                     throw new Exception("El número no es válido, por favor, introduzca una opción de 1 a 3");
@@ -955,8 +957,9 @@ namespace Nominas
             bool salir = false;
             do
             {
-                Console.WriteLine("\n\tPor favor, introduzca el número de semana:\n");
-                Console.WriteLine("\n\t\tSemana: ");
+                Header();
+                Console.WriteLine("\n\t\tPor favor, introduzca el número de semana:\n");
+                Console.Write("\n\t\t\tSemana: ");
                 if (!Int32.TryParse(Console.ReadLine(), out semana))
                 {
                     salir = false;
@@ -983,8 +986,9 @@ namespace Nominas
             bool flag = false;
             do
             {
-                Console.WriteLine("\n\tPor favor, introduzca el número de horas trabajadas esta semana\n");
-                Console.WriteLine("\n\t\tHoras: ");
+                Header();
+                Console.WriteLine("\n\t\tPor favor, introduzca el número de horas trabajadas esta semana\n");
+                Console.Write("\n\t\tHoras: ");
                 if (!Int32.TryParse(Console.ReadLine(), out horas))
                 {
                     flag = false;
@@ -1010,8 +1014,9 @@ namespace Nominas
             bool flag = false;
             do
             {
-                Console.WriteLine("\n\tPor favor, introduzca el precio por hora de esta semana\n");
-                Console.WriteLine("\n\t\tPrecio: ");
+                Header();
+                Console.WriteLine("\n\t\tPor favor, introduzca el precio por hora de esta semana\n");
+                Console.Write("\n\t\t\tPrecio: ");
                 if (!Single.TryParse(Console.ReadLine(), out precio))
                 {
                     flag = false;
@@ -1027,6 +1032,58 @@ namespace Nominas
                 else flag = true;
             } while (!flag);
             return precio;
+        }
+
+        internal static int SolicitarJornada()
+        {
+            int jor = 0;
+            bool flag = false;
+            do
+            {
+                Header();
+                Console.WriteLine("\n\t\tPor favor, introduzca la nueva jornada predeterminada\n");
+                Console.Write("\n\t\t\tNueva Jornada: ");
+                if (!Int32.TryParse(Console.ReadLine(), out jor))
+                {
+                    flag = false;
+                    throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca un valor numérico");
+
+                }
+                if (jor < 1 || jor > 168)
+                {
+                    flag = false;
+                    throw new Exception("El número no es válido, por favor, introduzca un número de horas adecuado");
+
+                }
+                else flag = true;
+            } while (!flag);
+            return jor;
+        }
+
+        internal static float SolicitarRetencion()
+        {
+            float ret = 0.0F;
+            bool flag = false;
+            do
+            {
+                Header();
+                Console.WriteLine("\n\t\tPor favor, introduzca la retención de esta semana\n");
+                Console.Write("\n\t\t\tNueva Retención: ");
+                if (!float.TryParse(Console.ReadLine(), out ret))
+                {
+                    flag = false;
+                    throw new Exception("Se ha introducido un caracter no válido, por favor, introduzca un valor numérico");
+
+                }
+                if (ret < 1 || ret > 100)
+                {
+                    flag = false;
+                    throw new Exception("El número no es válido, por favor, introduzca un valor del 1 al 100%");
+
+                }
+                else flag = true;
+            } while (!flag);
+            return ret / 100;
         }
 
         internal static string Pidefecha()

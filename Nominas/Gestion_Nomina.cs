@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -366,11 +367,19 @@ namespace Nominas
                 //Modificación de los datos
                 case 1://Lanza la Interfaz para modificar las horas
                     Nomina[semana].Horas_pre = Interfaz.SolicitarHoras();
-                    cadena = "Horas modificadas con éxito";
+                    cadena = "Horas modificadas con éxito.";
                     break;
                 case 2://Lanza la Interfaz para modificar el precio de la hora.
                     Nomina[semana].PrecioPre = Interfaz.SolicitarPrecio();
-                    cadena = "Precio de la hora de trabajo modificado con éxito";
+                    cadena = "Precio de la hora de trabajo modificado con éxito.";
+                    break;
+                case 3://Lanza la Interfaz para modificar el precio de la hora.
+                    Nomina[semana].JornadaPre = Interfaz.SolicitarJornada();
+                    cadena = "Jornada modificada con éxito.";
+                    break;
+                case 4://Lanza la Interfaz para modificar el precio de la hora.
+                    Nomina[semana].RetencionPre = Interfaz.SolicitarRetencion();
+                    cadena = "Retención modificada con éxito.";
                     break;
             }
             Interfaz.Continuar(cadena);
