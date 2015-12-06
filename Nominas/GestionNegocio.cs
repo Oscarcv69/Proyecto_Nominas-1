@@ -92,7 +92,8 @@ namespace Nominas
                         if (GestionNegocio.ValidarContraseña(pass))
                         {
                             Interfaz.PedirDatosArchivoConf(ref option, ref valor);
-                            Ficheros.ModConfig(option, valor);                
+                            Ficheros.ModConfig(option, valor);
+                            Interfaz.Continuar("Valor modificado con éxito");               
                         } else
                         {
                             Interfaz.Error("La contraseña no coincide.");

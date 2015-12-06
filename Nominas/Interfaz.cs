@@ -214,11 +214,11 @@ namespace Nominas
             do
             {
                 Header();
-                Console.Write("\t\t\tIntroduce la contraseña actual");
+                Console.Write("\t\t\tIntroduce la contraseña actual: ");
                 passactual = Console.ReadLine();
                 if (GestionNegocio.ValidarContraseña(passactual))
                 {
-                    Console.Write("\t\t\tIntroduce la contraseña nueva");
+                    Console.Write("\t\t\tIntroduce la contraseña nueva: ");
                     passnueva = Console.ReadLine();
                     if (!rg.IsMatch(passnueva) || passnueva.Length < 3)
                     {
@@ -301,11 +301,11 @@ namespace Nominas
                                     salir = true;
                                     break;
                                 case 2:
-                                    Console.Write("\n\t\t\tNuevo valor de la retenciones (Porcentaje): ");
+                                    Console.Write("\n\t\tNuevo valor de la retenciones (Porcentaje): ");
                                     ret = Console.ReadLine();
                                     if (Int32.TryParse(ret, out retencionTemp))
                                     {
-                                        nm.RetencionPre = float.Parse(retencionTemp.ToString(), CultureInfo.CurrentUICulture);
+                                        nm.RetencionPre = float.Parse(retencionTemp.ToString(), CultureInfo.InvariantCulture);
                                         valor = nm.RetencionPre;
                                         option = 2;
                                         salir = true;
@@ -640,8 +640,8 @@ namespace Nominas
                 }
                 else
                 {
-                    Console.WriteLine("\n\t\t\tEl trabajador no se encuentra registrado");
-                    cadena = "¿Quieres registrar este trabajador?";
+                    Console.WriteLine("\n\t\tEl trabajador no se encuentra registrado");
+                    cadena = "¿Quieres registrar este trabajador? (s/n): ";
                     Interfaz.Pregunta(ref cadena, ref flag);
                     dni_trb = dni;
                     if (flag == false)
@@ -705,8 +705,10 @@ namespace Nominas
                 Header();
                 try
                 {
-                    Console.Write("\n\t\tPor favor, introduzca la semana que quiere añadir" +
-                               "\n\t\tSemana:");
+                    Console.Write("\n\t\tPor favor, introduzca la semana que quiere añadir");
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write("\n\t\tSemana: ");
+                    Console.ResetColor();
                     semana = Convert.ToInt32(Console.ReadLine());
                     if (Gestion_Nomina.ExisteNomina(ref nominas, semana))
                     {
@@ -719,12 +721,16 @@ namespace Nominas
 
                         nomtemp.ID_pre = semana;
 
-                        Console.Write("\t\tPor favor, introduzca el número de horas trabajadas" +
-                                   "\n\t\tHoras:");
+                        Console.Write("\t\tPor favor, introduzca el número de horas trabajadas");
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.Write("\n\t\tHoras: ");
+                        Console.ResetColor();
                         horas = Int32.Parse(Console.ReadLine());
                         nomtemp.Horas_pre = horas;
-                        Console.Write("\t\tPor favor, introduzca el precio por hora trabajada" +
-                                   "\n\t\tPrecio:");
+                        Console.Write("\t\tPor favor, introduzca el precio por hora trabajada");
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.Write("\n\t\tPrecio: ");
+                        Console.ResetColor();
                         precio = Int32.Parse(Console.ReadLine());
                         nomtemp.PrecioPre = precio;
                         Ficheros.getConfig(ref jornada, ref valorHExtra, ref retencion);
