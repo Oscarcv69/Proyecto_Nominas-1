@@ -374,7 +374,7 @@ namespace Nominas
                             if (existe)
                             {
                                 Error("El empleado ya se encuentra registrado");
-                                Continuar("Pulsa una tecla para continuar");
+                                Continuar();
                                 correcto = false;
                             }
                             else
@@ -399,13 +399,13 @@ namespace Nominas
                 // ENTRADA: Nombre del Trabajador
                 if (!error)
                 {
-                    Console.Write("\t\t Introduzca Nombre: ");
                     if (trabajador.nombre_pre == null)
                     {
                         try
                         {
-                         
+                            Console.Write("\t\t Introduzca Nombre: ");
                             aux = Console.ReadLine();
+                            aux = aux.Trim();
                             trabajador.nombre_pre = aux;  // Validación Nombre
                             error = false;
                         }
@@ -431,7 +431,8 @@ namespace Nominas
                         try
                         {
                             Console.Write("\t\t Introduzca Apellidos: ");
-                            aux = Console.ReadLine(); 
+                            aux = Console.ReadLine();
+                            aux = aux.Trim();
                             trabajador.apellidos_pre = aux; // Validación Apellidos 
                             error = false;
                         }

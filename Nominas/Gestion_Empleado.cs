@@ -6,24 +6,27 @@ namespace Nominas
     {
         #region GESTION TRABAJADOR - OSCAR
 
+        //Método para comprobar si existe el trabajador en la base de datos
         public static bool ExisteTrabajador(Trabajador[] listaTrabajadores, string dni)
         {
-            bool existe = false;
+            bool existe = false; //Inicialización de variables
             int indice = 0;
 
             if (listaTrabajadores != null)
             {
                 for (indice = 0; (indice < listaTrabajadores.Length) && !existe; indice++)
                 {
-                    if (listaTrabajadores[indice].dni_pre.Equals(dni)) existe = true;
+                    if (listaTrabajadores[indice].dni_pre.Equals(dni)) existe = true; //Si lo encontramos, asignamos true
                 }
             }
 
-            return existe;
+            return existe; //Devolvemos el resultado de la búsqueda, falso/verdadero
         }
+
+        //Método para comprobar si existe el Trabajador, pero además nos trae su posición
         private static bool ExisteTrabajador(Trabajador[] listaTrabajadores, string dni, ref int posicion)
         {
-            bool existe = false;    // Control de existencia
+            bool existe = false;    // Inicialización de variables
             int indice = 0;
 
             if (listaTrabajadores != null)
@@ -32,19 +35,21 @@ namespace Nominas
                 {
                     if (listaTrabajadores[indice].dni_pre.Equals(dni))
                     {
-                        existe = true;
-                        posicion = indice;
+                        existe = true;  // Si existe, asignamos true a la variable
+                        posicion = indice; // Asignamos a la posición el índice donde lo hemos encontramos
                     }
                 }
             }
 
-            return existe;
+            return existe; //Devolvemos si existe o no
         }
+
+        //Método utilizado para la creación de nuevos trabajadores
         public static void NuevoTrabajador(ref Trabajador[] listaTrabajadores, int mode)
         {
             Trabajador trabtemp;
             Trabajador[] copia = null;
-            bool salida = false;
+            bool salida = false; //Inicialización de variables
             string mensaje = null;
             string mensaje2 = null;
             bool existe = false;
@@ -53,39 +58,39 @@ namespace Nominas
             do
             {
                 // ENTRADA
-                // NO COMPRUEBA SI EXISTE EL TRABAJADOR ------------------------->>>>>>
                 trabtemp = Interfaz.PlantillaCrearTrabajador();
-                existe = ExisteTrabajador(listaTrabajadores, trabtemp.dni_pre);
+                existe = ExisteTrabajador(listaTrabajadores, trabtemp.dni_pre); //Comprueba si existe o no el trabajador
 
-                if (listaTrabajadores == null)
+                if (listaTrabajadores == null) //Si la lista de trabajadores está vacía, le asigna una posición
                 {
                     listaTrabajadores = new Trabajador[1];
                 }
-                if (listaTrabajadores != null)
+                if (listaTrabajadores != null) //Como no es nula, debido a la anterior creación de la posición
                 {
                     if (existe == false)
                     {
-                        copia = new Trabajador[listaTrabajadores.Length];
-                        listaTrabajadores.CopyTo(copia, 0);
-                        listaTrabajadores = new Trabajador[listaTrabajadores.Length + 1];
-                        copia.CopyTo(listaTrabajadores, 0);
-                        copia = null;
+                        //Gestión dinámica de la memoria
+                        copia = new Trabajador[listaTrabajadores.Length]; //Copiamos el tamaño del array de trabajadores
+                        listaTrabajadores.CopyTo(copia, 0); //Volcamos el contenido del array de trabajadores en copia
+                        listaTrabajadores = new Trabajador[listaTrabajadores.Length + 1]; //Asignamos una posición más
+                        copia.CopyTo(listaTrabajadores, 0); //Copiamos todo de nuevo al array de trabajadores
+                        copia = null;//Volvemos copia a null para ahorrar memoria
 
-                        listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp;
+                        listaTrabajadores[listaTrabajadores.Length - 1] = trabtemp; //Asignamos el nuevo trabajador al array
 
                         mensaje = "Trabajador registrado correctamente";
-                        if (mode == 1)
+                        if (mode == 1)// Modo 1: Creamos empleados por NuevoTrabajadors
                         {
                             mensaje2 = "Desea registrar otro Trabajador (s/n): ";
                             salida = Interfaz.Continuar(mensaje);
                             Interfaz.Pregunta(ref mensaje2, ref salida);
-                        } else
+                        } else //Creamos empleados desde la nómina.
                         {
                             salida = true;
                         }
                     }
 
-                    else
+                    else //Si existe el trabajador, asignamos que salga del bucle
                     {
                         salida = true;
                     }
@@ -93,42 +98,44 @@ namespace Nominas
                 }
 
             } while (!salida);
-
         }
+        //Método para la Modificación de los diferentes aspectos de un trabajador en concreto
         public static void ModificarTrabajador(ref Trabajador[] listaTrabajadores)
         {
             int posicion = 0;
             string eleccion = null;
-            string dni = null;
-            bool existe = false;
-            bool salir = false;
+            string dni = null; 
+            bool existe = false;        //Inicialización de variables
+            bool salir = false;        
             bool error = false;
             string pregunta = null;
             string mensaje = null;
 
-
-
             if (error == false)
             {
-                dni = Interfaz.PlantillaPedirDni();
-                existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
+                dni = Interfaz.PlantillaPedirDni(); //Pedimos el DNI a modificar con la plantilla de la intefaz
+                existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion); //Buscamos si existe el dni facilitado
             }
             do
             {
                 try
                 {
-                    if (existe)
+                    if (existe) //Si el trabajador existe 
                     {
-                        eleccion = Interfaz.PlantillaEleccionModificar();
+                        //Llamamos a la plantilla para ver la elección escogida
+                        eleccion = Interfaz.PlantillaEleccionModificar(); 
 
-                        switch (eleccion)
+                        switch (eleccion) //Según la elección escogida realiza una acción u otra
                         {
+                            //Caso 1: Modificación del DNI
                             case "1":
                                 listaTrabajadores[posicion].dni_pre = Interfaz.ElementoModificar(eleccion);
                                 break;
+                            //Caso 2: Modificación del NOMBRE
                             case "2":
                                 listaTrabajadores[posicion].nombre_pre = Interfaz.ElementoModificar(eleccion);
                                 break;
+                            //Caso 1: Modificación de los APELLIDOS
                             case "3":
                                 listaTrabajadores[posicion].apellidos_pre = Interfaz.ElementoModificar(eleccion);
                                 break;
@@ -139,7 +146,7 @@ namespace Nominas
                         Interfaz.Continuar(mensaje);
                         Interfaz.Pregunta(ref pregunta, ref salir);
                         Ficheros.GuardarTrabajadores(listaTrabajadores);
-
+                        // Si todo ha sido validado, lo guardamos en el fichero
                     }
 
                     else
@@ -153,7 +160,7 @@ namespace Nominas
                 catch (Exception ex)
                 {
                     Interfaz.Error(ex.Message);
-                    Interfaz.Continuar("Pulse una tecla para continuar...");
+                    Interfaz.Continuar();
                     salir = false;
                     error = true;
                 }
