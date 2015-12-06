@@ -1,11 +1,8 @@
 ﻿using System;
 /// <summary> INFORME : 
-/// 
-/// 
-/// 
-/// 
-/// 
-/// 
+/// Clase que contiene las métodos correspondientes para la creación, modificación y borrado de trabajadores.
+/// También están los metodos para comprobar la existencia de los trabajadores consultados en la Base de datos
+/// y un método para mostrar por pantalla dichos trabajadores contenidos en la base de Datos
 /// </summary>
 
 namespace Nominas
@@ -186,9 +183,6 @@ namespace Nominas
             string mensaje;
             int j = 0;
 
-            //En primer lugar pedimos la contraseña para realizar cambios
-            /*correcto = GestionContraseña();*/
-
             //Vamos a pedir el DNI para buscar a la persona que vamos a borrar
             dni = Interfaz.PlantillaPedirDni();
 
@@ -202,9 +196,9 @@ namespace Nominas
                 // Creamos un array de Copia para volcar los datos, con longitud de los trabajadores -1
                 copia = new Trabajador[listaTrabajadores.Length - 1];
 
+
+
                 /* For para recorrer el array, si encotnramos dicho DNI, borramos dicha posición y datos.*/
-
-
                 for (int i = 0; i < listaTrabajadores.Length; i++, j++)
                 {
                     if (i != posicion)
@@ -218,8 +212,9 @@ namespace Nominas
                 copia.CopyTo(listaTrabajadores, 0);
                 //Ponemos el array de copia en Null para ahorrar memoria
                 copia = null;
-                mensaje = "Trabajador borrado con éxito, Pulse ENTER para continuar";
+                mensaje = "Trabajador borrado con éxito";
                 Interfaz.Continuar(mensaje);
+                Interfaz.Continuar();
             }
             else
             {
@@ -228,31 +223,27 @@ namespace Nominas
                 Interfaz.Continuar();
             }
         }
+        // Método para mostrar a todos los trabajadores que hay en la nómina
 
         public static void ListarTrabajadores(Trabajador[] arr)
         {
-            arr = Ficheros.getTrabajadores();
+            arr = Ficheros.getTrabajadores(); //Cogemos los trabajadores del fichero
             Interfaz.Header();
             for (int i = 0; i < arr.Length; i++)
             {
                 Interfaz.FormatoLeerXML(arr[i].dni_pre, arr[i].nombre_pre, arr[i].apellidos_pre);
             }
-            Interfaz.Continuar("Pulsa una tecla para continuar");
+            Interfaz.Continuar();
         }
         
-        // Método para mostrar a todos los trabajadores que hay en la nómina
-        public static void ComprobarListaTrabajadores()
-        {
-
-        }
-
+        //Método para comprobar si el DNI existe ya en la Base de datos de empleados.
         public static bool ComprobarDni(string dni)
         {
             Trabajador[] temp = null;
             bool correcto = false;
-            int i = 0;
-            temp = Ficheros.getTrabajadores();
-            for (i = 0; i < temp.Length; i++)
+            int i = 0;                          //Inicialización de variables
+            temp = Ficheros.getTrabajadores(); //Cogemos los trabajadores del fichero
+            for (i = 0; i < temp.Length; i++) //Recorremos los DNI de los trabajadores buscando el solicitado
             {
                 if (dni.Equals(temp[i].dni_pre))
                 {
@@ -264,7 +255,7 @@ namespace Nominas
                     correcto = false;
                 }
             }
-            return correcto;
+            return correcto; //Devolvemos si ha sido encontrado o no
         }
         #endregion
     }

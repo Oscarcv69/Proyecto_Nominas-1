@@ -7,11 +7,12 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 
 /// <summary> INFORME : 
-/// 
-/// 
-/// 
-/// 
-/// 
+/// Clase que contiene las métodos correspondientes para mostrar por pantalla y facilitar al usuario la introducción
+/// de datos por teclado.
+/// Contiene métodos tanto para trabajadores como para las nóminas.
+/// Dichos Métodos actúan de plantilla para la creación de un nuevo trabajador, modificación y borrado de un trabajador
+/// así como métodos para mostrar errores o continuaciones.
+/// COMENTAR PARTE ANTONIO!!
 /// 
 /// </summary>
 
