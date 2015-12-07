@@ -148,4 +148,12 @@
     <Nombre>RgByAGEAbgA=</Nombre>
     <Apellidos>UgBvAG0AZQByAG8A</Apellidos>
   </Trabajador>
+  <Trabajador DNI="NAA0ADUAOAAyADQAMAAxAFkA">
+    <Nombre>QQBuAHQAbwBuAGkAbwA=</Nombre>
+    <Apellidos>QgBhAGUAbgBhAA==</Apellidos>
+  </Trabajador>
+  <Trabajador DNI="NAA1ADQAOAAyADQAMAAxAFEA">
+    <Nombre>cABhAHQAYQB0AGEA</Nombre>
+    <Apellidos>cABlAGwAbwBuAGEA</Apellidos>
+  </Trabajador>
 </Plantilla>

@@ -60,7 +60,7 @@ namespace Nominas
         #endregion
 
         #region GestionNomina - LLAMADA INTERFAZ (Antonio Baena)
-        //Método que controla el funcionamiento de la clase GestionNomina y la Interfaz
+        //Métodos que controlan el funcionamiento de la clase GestionNomina y la Interfaz
         public static void GestionNominas(int numb, ref bool flag, string dni)
         {
             string fecha;
@@ -85,7 +85,7 @@ namespace Nominas
                         *  e introducirla en el array nómina, tras lo cual se almacena en el fichero.*/
                         if (!Gestion_Nomina.LimiteSemanas(Nomina))
                         {
-                            semana = Interfaz.PedirSemana(Nomina);
+                            semana = Interfaz.AgregarSemana(Nomina);
                             Gestion_Nomina.CreaSemana(ref Nomina, ref semana);
                             Ficheros.GuardarNominaTemporal(ref Nomina);
                         }
@@ -133,7 +133,7 @@ namespace Nominas
                         opcion = Interfaz.EliminarSemanaOpcion();
                         if (opcion == 1)
                         {
-                            ordinal = Interfaz.EliminarSemana(); // Pide la semana a eliminar
+                            ordinal = Interfaz.ElegirSemana(); // Pide la semana a eliminar
                             Gestion_Nomina.ProcesoEliminarSemana(ref Nomina, ordinal);
                         }
                         else
@@ -162,7 +162,7 @@ namespace Nominas
                         cadena = Interfaz.MostrarNomina(Nomina, dni);
                         //El método cierreMes devuelve (y concatena) en la variable cadena el resultado del cálculo de los totales de cada semana.
                         cadena += Interfaz.CierreMes(Nomina);
-                        if (!Interfaz.Confirmar())//se pide confirmación para guardar los cambios.
+                        if (!Confirmar())//se pide confirmación para guardar los cambios.
                         {
                             //Almacena en el fichero
                             fecha = Interfaz.Pidefecha();//En este método vamos a pedir la fecha de mes y año de la nómina para almacenarla.
@@ -184,6 +184,17 @@ namespace Nominas
                 Interfaz.Error(e.Message);
                 Interfaz.Continuar("Pulsa una tecla para continuar...");
             }
+        }
+        
+        //CONFIRMACIÓN PARA GUARDAR CAMBIOS
+        public static bool Confirmar()
+        {
+            String cad = null; //CADENA QUE ALMACENA LA PREGUNTA
+            bool confirma = false; //BOOLEANO DE RESPUESTA
+            cad = "\t¿Desea usted guardar los cambios?(s/n)";
+           Interfaz.Pregunta(ref cad, ref confirma); //LLAMADA AL MÉTODO QUE REALIZA LA PREGUNTA
+
+            return confirma;
         }
         #endregion
 
