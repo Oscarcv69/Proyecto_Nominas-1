@@ -16,7 +16,7 @@ namespace Nominas
     class Ficheros
     {
         #region Variables privadas de la clase
-        private static string rutaEMP = @"..\\..\\..\\Nominas\\B.D_Empleados\\trabajador.xml"; // RUTA POR DEFECTO DE LA BASE DE DATOS DE EMPLEADO
+        private static string rutaEMP = @"..\\..\\..\\Nominas\\trabajador.xml"; // RUTA POR DEFECTO DE LA BASE DE DATOS DE EMPLEADO
         private static string rutaNOM = @"..\\..\\..\\Nominas\\B.D_Nominas\\"; // RUTA POR DEFECTO DE LAS NOMINAS DE LOS TRABAJADORES
         private static string rutaConf = @"..\\..\\..\\Nominas\\Recursos\\"; // RUTA DEL ARCHIVO DE CONFIGURACIÓN
         private static string nominascerradas = @"..\\..\\..\\Nominas\\B.D_Cerradas\\"; // RUTA DEL DIRECTORIO DE NÓMINAS CERRADAS

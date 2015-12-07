@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 /// <summary> INFORME : 
-/// 
-/// 
-/// 
-/// 
-/// 
-/// 
+/// Es una clase para validar la entrada dni, nombre y apellidos.
+/// Declaramos las varibles que vamos a utilizar como en la clase trbajadores como son dni, nombre y apellidos.
+/// Con un metodo trabajadores hacemos que estas variables se conviertan en null.
+/// Con los metodos dni_pre, nombre_pre y apellidos_pre controlamos las excepciones de estos campos
+///     En el metodo dni_pre tenemos un get que devuelve el dni introducido y un set en el cual se validan las entradas de dni por teclado
+///     en el set comprobamos que no tenemos un dni que su largo sea inferior o mayor a 9 caracteres ya sean letras o numeros, en el cual acontinuacion 
+///     tenemos un if el cual lee cada caracter de la cadena dni y comprueba que los 8 primero caracteres son numeros y el ultimo caracter de la cadena es 
+///     una letra, tras pasado por este if, llegamos al ultimo if el cual comprueba que la letra del dni es correcta, si todo es correcto devuelve dni para
+///     guardarlo.
+///     En los metodos nombre_pre y apellidos_pre tenemos un get que nos devuelve el nombre en nombre_pre y los apellidos en apellidos_pre.
+///     El set de estos metodos son iguales porque tenemos que conprobar lo mismo en los dos asi que tenemos un if con un regex con todos los 
+///     caracteres que podemos introducir, si es todo correcto devuelve nombre y apellido, sino lo son saltara una execión.
 /// </summary>
 
 namespace Nominas
