@@ -570,8 +570,7 @@ namespace Nominas
                             else
                             {
                                 salir = true;
-                                mensaje = "DNI agregado con éxito";
-                                Continuar(mensaje); //Si no lo encuentra, salimos del bucle.
+                                 //Si no lo encuentra, salimos del bucle.
                             }
                             break;
                         //Caso 2: Modificación del Nombre del trabajador
