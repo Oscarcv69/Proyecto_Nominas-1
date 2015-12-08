@@ -89,6 +89,7 @@ namespace Nominas
                             mensaje2 = "Desea registrar otro Trabajador (s/n): ";
                             salida = Interfaz.Continuar(mensaje);
                             Interfaz.Pregunta(ref mensaje2, ref salida);
+                            Ficheros.GuardarTrabajadores(listaTrabajadores);
                         } else //Creamos empleados desde la nómina.
                         {
                             salida = true;

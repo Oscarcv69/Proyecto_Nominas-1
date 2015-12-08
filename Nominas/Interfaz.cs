@@ -13,7 +13,6 @@ using System.Globalization;
 /// Dichos Métodos actúan de plantilla para la creación de un nuevo trabajador, modificación y borrado de un trabajador
 /// así como métodos para mostrar errores o continuaciones.
 /// Los métodos de nómina se encargan de gestionar los procesos de entrada/salida de la parte relacionada con las nóminas.
-/// 
 /// </summary>
 
 namespace Nominas
@@ -99,7 +98,6 @@ namespace Nominas
                     }
 
                 }
-                Continuar();
             } while (!salir);
         }
         private static string LineaSeparador(String car) // Antonio Baena - Crea guiones utilizados en la salida por pantalla, acorde al ancho de la consola.
