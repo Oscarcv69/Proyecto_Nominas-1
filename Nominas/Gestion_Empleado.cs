@@ -90,7 +90,8 @@ namespace Nominas
                             salida = Interfaz.Continuar(mensaje);
                             Interfaz.Pregunta(ref mensaje2, ref salida);
                             Ficheros.GuardarTrabajadores(listaTrabajadores);
-                        } else //Creamos empleados desde la nómina.
+                        }
+                        else //Creamos empleados desde la nómina.
                         {
                             salida = true;
                         }
@@ -110,9 +111,8 @@ namespace Nominas
         {
             int posicion = 0;
             string eleccion = null;
-            string dni = null; 
-            bool existe = false;        //Inicialización de variables
-            bool salir = false;        
+            string dni = null;
+            bool salir = false, existe = false;
             bool error = false;
             string pregunta = null;
             string mensaje = null;
@@ -120,16 +120,16 @@ namespace Nominas
             if (error == false)
             {
                 dni = Interfaz.PlantillaPedirDni(); //Pedimos el DNI a modificar con la plantilla de la intefaz
-                existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion); //Buscamos si existe el dni facilitado
+                existe = ExisteTrabajador(listaTrabajadores, dni, ref posicion);
             }
-            do
+            if (existe)
             {
-                try
+                do
                 {
-                    if (existe) //Si el trabajador existe 
+                    try
                     {
                         //Llamamos a la plantilla para ver la elección escogida
-                        eleccion = Interfaz.PlantillaEleccionModificar(); 
+                        eleccion = Interfaz.PlantillaEleccionModificar();
 
                         switch (eleccion) //Según la elección escogida realiza una acción u otra
                         {
@@ -153,24 +153,17 @@ namespace Nominas
                         Interfaz.Pregunta(ref pregunta, ref salir);
                         Ficheros.GuardarTrabajadores(listaTrabajadores);
                         // Si todo ha sido validado, lo guardamos en el fichero
-                    }
 
-                    else
+                    }
+                    catch (Exception ex)
                     {
-                        mensaje = "El Trabajador no existe";
+                        Interfaz.Error(ex.Message);
+                        Interfaz.Continuar();
                         salir = false;
                         error = true;
                     }
-
-                }
-                catch (Exception ex)
-                {
-                    Interfaz.Error(ex.Message);
-                    Interfaz.Continuar();
-                    salir = false;
-                    error = true;
-                }
-            } while (!salir);
+                } while (!salir);
+            }
 
         }
         //Método para borrar un trabajador
@@ -236,7 +229,7 @@ namespace Nominas
             }
             Interfaz.Continuar();
         }
-        
+
         //Método para comprobar si el DNI existe ya en la Base de datos de empleados.
         public static bool ComprobarDni(string dni)
         {

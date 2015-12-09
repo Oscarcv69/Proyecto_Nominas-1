@@ -389,6 +389,7 @@ namespace Nominas
                             Console.Write("\t\t Introduzca DNI (12345678A): ");
                             aux = Console.ReadLine();
                             aux = aux.Trim().ToUpper(); //Pasamos a mayúsculas la letra del DNI
+                            aux = aux.Replace(" ", "");
                             existe = Gestion_Empleado.ComprobarDni(aux); //Comprobación si existe en la base de datos
                             if (existe)
                             {
@@ -494,11 +495,14 @@ namespace Nominas
                     existe = Gestion_Empleado.ComprobarDni(dni.ToUpper()); //Comprobamos si ya está en la Base de datos
                     if (existe == true)
                     {
-                        trabajador = null; //VACIAR OBJETO TRABAJADOR PARA AHORRAR MEMORIA
+                        //trabajador = null; //VACIAR OBJETO TRABAJADOR PARA AHORRAR MEMORIA
                         salir = true;
                     }
                     else
                     {
+                        Error("El empleado no se encuentra registrado.");
+                        Continuar();
+                        dni = null;
                         salir = true; //Si no existe, sale del bucle
                     }
                 }
